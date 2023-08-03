@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
             $table->string('title');
+            $table->boolean('is_visible')->default(true);
             $table->timestamps();
         });
         Schema::create('submodules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('module_id')->constrained('modules')->cascadeOnDelete();
             $table->string('title');
+            $table->integer('list_sort');
+            $table->boolean('is_visible')->default(true);
             $table->timestamps();
         });
         Schema::create('materials', function (Blueprint $table) {

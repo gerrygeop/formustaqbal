@@ -23,8 +23,10 @@ return new class extends Migration
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->nullOnDelete();
             $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->integer('level')->default(1); // fundamental, pemula, menengah, ahli ...etc,
-            $table->text('descriptions')->nullable();
+            $table->string('level')->default('dasar'); // fundamental, pemula, menengah, ahli ...etc,
+            $table->longText('descriptions')->nullable();
+            $table->boolean('is_visible')->default(false);
+            $table->date('published_at')->nullable();
             $table->timestamps();
         });
     }

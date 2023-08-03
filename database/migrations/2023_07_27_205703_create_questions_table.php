@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained('quizzes')->cascadeOnDelete();
             $table->text('question')->nullable();
+            $table->string('file_path')->nullable();
             $table->integer('type')->default(1); //multiple choices, essay, listening, speaking
             $table->boolean('is_active')->default(true);
             $table->timestamps();

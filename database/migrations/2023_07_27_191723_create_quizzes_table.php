@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('submodules_id')->constrained('submodules')->cascadeOnDelete();
+            $table->foreignId('submodule_id')->constrained('submodules')->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
         Schema::create('quiz_user', function (Blueprint $table) {
