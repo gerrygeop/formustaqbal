@@ -23,4 +23,9 @@ class Submodule extends Model
     {
         return $this->hasOne(Material::class);
     }
+
+    public function quiz(): HasOne
+    {
+        return $this->hasOne(Quiz::class);
+    }
 }
