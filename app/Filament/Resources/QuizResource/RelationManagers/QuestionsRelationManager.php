@@ -8,6 +8,7 @@ use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Str;
 
 class QuestionsRelationManager extends RelationManager
 {
@@ -39,34 +40,35 @@ class QuestionsRelationManager extends RelationManager
                         ->maxSize(3024),
 
                     Forms\Components\Textarea::make('question'),
-                    Forms\Components\Toggle::make('is_active')->required()->default(true),
 
-                    Forms\Components\Repeater::make('choices')
-                        ->label('Options')
-                        ->relationship()
+                    Forms\Components\Section::make('Options')
+                        ->relationship('choices')
                         ->schema([
-                            Forms\Components\FileUpload::make('image_path')
+                            Forms\Components\Repeater::make('options')
+                                ->schema([
+                                    Forms\Components\TextInput::make('id')->default(Str::password(5, symbols: false))->hidden(),
+
+                                    Forms\Components\FileUpload::make('image_path')
+                                        ->directory('question-choice-images')
+                                        ->image()
+                                        ->imageResizeMode('cover')
+                                        ->imagePreviewHeight('200')
+                                        ->enableOpen()
+                                        ->maxSize(3024)
+                                        ->columnSpan([
+                                            'md' => 6,
+                                        ]),
+                                    Forms\Components\Toggle::make('is_correct')->inline(false)->columnSpan([
+                                        'md' => 2
+                                    ]),
+                                    Forms\Components\TextInput::make('choice')->disableLabel()->placeholder('Options text...')->columnSpanFull(),
+                                ])
                                 ->disableLabel()
-                                ->directory('question-choice-images')
-                                ->image()
-                                ->imageResizeMode('cover')
-                                ->imagePreviewHeight('200')
-                                ->enableOpen()
-                                ->maxSize(3024)
-                                ->columnSpan([
-                                    'md' => 3,
-                                ]),
-                            Forms\Components\TextInput::make('choice')->disableLabel()->columnSpan([
-                                'md' => 5,
-                            ]),
-                            Forms\Components\Toggle::make('is_correct')->columnSpan([
-                                'md' => 2
-                            ]),
+                                ->columns([
+                                    'md' => 12,
+                                ])
+                                ->createItemButtonLabel('Add Option')
                         ])
-                        ->columns([
-                            'md' => 10,
-                        ])
-                        ->createItemButtonLabel('Add Option')
                         ->visible(function (callable $get) {
                             return ($get('type') == '1') ? true : false;
                         }),

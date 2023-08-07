@@ -3,12 +3,16 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuestionResource\Pages;
+use App\Models\Exam;
 use App\Models\Question;
+use App\Models\Quiz;
 use Filament\Forms;
+use Filament\Forms\Components\MorphToSelect;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Support\Str;
 
 class QuestionResource extends Resource
 {
@@ -23,9 +27,13 @@ class QuestionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                    Forms\Components\Select::make('quiz_id')
-                        ->relationship('quiz', 'title')
+                    Forms\Components\MorphToSelect::make('questionable')
+                        ->types([
+                            MorphToSelect\Type::make(Quiz::class)->titleColumnName('title'),
+                            MorphToSelect\Type::make(Exam::class)->titleColumnName('title'),
+                        ])
                         ->required(),
+
                     Forms\Components\Select::make('type')
                         ->required()
                         ->options([
@@ -46,39 +54,41 @@ class QuestionResource extends Resource
                         ->maxSize(3024),
 
                     Forms\Components\Textarea::make('question'),
-                    Forms\Components\Toggle::make('is_active')->required()->default(true),
                 ]),
 
-                Forms\Components\Section::make('Options')->schema([
-                    Forms\Components\Repeater::make('choices')
-                        ->relationship()
-                        ->schema([
-                            Forms\Components\FileUpload::make('image_path')
-                                ->disableLabel()
-                                ->directory('question-choice-images')
-                                ->image()
-                                ->imageResizeMode('cover')
-                                ->imagePreviewHeight('200')
-                                ->enableOpen()
-                                ->maxSize(3024)
-                                ->columnSpan([
-                                    'md' => 3,
+                Forms\Components\Section::make('Options')
+                    ->relationship('choices')
+                    ->schema([
+                        Forms\Components\Repeater::make('options')
+                            ->schema([
+                                Forms\Components\TextInput::make('id')->default(Str::password(5, symbols: false))->hidden(),
+
+                                Forms\Components\FileUpload::make('image_path')
+                                    ->directory('question-choice-images')
+                                    ->image()
+                                    ->imageResizeMode('cover')
+                                    ->imagePreviewHeight('200')
+                                    ->enableOpen()
+                                    ->maxSize(3024)
+                                    ->columnSpan([
+                                        'md' => 3,
+                                    ]),
+                                Forms\Components\TextInput::make('choice')->columnSpan([
+                                    'md' => 5,
                                 ]),
-                            Forms\Components\TextInput::make('choice')->disableLabel()->columnSpan([
-                                'md' => 5,
-                            ]),
-                            Forms\Components\Toggle::make('is_correct')->columnSpan([
-                                'md' => 2
-                            ]),
-                        ])
-                        ->disableLabel()
-                        ->columns([
-                            'md' => 10,
-                        ])
-                        ->createItemButtonLabel('Add Option'),
-                ])->visible(function (callable $get) {
-                    return ($get('type') == '1') ? true : false;
-                }),
+                                Forms\Components\Toggle::make('is_correct')->inline(false)->columnSpan([
+                                    'md' => 2
+                                ]),
+                            ])
+                            ->disableLabel()
+                            ->columns([
+                                'md' => 10,
+                            ])
+                            ->createItemButtonLabel('Add Option'),
+                    ])
+                    ->visible(function (callable $get) {
+                        return ($get('type') == '1') ? true : false;
+                    }),
             ]);
     }
 
@@ -86,7 +96,7 @@ class QuestionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('quiz.title')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('questionable.title')->label('Title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('type')->enum([
                     '1' => 'Multiple Choice',
                     '2' => 'Essay',
@@ -94,7 +104,6 @@ class QuestionResource extends Resource
                     '4' => 'Speaking',
                 ]),
                 Tables\Columns\TextColumn::make('question')->words(10)->searchable(),
-                Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')->options([
@@ -103,7 +112,6 @@ class QuestionResource extends Resource
                     '3' => 'Listening',
                     '4' => 'Speaking',
                 ]),
-                Tables\Filters\TernaryFilter::make('is_active')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
