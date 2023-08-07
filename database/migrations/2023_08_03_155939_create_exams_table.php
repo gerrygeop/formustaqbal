@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->text('instruction');
             $table->date('published_at');

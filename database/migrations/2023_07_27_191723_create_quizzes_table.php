@@ -19,12 +19,6 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
-        Schema::create('quiz_user', function (Blueprint $table) {
-            $table->foreignId('quiz_id')->constrained('quizzes')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->primary(['quiz_id', 'user_id']);
-            $table->timestamps();
-        });
     }
 
     /**
@@ -32,7 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quiz_user');
         Schema::dropIfExists('quizzes');
     }
 };
