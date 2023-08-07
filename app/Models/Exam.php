@@ -5,28 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class Quiz extends Model
+class Exam extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 'quizzes';
+    protected $table = 'exams';
 
-    public function users(): BelongsToMany
+    public function creator(): BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function questions(): MorphMany
     {
         return $this->morphMany(Question::class, 'questionable');
-    }
-
-    public function submodule(): BelongsTo
-    {
-        return $this->belongsTo(Submodule::class);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Question extends Model
 {
@@ -11,13 +13,13 @@ class Question extends Model
 
     protected $guarded = ['id'];
 
-    public function quiz()
+    public function questionable(): MorphTo
     {
-        return $this->belongsTo(Quiz::class);
+        return $this->morphTo();
     }
 
-    public function choices()
+    public function choices(): HasOne
     {
-        return $this->hasMany(QuestionChoice::class);
+        return $this->hasOne(QuestionChoice::class);
     }
 }
