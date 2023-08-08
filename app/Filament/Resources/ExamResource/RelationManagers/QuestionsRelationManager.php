@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\QuizResource\RelationManagers;
+namespace App\Filament\Resources\ExamResource\RelationManagers;
 
 use App\Models\Question;
 use Filament\Forms;
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 class QuestionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'questions';
-    protected static ?string $recordTitleAttribute = 'type';
+    protected static ?string $recordTitleAttribute = 'question';
 
     public static function form(Form $form): Form
     {
