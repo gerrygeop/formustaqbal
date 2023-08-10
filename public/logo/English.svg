@@ -1,0 +1,25 @@
+<svg width="105" height="60" viewBox="0 0 105 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="English">
+<mask id="mask0_41_112" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="105" height="60">
+<rect id="Rectangle 38" width="104.762" height="60" rx="10" fill="#012169"/>
+</mask>
+<g mask="url(#mask0_41_112)">
+<rect id="Rectangle 31" width="104.762" height="60" rx="10" fill="#012169"/>
+<rect id="Rectangle 34" x="-3.19097" y="-4.34275" width="56.6741" height="5.41326" transform="rotate(25.1048 -3.19097 -4.34275)" fill="white" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 35" x="56.3622" y="34.0714" width="55.9918" height="5.41326" transform="rotate(23.3657 56.3622 34.0714)" fill="white" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 37" x="-4.40406" y="55.4261" width="55.4705" height="5.41326" transform="rotate(-23.5131 -4.40406 55.4261)" fill="white" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 36" x="55.6492" y="22.1134" width="55.302" height="5.41326" transform="rotate(-24.311 55.6492 22.1134)" fill="white" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 39" x="-2.70972" y="-2.01294" width="54.6741" height="3.41326" transform="rotate(25.1048 -2.70972 -2.01294)" fill="#C8102E"/>
+<rect id="Rectangle 40" x="56.8835" y="34.386" width="53.9918" height="3.41326" transform="rotate(23.3657 56.8835 34.386)" fill="#C8102E"/>
+<rect id="Rectangle 41" x="-3.08813" y="56.9441" width="53.4705" height="3.41326" transform="rotate(-23.5131 -3.08813 56.9441)" fill="#C8102E"/>
+<rect id="Rectangle 42" x="56.9722" y="21.613" width="53.302" height="3.41326" transform="rotate(-24.311 56.9722 21.613)" fill="#C8102E"/>
+<g id="Union">
+<mask id="path-11-inside-1_41_112" fill="white">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M43 40V134H62V40H156V20H62V-74H43V20H-51V40H43Z"/>
+</mask>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M43 40V134H62V40H156V20H62V-74H43V20H-51V40H43Z" fill="#C8102E"/>
+<path d="M43 134H39V138H43V134ZM43 40H47V36H43V40ZM62 134V138H66V134H62ZM62 40V36H58V40H62ZM156 40V44H160V40H156ZM156 20H160V16H156V20ZM62 20H58V24H62V20ZM62 -74H66V-78H62V-74ZM43 -74V-78H39V-74H43ZM43 20V24H47V20H43ZM-51 20V16H-55V20H-51ZM-51 40H-55V44H-51V40ZM47 134V40H39V134H47ZM62 130H43V138H62V130ZM58 40V134H66V40H58ZM156 36H62V44H156V36ZM152 20V40H160V20H152ZM62 24H156V16H62V24ZM58 -74V20H66V-74H58ZM43 -70H62V-78H43V-70ZM47 20V-74H39V20H47ZM-51 24H43V16H-51V24ZM-47 40V20H-55V40H-47ZM43 36H-51V44H43V36Z" fill="white" mask="url(#path-11-inside-1_41_112)"/>
+</g>
+</g>
+</g>
+</svg>
