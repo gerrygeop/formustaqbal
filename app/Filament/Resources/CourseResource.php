@@ -35,7 +35,6 @@ class CourseResource extends Resource
                             ->lazy()
                             ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : $set('slug', Str::slug($state))),
                         Forms\Components\TextInput::make('slug')
-                            ->disabled()
                             ->required()
                             ->maxLength(255)
                             ->unique(Course::class, 'slug', ignoreRecord: true),
@@ -47,6 +46,14 @@ class CourseResource extends Resource
                                 'menengah' => 'Menengah',
                                 'mahir' => 'Mahir',
                             ]),
+                        Forms\Components\FileUpload::make('cover_path')
+                            ->label('Cover')
+                            ->directory('course-cover')
+                            ->image()
+                            ->imageResizeMode('cover')
+                            ->imagePreviewHeight('200')
+                            ->enableOpen()
+                            ->maxSize(3024),
                         Forms\Components\RichEditor::make('descriptions'),
                     ])
             ]);

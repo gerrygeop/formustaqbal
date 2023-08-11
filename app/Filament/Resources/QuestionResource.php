@@ -64,7 +64,7 @@ class QuestionResource extends Resource
                                 Forms\Components\TextInput::make('id')->default(Str::password(5, symbols: false))->hidden(),
 
                                 Forms\Components\FileUpload::make('image_path')
-                                    ->directory('question-choice-images')
+                                    ->directory('question-choices-images')
                                     ->image()
                                     ->imageResizeMode('cover')
                                     ->imagePreviewHeight('200')
