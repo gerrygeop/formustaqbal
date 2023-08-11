@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('slug')->unique();
             $table->timestamps();
         });
@@ -21,8 +21,9 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_id')->nullable()->constrained('subjects')->nullOnDelete();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('slug')->unique();
+            $table->string('cover_path')->nullable();
             $table->string('level')->default('dasar'); // fundamental, pemula, menengah, ahli ...etc,
             $table->longText('descriptions')->nullable();
             $table->boolean('is_visible')->default(false);

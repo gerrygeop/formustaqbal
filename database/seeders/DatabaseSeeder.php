@@ -12,12 +12,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory()->create([
+        \App\Models\User::factory()->hasProfile()->create([
             'name' => 'Geop',
+            'username' => 'geopp',
             'email' => 'geop@geop.com',
         ]);
 
-        \App\Models\User::factory(5)->create();
+        \App\Models\User::factory(5)->hasProfile()->create();
 
         $this->call([
             RoleSeeder::class,

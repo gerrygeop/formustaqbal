@@ -18,5 +18,16 @@ class RoleSeeder extends Seeder
             ['name' => 'reviewer'],
             ['name' => 'superadmin'],
         ]);
+
+        DB::table('subjects')->insert([
+            [
+                'name' => 'Bahasa Arab',
+                'slug' => 'bahasa-arab',
+            ],
+            [
+                'name' => 'Bahasa Inggris',
+                'slug' => 'bahasa-inggris',
+            ],
+        ]);
     }
 }
