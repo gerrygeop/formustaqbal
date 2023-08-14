@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubmoduleController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +22,18 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['verified'])->name('dashboard');
+    Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
+    // courses
     Route::get('/courses/my', [CourseController::class, 'my'])->name('courses.my');
+    Route::get('/courses/{subject}/list', [CourseController::class, 'courses'])->name('courses.list');
+    Route::get('/courses/{course}/attach', [CourseController::class, 'attach'])->name('courses.attach');
+
+    // Route::get('/courses/{course}/lesson', [CourseController::class, 'lesson'])->name('courses.lesson');
+    Route::get('/courses/{course}/lesson/{submodule}', [SubmoduleController::class, 'lesson'])->name('courses.lesson');
+
+    Route::resource('courses', CourseController::class);
+    // Route::get('/courses/{course}/syllabus', [CourseController::class, 'syllabus'])->name('courses.syllabus');
 });
 
 Route::middleware('auth')->group(function () {
