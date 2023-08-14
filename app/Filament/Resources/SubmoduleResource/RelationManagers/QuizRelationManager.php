@@ -23,6 +23,11 @@ class QuizRelationManager extends RelationManager
                     Forms\Components\TextInput::make('title')
                         ->required()
                         ->maxLength(255),
+                    Forms\Components\Toggle::make('is_active')->required()->inline(false)->default(true),
+                    Forms\Components\TextInput::make('timer_in_minutes')
+                        ->required()
+                        ->numeric()
+                        ->minValue(1),
                     Forms\Components\Textarea::make('description')->label('Instruction'),
                 ])
             ]);
