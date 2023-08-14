@@ -19,8 +19,8 @@ class QuestionResource extends Resource
     protected static ?string $model = Question::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'System Management';
-    protected static ?int $navigationSort = 7;
+    protected static ?string $navigationGroup = 'Questions Management';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

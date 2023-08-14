@@ -32,9 +32,17 @@ class SubjectResource extends Resource
                             ->maxLength(255)
                             ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : null),
                         Forms\Components\TextInput::make('slug')
-                            ->disabled()
                             ->required()
                             ->unique(Subject::class, 'slug', ignoreRecord: true),
+                        Forms\Components\FileUpload::make('cover_path')
+                            ->label('Cover')
+                            ->directory('subject-cover')
+                            ->image()
+                            ->imageResizeMode('cover')
+                            ->imagePreviewHeight('200')
+                            ->enableOpen()
+                            ->maxSize(3024),
+                        Forms\Components\RichEditor::make('description'),
                     ])
             ]);
     }

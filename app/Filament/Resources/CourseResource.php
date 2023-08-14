@@ -46,6 +46,7 @@ class CourseResource extends Resource
                                 'menengah' => 'Menengah',
                                 'mahir' => 'Mahir',
                             ]),
+                        Forms\Components\Toggle::make('is_visible')->required()->inline(false)->default(true),
                         Forms\Components\FileUpload::make('cover_path')
                             ->label('Cover')
                             ->directory('course-cover')
@@ -54,7 +55,7 @@ class CourseResource extends Resource
                             ->imagePreviewHeight('200')
                             ->enableOpen()
                             ->maxSize(3024),
-                        Forms\Components\RichEditor::make('descriptions'),
+                        Forms\Components\RichEditor::make('description'),
                     ])
             ]);
     }

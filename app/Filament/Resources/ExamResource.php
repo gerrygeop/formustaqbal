@@ -18,8 +18,8 @@ class ExamResource extends Resource
     protected static ?string $model = Exam::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'System Management';
-    protected static ?int $navigationSort = 10;
+    protected static ?string $navigationGroup = 'Assessment Management';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
