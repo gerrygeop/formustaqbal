@@ -28,4 +28,9 @@ class Submodule extends Model
     {
         return $this->hasOne(Quiz::class);
     }
+
+    public function courseProgress()
+    {
+        return $this->hasMany(UserCourseProgress::class);
+    }
 }
