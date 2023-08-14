@@ -12,6 +12,11 @@ class Subject extends Model
 
     protected $guarded = ['id'];
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class);
