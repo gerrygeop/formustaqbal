@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->string('cover_path')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
@@ -25,8 +27,8 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('cover_path')->nullable();
             $table->string('level')->default('dasar'); // fundamental, pemula, menengah, ahli ...etc,
-            $table->longText('descriptions')->nullable();
-            $table->boolean('is_visible')->default(false);
+            $table->longText('description')->nullable();
+            $table->boolean('is_visible')->default(true);
             $table->date('published_at')->nullable();
             $table->timestamps();
         });

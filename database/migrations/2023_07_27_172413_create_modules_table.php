@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
             $table->string('title');
             $table->boolean('is_visible')->default(true);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
         Schema::create('submodules', function (Blueprint $table) {
@@ -29,7 +30,7 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('submodule_id')->constrained('submodules')->cascadeOnDelete();
-            $table->text('content');
+            $table->longText('content');
             $table->timestamps();
         });
     }
