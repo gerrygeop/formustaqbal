@@ -41,7 +41,7 @@
 								class="bg-transparent ring-2 ring-accent ring-inset rounded-full px-4 py-1.5 text-accent">
 								{{ __('Login') }}
 							</a>
-							<a href="#" class="bg-accent rounded-full px-4 py-1.5 text-white">
+							<a href="{{ route('register') }}" class="bg-accent rounded-full px-4 py-1.5 text-white">
 								{{ __('Sign Up') }}
 							</a>
 						</div>
