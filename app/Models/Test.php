@@ -22,4 +22,9 @@ class Test extends Model
     {
         return $this->morphMany(Question::class, 'questionable');
     }
+
+    public function answers(): MorphMany
+    {
+        return $this->morphMany(Answer::class, 'answerable');
+    }
 }
