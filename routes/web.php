@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmoduleController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::middleware(['auth'])->group(function () {
+    Route::get('/start', [TestController::class, 'start'])->name('start');
+    Route::get('/placement-test/{subject:id}', [TestController::class, 'test'])->name('placement.test');
+
     Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
     // courses
@@ -33,7 +38,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/courses/{course}/lesson/{submodule}', [SubmoduleController::class, 'lesson'])->name('courses.lesson');
 
     Route::resource('courses', CourseController::class);
-    // Route::get('/courses/{course}/syllabus', [CourseController::class, 'syllabus'])->name('courses.syllabus');
 });
 
 Route::middleware('auth')->group(function () {
