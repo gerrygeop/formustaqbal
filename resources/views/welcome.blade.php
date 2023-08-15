@@ -61,7 +61,7 @@
 							Pembelajaran tidak didapat dengan kebetulan, ia harus dicari dengan semangat <br /> dan dijalani dengan tekun.
 						</p>
 
-						<a href="#"
+						<a href="{{ route('start') }}"
 							class="bg-amber-500/100 hover:bg-amber-500/80 text-white text-xl font-semibold rounded-lg px-5 py-2.5">
 							Mulai belajar sekarang
 						</a>
