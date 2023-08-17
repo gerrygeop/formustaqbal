@@ -15,6 +15,12 @@ class TestController extends Controller
     // Choose language
     public function start()
     {
+        return view('greeting');
+    }
+
+    // Choose language
+    public function language()
+    {
         $subjects = Subject::all();
         return view('choose-language', [
             'subjects' => $subjects

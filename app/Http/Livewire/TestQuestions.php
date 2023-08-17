@@ -71,6 +71,7 @@ class TestQuestions extends Component
             $response = [
                 'question_id' => $questionId,
                 'question_type' => $this->currentQuestion->type,
+                'point' => $this->currentQuestion->point,
             ];
 
             if ($this->currentQuestion->type == 1) {
@@ -100,14 +101,18 @@ class TestQuestions extends Component
     {
         if ($this->saveAnswer($this->currentQuestion->id)) {
             DB::transaction(function () {
-                $arr = [];
-                foreach ($this->answers as $value) {
-                    $arr[] = $value;
-                }
+                $answerData = collect($this->answers)->map(function ($answer) {
+                    return [
+                        'question_id' => $answer['question_id'],
+                        'question_type' => $answer['question_type'],
+                        'response' => $answer['response'],
+                        'point' => $answer['point'],
+                    ];
+                })->toArray();
 
                 $answer = new Answer();
                 $answer->user_id = auth()->user()->id;
-                $answer->answer = json_encode($arr);
+                $answer->answer = $answerData;
 
                 $this->test->answers()->save($answer);
             });
