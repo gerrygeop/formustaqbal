@@ -35,7 +35,7 @@
 						@foreach ($question->choices->options as $choice)
 							<label class="text-lg font-medium">
 								<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
-									value="{{ $choice['id'] }}"> {{ $choice['choice'] }}
+									value="{{ $choice['choice'] }}"> {{ $choice['choice'] }}
 							</label>
 						@endforeach
 					@elseif ($question->type == 2 || $question->type == 3)
@@ -50,7 +50,7 @@
 					@endif
 
 					@if ($questionNull)
-						<p class="text-red-500">Anda belum menjawab</p>
+						<p class="text-red-500">Pastikan anda jawaban anda telah terisi</p>
 					@endif
 					@error('answers.*.speaking')
 						<span class="text-red-500">{{ $message }}</span>

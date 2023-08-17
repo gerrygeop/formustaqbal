@@ -115,32 +115,19 @@
 			<div class="relative max-w-[1440px] mx-auto py-20 px-4 sm:px-6">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
 					<div
-						class="w-[36rem] h-[360px] bg-gray shadow-lg rounded-2xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
+						class="w-[36rem] h-[530px] bg-gray shadow-lg rounded-2xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
 						<div class="grid grid-cols-5 gap-y-4 px-6 py-4 text-lg">
 							<span class="col-span-1">No</span>
 							<span class="col-span-3">Nama</span>
 							<span class="col-span-1">Poin</span>
 
-							<span class="col-span-1">1</span>
-							<span class="col-span-3">Muhammad Ronald Simatupang</span>
-							<span class="col-span-1">1560</span>
+							<span class="col-span-full border-t"></span>
 
-							<span class="col-span-1">2</span>
-							<span class="col-span-3">John Doe</span>
-							<span class="col-span-1">1460</span>
-
-							<span class="col-span-1">3</span>
-							<span class="col-span-3">Alex Doe</span>
-							<span class="col-span-1">1260</span>
-							<span class="col-span-1">3</span>
-							<span class="col-span-3">Alex Doe</span>
-							<span class="col-span-1">1260</span>
-							<span class="col-span-1">3</span>
-							<span class="col-span-3">Alex Doe</span>
-							<span class="col-span-1">1260</span>
-							<span class="col-span-1">3</span>
-							<span class="col-span-3">Alex Doe</span>
-							<span class="col-span-1">1260</span>
+							@foreach (\App\Models\User::with('profile')->get()->take(10) as $user)
+								<span class="col-span-1 font-semibold">{{ $loop->iteration }}</span>
+								<span class="col-span-3 font-semibold">{{ $user->name }}</span>
+								<span class="col-span-1 font-semibold">{{ $user->profile->point ?? '0' }}</span>
+							@endforeach
 						</div>
 
 					</div>
@@ -227,7 +214,7 @@
 					<div class="bg-white rounded-2xl shadow-lg py-6 px-8">
 						<div class="flex items-center space-x-4 mb-3">
 							<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-							<h4 class="font-semibold">Junaedi Ruslia</h4>
+							<h4 class="font-semibold">Paul Greyrad</h4>
 						</div>
 						<p>
 							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
@@ -237,7 +224,7 @@
 					<div class="bg-white rounded-2xl shadow-lg py-6 px-8">
 						<div class="flex items-center space-x-4 mb-3">
 							<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-							<h4 class="font-semibold">Junaedi Ruslia</h4>
+							<h4 class="font-semibold">John Doe</h4>
 						</div>
 						<p>
 							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.

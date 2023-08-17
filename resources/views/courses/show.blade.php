@@ -52,10 +52,13 @@
 
 			<div class="col-span-1">
 				<div class="flex flex-col items-center justify-center gap-y-4 bg-white dark:bg-gray-800 p-6 shadow-sm rounded-md">
-					<a href="{{ route('courses.attach', $course) }}"
-						class="bg-accent/100 hover:bg-accent/90 px-6 py-2 text-richblack rounded w-full text-center">
-						Belajar sekarang
-					</a>
+
+					@if (auth()->user()->profile->point)
+						<a href="{{ route('courses.attach', $course) }}"
+							class="bg-accent/100 hover:bg-accent/90 px-6 py-2 text-richblack rounded w-full text-center">
+							Belajar sekarang
+						</a>
+					@endif
 
 					<a href="#"
 						class="bg-gray-100 hover:bg-gray-200 px-6 py-2 text-richblack border border-gray-300 rounded w-full text-center">

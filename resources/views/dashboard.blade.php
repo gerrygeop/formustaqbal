@@ -48,7 +48,13 @@
 						<div class="p-6 text-gray-900 dark:text-gray-100">
 							<div class="flex items-center justify-center space-x-2">
 								<h2 class="text-lg text-slate-600 dark:text-gray-50">
-									Ayo mulai belajar sekarang! Temukan kelas yang menarik dan daftar sekarang.
+									@if ($test)
+										@if ($test->created_at !== $test->updated_at)
+											Terima kasih telah menunggu. Point anda {{ auth()->user()->profile->point }}
+										@endif
+									@else
+										Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
+									@endif
 								</h2>
 							</div>
 						</div>
