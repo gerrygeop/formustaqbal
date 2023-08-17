@@ -21,7 +21,7 @@ class TestController extends Controller
     // Choose language
     public function language()
     {
-        $subjects = Subject::all();
+        $subjects = Subject::whereHas('test')->get();
         return view('choose-language', [
             'subjects' => $subjects
         ]);
