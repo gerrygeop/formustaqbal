@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->boolean('is_visible')->default(true);
             $table->text('description')->nullable();
+            $table->integer('standard_point')->default(0);
             $table->timestamps();
         });
         Schema::create('submodules', function (Blueprint $table) {

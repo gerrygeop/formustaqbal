@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('question')->nullable();
             $table->string('file_path')->nullable();
             $table->integer('type')->default(2); //multiple choices, essay, listening, speaking
+            $table->integer('point');
             $table->timestamps();
         });
 
