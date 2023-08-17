@@ -51,6 +51,8 @@
 									@if ($test)
 										@if ($test->created_at !== $test->updated_at)
 											Terima kasih telah menunggu. Point anda {{ auth()->user()->profile->point }}
+										@else
+											Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
 										@endif
 									@else
 										Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
