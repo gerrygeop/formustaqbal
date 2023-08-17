@@ -49,7 +49,7 @@
 							<div class="flex items-center justify-center space-x-2">
 								<h2 class="text-lg text-slate-600 dark:text-gray-50">
 									@if ($test)
-										@if ($test->created_at !== $test->updated_at)
+										@if ($test->created_at != $test->updated_at)
 											Terima kasih telah menunggu. Point anda {{ auth()->user()->profile->point }}
 										@else
 											Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
