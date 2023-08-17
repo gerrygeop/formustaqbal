@@ -6,6 +6,7 @@ use App\Filament\Resources\QuestionResource\Pages;
 use App\Models\Exam;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\Test;
 use Filament\Forms;
 use Filament\Forms\Components\MorphToSelect;
 use Filament\Resources\Form;
@@ -19,8 +20,8 @@ class QuestionResource extends Resource
     protected static ?string $model = Question::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Questions Management';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Questions\Answers';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -31,6 +32,7 @@ class QuestionResource extends Resource
                         ->types([
                             MorphToSelect\Type::make(Quiz::class)->titleColumnName('title'),
                             MorphToSelect\Type::make(Exam::class)->titleColumnName('title'),
+                            MorphToSelect\Type::make(Test::class)->titleColumnName('title'),
                         ])
                         ->required(),
 
@@ -54,6 +56,7 @@ class QuestionResource extends Resource
                         ->maxSize(3024),
 
                     Forms\Components\Textarea::make('question'),
+                    Forms\Components\TextInput::make('point')->numeric(),
                 ]),
 
                 Forms\Components\Section::make('Options')

@@ -69,6 +69,7 @@ class TestResource extends Resource
     {
         return [
             RelationManagers\QuestionsRelationManager::class,
+            RelationManagers\AnswersRelationManager::class,
         ];
     }
 
