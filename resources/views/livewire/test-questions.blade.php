@@ -32,12 +32,17 @@
 
 				<div class="flex flex-col gap-4">
 					@if ($question->type == 1)
-						@foreach ($question->choices->options as $choice)
-							<label class="text-lg font-medium">
-								<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
-									value="{{ $choice['choice'] }}"> {{ $choice['choice'] }}
-							</label>
-						@endforeach
+						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
+							@foreach ($question->choices->options as $choice)
+								<label class="text-lg font-medium flex items-center gap-x-4">
+									@if ($choice['image_path'])
+										<img src="{{ asset('storage/' . $choice['image_path']) }}" alt="choice">
+									@endif
+									<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
+										value="{{ $choice['choice'] ?? $choice['image_path'] }}"> {{ $choice['choice'] }}
+								</label>
+							@endforeach
+						</div>
 					@elseif ($question->type == 2 || $question->type == 3)
 						<x-textarea name="response_{{ $question->id }}" cols="30" rows="10"
 							placeholder="Tuliskan jawaban anda..." wire:model="answers.{{ $question->id }}" />
