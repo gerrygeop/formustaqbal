@@ -3,24 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuestionResource\Pages;
-use App\Models\Exam;
 use App\Models\Question;
-use App\Models\Quiz;
-use App\Models\Test;
 use Filament\Forms;
-use Filament\Forms\Components\MorphToSelect;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Support\Str;
 
 class QuestionResource extends Resource
 {
     protected static ?string $model = Question::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Questions\Answers';
+    protected static ?string $navigationGroup = 'Questions Management';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
@@ -28,12 +23,8 @@ class QuestionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                    Forms\Components\MorphToSelect::make('questionable')
-                        ->types([
-                            MorphToSelect\Type::make(Quiz::class)->titleColumnName('title'),
-                            MorphToSelect\Type::make(Exam::class)->titleColumnName('title'),
-                            MorphToSelect\Type::make(Test::class)->titleColumnName('title'),
-                        ])
+                    Forms\Components\Select::make('assessment_id')
+                        ->relationship('assessment', 'title')
                         ->required(),
 
                     Forms\Components\Select::make('type')
@@ -60,14 +51,13 @@ class QuestionResource extends Resource
                 ]),
 
                 Forms\Components\Section::make('Options')
-                    ->relationship('choices')
                     ->schema([
-                        Forms\Components\Repeater::make('options')
+                        Forms\Components\Repeater::make('choices')
+                            ->relationship('choices')
                             ->schema([
-                                Forms\Components\TextInput::make('id')->default(Str::password(5, symbols: false))->hidden(),
-
                                 Forms\Components\FileUpload::make('image_path')
-                                    ->directory('question-choices-images')
+                                    ->label('Image')
+                                    ->directory('choices-images')
                                     ->image()
                                     ->imageResizeMode('cover')
                                     ->imagePreviewHeight('200')
@@ -76,7 +66,7 @@ class QuestionResource extends Resource
                                     ->columnSpan([
                                         'md' => 3,
                                     ]),
-                                Forms\Components\TextInput::make('choice')->columnSpan([
+                                Forms\Components\TextInput::make('choice')->label('Choice Text')->columnSpan([
                                     'md' => 5,
                                 ]),
                                 Forms\Components\Toggle::make('is_correct')->inline(false)->columnSpan([
@@ -99,7 +89,6 @@ class QuestionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('questionable.title')->label('Title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('type')->enum([
                     '1' => 'Multiple Choice',
                     '2' => 'Essay',
@@ -107,6 +96,7 @@ class QuestionResource extends Resource
                     '4' => 'Speaking',
                 ]),
                 Tables\Columns\TextColumn::make('question')->words(10)->searchable(),
+                Tables\Columns\TextColumn::make('point')->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')->options([

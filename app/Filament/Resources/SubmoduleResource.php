@@ -70,7 +70,6 @@ class SubmoduleResource extends Resource
     {
         return [
             RelationManagers\MaterialRelationManager::class,
-            RelationManagers\QuizRelationManager::class,
         ];
     }
 
