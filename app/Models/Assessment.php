@@ -6,22 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use PhpOption\Option;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Question extends Model
+class Assessment extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function assessment(): BelongsTo
+    public function assessmentable(): MorphTo
     {
-        return $this->belongsTo(Assessment::class);
+        return $this->morphTo();
     }
 
-    public function choices(): HasMany
+    public function user(): BelongsTo
     {
-        return $this->hasMany(Choice::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
     }
 
     public function answers(): HasMany

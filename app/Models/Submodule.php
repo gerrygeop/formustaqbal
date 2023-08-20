@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Submodule extends Model
 {
@@ -24,13 +25,13 @@ class Submodule extends Model
         return $this->hasOne(Material::class);
     }
 
-    public function quiz(): HasOne
+    public function progress()
     {
-        return $this->hasOne(Quiz::class);
+        return $this->hasMany(Progress::class);
     }
 
-    public function courseProgress()
+    public function assessments(): MorphMany
     {
-        return $this->hasMany(UserCourseProgress::class);
+        return $this->morphMany(Assessment::class, 'assessmentable');
     }
 }

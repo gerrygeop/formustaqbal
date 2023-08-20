@@ -69,24 +69,19 @@ class User extends Authenticatable implements FilamentUser
         return $this->roles->pluck('name')->contains($roles);
     }
 
-    public function quizzes(): BelongsToMany
-    {
-        return $this->belongsToMany(Quiz::class);
-    }
-
-    public function exams(): HasMany
-    {
-        return $this->hasMany(Exam::class, 'creator_id');
-    }
-
     public function courses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class)->withTimestamps();
+        return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
     }
 
-    public function courseProgress()
+    public function modules(): BelongsToMany
     {
-        return $this->hasMany(UserCourseProgress::class);
+        return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
+    }
+
+    public function progress(): HasMany
+    {
+        return $this->hasMany(Progress::class);
     }
 
     public function answers(): HasMany

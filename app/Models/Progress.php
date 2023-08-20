@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserCourseProgress extends Model
+class Progress extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_course_progress';
+    protected $guarded = ['id'];
+    protected $table = 'progress';
 
     public function user()
     {

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use PhpOption\Option;
 
 class Answer extends Model
 {
@@ -19,15 +20,6 @@ class Answer extends Model
         'updated' => AnswerUpdated::class,
     ];
 
-    protected $casts = [
-        'answer' => 'array',
-    ];
-
-    public function answerable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -36,5 +28,15 @@ class Answer extends Model
     public function questions(): BelongsTo
     {
         return $this->belongsTo(Question::class);
+    }
+
+    public function assessment(): BelongsTo
+    {
+        return $this->belongsTo(Assessment::class);
+    }
+
+    public function choice(): BelongsTo
+    {
+        return $this->belongsTo(Choice::class);
     }
 }

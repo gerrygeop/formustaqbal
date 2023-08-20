@@ -34,8 +34,8 @@ class Course extends Model
         return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    public function courseProgress()
+    public function progress()
     {
-        return $this->hasMany(UserCourseProgress::class);
+        return $this->hasMany(Progress::class);
     }
 }
