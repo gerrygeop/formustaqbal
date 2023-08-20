@@ -54,7 +54,7 @@ class AnswersRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->url(fn (Answer $record): string => route('filament.resources.answers.edit', $record)),
+                Tables\Actions\EditAction::make()->label('Review')->url(fn (Answer $record): string => route('filament.resources.answers.edit', $record)),
                 // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

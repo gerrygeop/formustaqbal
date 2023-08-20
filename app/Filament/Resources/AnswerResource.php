@@ -31,10 +31,6 @@ class AnswerResource extends Resource
                     Forms\Components\Select::make('user')->relationship('user', 'name')->disabled(),
                     Forms\Components\Repeater::make('answer')
                         ->schema([
-                            Forms\Components\Select::make('question_id')
-                                ->label('Question')
-                                ->options(Question::all()->pluck('question'))
-                                ->disabled(),
                             Forms\Components\Select::make('question_type')
                                 ->options([
                                     '1' => 'Multiple Choice',
@@ -42,9 +38,37 @@ class AnswerResource extends Resource
                                     '3' => 'Listening',
                                     '4' => 'Speaking',
                                 ])
+                                ->disabled()
+                                ->reactive(),
+
+                            Forms\Components\Select::make('question_id')
+                                ->label('Question')
+                                ->options(
+                                    Question::all()->mapWithKeys(function ($item) {
+                                        return [$item->id => $item->question];
+                                    })
+                                )
                                 ->disabled(),
 
-                            Forms\Components\TextInput::make('response')->disabled(),
+                            Forms\Components\TextInput::make('response')
+                                ->disabled()
+                                ->visible(function (callable $get) {
+                                    return ($get('question_type') != '4') ? true : false;
+                                }),
+
+                            Forms\Components\FileUpload::make('file_path')
+                                ->label('Audio')
+                                ->directory('speaking-test')
+                                ->acceptedFileTypes(['audio/mpeg', 'audio/ogg', 'audio/wav'])
+                                ->enableOpen()
+                                ->enableDownload()
+                                ->panelAspectRatio('8:1')
+                                ->disabled()
+                                ->maxSize(3024)
+                                ->visible(function (callable $get) {
+                                    return ($get('question_type') == '4') ? true : false;
+                                }),
+
                             Forms\Components\TextInput::make('point')->required(),
                         ])
                         ->disableItemCreation()
@@ -60,8 +84,6 @@ class AnswerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('answerable_type')->label('Type'),
-                // Tables\Columns\TextColumn::make('answerable_id'),
-                // Tables\Columns\TextColumn::make('answer'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -73,9 +95,7 @@ class AnswerResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
