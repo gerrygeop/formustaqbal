@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_course_progress', function (Blueprint $table) {
+        Schema::create('choices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('course_id')->constrained();
-            $table->foreignId('submodule_id')->constrained();
+            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
+            $table->text('choice')->nullable();
+            $table->text('image_path')->nullable();
+            $table->boolean('is_correct')->default(false);
             $table->timestamps();
-
-            $table->unique(['user_id', 'course_id', 'submodule_id']);
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_course_progress');
+        Schema::dropIfExists('choices');
     }
 };

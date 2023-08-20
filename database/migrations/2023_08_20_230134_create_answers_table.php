@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course_user', function (Blueprint $table) {
-            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
+        Schema::create('answers', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('module_id')->constrained('modules')->cascadeOnDelete();
-            $table->boolean('is_graduated')->default(false);
-            $table->primary(['course_id', 'user_id', 'module_id']);
+            $table->foreignId('assessment_id')->constrained('assessments')->cascadeOnDelete();
+            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
+            $table->foreignId('choice_id')->nullable()->constrained('choices')->cascadeOnDelete();
+            $table->text('answer_text')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('course_user');
+        Schema::dropIfExists('answers');
     }
 };

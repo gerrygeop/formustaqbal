@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('point')->nullable();
             $table->text('bio')->nullable();
             $table->boolean('is_premium')->default(false);
-            $table->date('joined_at')->nullable();
+            $table->dateTime('joined_at')->default(now());
             $table->timestamps();
         });
     }
