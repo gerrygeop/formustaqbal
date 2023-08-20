@@ -74,21 +74,20 @@ class TestQuestions extends Component
                 'point' => $this->currentQuestion->point,
             ];
 
-            if ($this->currentQuestion->type == 1) {
-                $response['response'] = $this->answers[$questionId];
+
+            if ($this->currentQuestion->type == 4 && isset($this->answers[$questionId]['speaking'])) {
+
+                $this->validate([
+                    'answers.*.speaking' => 'file|mimetypes:audio/mpeg,audio/ogg|max:5024', // 5MB Max
+                ]);
+
+                $audioFile = $this->answers[$questionId]['speaking'];
+                $audioFileName = $audioFile->store('speaking-test', 'public');
+                $response['response'] = '-';
+                $response['file_path'] = $audioFileName;
             } else {
-                if ($this->currentQuestion->type == 4 && isset($this->answers[$questionId]['speaking'])) {
-
-                    $this->validate([
-                        'answers.*.speaking' => 'file|mimetypes:audio/mpeg,audio/ogg|max:5024', // 5MB Max
-                    ]);
-
-                    $audioFile = $this->answers[$questionId]['speaking'];
-                    $audioFileName = $audioFile->store('speaking-test', 'public');
-                    $response['response'] = $audioFileName;
-                } else {
-                    $response['response'] = $this->answers[$questionId];
-                }
+                $response['response'] = $this->answers[$questionId];
+                $response['file_path'] = '-';
             }
 
             $this->answers[$questionId] = $response;
@@ -101,14 +100,12 @@ class TestQuestions extends Component
     {
         if ($this->saveAnswer($this->currentQuestion->id)) {
             DB::transaction(function () {
-                $answerData = collect($this->answers)->map(function ($answer) {
-                    return [
-                        'question_id' => $answer['question_id'],
-                        'question_type' => $answer['question_type'],
-                        'response' => $answer['response'],
-                        'point' => $answer['point'],
-                    ];
-                })->toArray();
+
+                $answerData = [];
+                foreach ($this->answers as $value) {
+                    $answerData[] = $value;
+                }
+                $answerData = collect($answerData)->toArray();
 
                 $answer = new Answer();
                 $answer->user_id = auth()->user()->id;
