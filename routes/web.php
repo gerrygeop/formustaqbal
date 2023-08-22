@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmoduleController;
 use App\Http\Controllers\TestController;
@@ -24,6 +25,7 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth'])->group(function () {
+    // placement test
     Route::get('/start', [TestController::class, 'start'])->name('start');
     Route::get('/language', [TestController::class, 'language'])->name('language');
     Route::get('/placement-test/{subject:id}', [TestController::class, 'test'])->name('placement.test');
@@ -34,11 +36,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/courses/my', [CourseController::class, 'my'])->name('courses.my');
     Route::get('/courses/{subject}/list', [CourseController::class, 'courses'])->name('courses.list');
     Route::get('/courses/{course}/attach', [CourseController::class, 'attach'])->name('courses.attach');
+    Route::get('/courses/{module}/get', [CourseController::class, 'mulai'])->name('courses.mulai');
+    Route::get('/courses/{module}/learn/{submodule}', [CourseController::class, 'learn'])->name('courses.learn');
 
-    // Route::get('/courses/{course}/lesson', [CourseController::class, 'lesson'])->name('courses.lesson');
     Route::get('/courses/{course}/lesson/{submodule}', [SubmoduleController::class, 'lesson'])->name('courses.lesson');
 
-    Route::resource('courses', CourseController::class);
+    Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+
+    // Leaderboard
+    Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');
 });
 
 Route::middleware('auth')->group(function () {
