@@ -74,7 +74,7 @@
 
 					<div class="grid grid-cols-1 gap-y-4 mt-4">
 						@foreach ($course->modules as $module)
-							@if ($module->standard_point <= auth()->user()->profile->point)
+							@if ($module->standard_point <= auth()->user()->profile->point && $module->users->contains(auth()->user()->id))
 								<a href="{{ route('courses.mulai', $module) }}"
 									class="inline-flex items-center rounded-md bg-yellow-200 hover:bg-yellow-300 ring-1 ring-inset ring-yellow-600/20 hover:ring-yellow-600/70 transition-all duration-150 px-4 py-2">
 									<span class="font-medium text-lg text-yellow-800">{{ $module->title }}</span>
