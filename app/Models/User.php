@@ -23,11 +23,7 @@ class User extends Authenticatable implements FilamentUser
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -97,5 +93,10 @@ class User extends Authenticatable implements FilamentUser
     public function assessments(): BelongsToMany
     {
         return $this->belongsToMany(Assessment::class, 'assessment_user', 'user_id');
+    }
+
+    public function siakad(): HasOne
+    {
+        return $this->hasOne(Siakad::class);
     }
 }
