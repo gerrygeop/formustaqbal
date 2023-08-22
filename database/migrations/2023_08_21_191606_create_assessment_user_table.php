@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('assessment_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('assessment_id')->constrained('assessments')->cascadeOnDelete();
-            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
-            $table->foreignId('choice_id')->nullable()->constrained('choices')->cascadeOnDelete();
-            $table->text('answer_text')->nullable();
-            $table->string('file_path')->nullable();
-            $table->integer('point')->default(0);
+            $table->integer('score');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('assessment_user');
     }
 };

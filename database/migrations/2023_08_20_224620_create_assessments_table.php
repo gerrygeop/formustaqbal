@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('assessments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('creator_id')->constrained('users')->cascadeOnDelete();
             $table->morphs('assessmentable');
             $table->string('title');
             $table->integer('type');
@@ -23,6 +23,7 @@ return new class extends Migration
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->integer('duration_minutes')->nullable();
+            $table->boolean('is_random_questions')->default(false);
             $table->timestamps();
         });
     }

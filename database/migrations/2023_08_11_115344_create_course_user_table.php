@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('module_id')->constrained('modules')->cascadeOnDelete();
             $table->boolean('is_graduated')->default(false);
-            $table->primary(['course_id', 'user_id', 'module_id']);
             $table->timestamps();
         });
     }
