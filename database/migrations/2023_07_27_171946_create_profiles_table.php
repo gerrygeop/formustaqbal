@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('phone')->nullable();
+            $table->string('gender')->nullable();
             $table->string('photo_path')->nullable();
-            $table->integer('xp')->nullable();
-            $table->integer('point')->nullable();
+            $table->integer('xp')->default(0);
+            $table->integer('point')->default(0);
             $table->text('bio')->nullable();
             $table->boolean('is_premium')->default(false);
             $table->dateTime('joined_at')->default(now());
