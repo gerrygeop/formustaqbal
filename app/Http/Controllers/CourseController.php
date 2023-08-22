@@ -18,9 +18,14 @@ class CourseController extends Controller
             ->courses()
             ->where('is_visible', true)
             ->where(function ($query) {
-                $query->where('published_at', NULL)
+                $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', date('Y-m-d'));
             })
+            ->with(['modules' => function ($query) {
+                $query->whereHas('users', function ($userQuery) {
+                    $userQuery->where('user_id', Auth::id());
+                });
+            }])
             ->get();
 
         $subjects = Subject::withCount(['courses'])->get();

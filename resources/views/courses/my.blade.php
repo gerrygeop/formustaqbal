@@ -22,7 +22,9 @@
 									<img src="{{ asset('storage/' . $my->cover_path) }}" alt="{{ $my->name }}" class="h-8 w-auto">
 								</div>
 
-								<span class="text-sm text-blue-500 font-medium">Sedang dikerjakan - Level 2</span>
+								@foreach ($my->modules as $module)
+									<span class="text-sm text-blue-500 font-medium">Sedang dikerjakan - {{ $module->title }}</span>
+								@endforeach
 							</div>
 						</a>
 
