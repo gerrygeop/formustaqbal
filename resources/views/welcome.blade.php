@@ -13,6 +13,9 @@
 
 	<!-- Styles -->
 	@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+	<!-- Link Swiper's CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 </head>
 
 <body class="font-sans antialiased">
@@ -26,17 +29,17 @@
 					<div class="shrink-0">
 						<a href="/" class="flex items-center">
 							<x-app-logo class="h-14 w-auto mr-2" />
-							<h1 class="text-slate-800 text-xl font-bold tracking-wide">Formustaqbal</h1>
+							<h1 class="text-slate-800 text-xl font-bold tracking-wide hidden md:block">Formustaqbal</h1>
 						</a>
 					</div>
 
 					{{-- Menu --}}
-					<nav class="flex items-center space-x-10 text-slate-700 font-semibold">
+					<nav class="flex items-center space-x-4 md:space-x-10 text-slate-700 font-semibold">
 						<a href="#" class="hover:text-slate-900">
 							{{ __('Pricing') }}
 						</a>
 
-						<div class="flex items-center space-x-4">
+						<div class="flex items-center space-x-2 md:space-x-4">
 							<a href="{{ route('login') }}"
 								class="bg-transparent ring-2 ring-accent ring-inset rounded-full px-4 py-1.5 text-accent">
 								{{ __('Login') }}
@@ -52,12 +55,12 @@
 
 		{{-- Hero Section --}}
 		<div class="min-h-screen md:min-h-fit bg-accent bg-opacity-10 backdrop-blur-[3px]">
-			<div class="relative max-w-[1440px] mx-auto py-24 px-4 sm:px-6">
+			<div class="relative max-w-[1440px] mx-auto pb-16 pt-10 lg:py-24 px-4 sm:px-6">
 
-				<div class="grid grid-cols-1 lg:grid-cols-3 mb-12">
+				<div class="grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-y-0 mb-12">
 					<div class="col-span-1 lg:col-span-2">
-						<h1 class="text-8xl text-slate-900 font-bold mb-8">Ayo! <br /> Belajar Bahasa</h1>
-						<p class="text-xl text-slate-700 mb-8">
+						<h1 class="text-7xl lg:text-8xl text-slate-900 font-bold mb-4 lg:mb-8">Ayo! <br /> Belajar Bahasa</h1>
+						<p class="text-xl text-slate-700 mb-6 lg:mb-8">
 							Pembelajaran tidak didapat dengan kebetulan, ia harus dicari dengan semangat <br /> dan dijalani dengan tekun.
 						</p>
 
@@ -67,8 +70,9 @@
 						</a>
 					</div>
 
-					<div class="relative col-span-1">
-						<img src="{{ asset('logo/maskot-shadow.png') }}" alt="Maskot" class="z-15 absolute -top-10">
+					<div class="relative col-span-1 min-h-[300px]">
+						<img src="{{ asset('logo/maskot-shadow.png') }}" alt="Maskot"
+							class="z-15 absolute top-0 md:left-[30%] lg:left-0 md:-top-10">
 						<img src="{{ asset('shapes/Skill.svg') }}" alt="Skill" class="z-20 absolute -bottom-14 right-10 h-24 w-auto">
 
 						<div
@@ -85,15 +89,17 @@
 
 				</div>
 
+				{{-- Language --}}
 				<div class="max-w-4xl mx-auto mt-32 bg-white rounded-xl shadow-lg">
-					<div class="flex items-center justify-evenly p-6">
-						<div class="flex items-center space-x-4">
-							<span class="text-2xl text-slate-900 font-bold">Bahasa Arab</span>
-							<img src="{{ asset('logo/Arabic.svg') }}" alt="Flag Arabic">
+					<div class="flex items-center justify-evenly px-2 py-6 md:p-6">
+						<div class="flex flex-col md:flex-row items-center space-x-2 md:space-x-4">
+							<span class="text-base md:text-2xl text-slate-900 font-bold">Bahasa Arab</span>
+							<img src="{{ asset('logo/Arabic.svg') }}" alt="Flag Arabic"
+								class="w-14 h-auto md:w-24 order-first md:order-last">
 						</div>
-						<div class="flex items-center space-x-4">
-							<img src="{{ asset('logo/English.svg') }}" alt="Flag English">
-							<span class="text-2xl text-slate-900 font-bold">Bahasa Inggris</span>
+						<div class="flex flex-col md:flex-row items-center space-x-2 md:space-x-4">
+							<img src="{{ asset('logo/English.svg') }}" alt="Flag English" class="w-14 h-auto md:w-24">
+							<span class="text-base md:text-2xl text-slate-900 font-bold">Bahasa Inggris</span>
 						</div>
 					</div>
 				</div>
@@ -113,9 +119,9 @@
 		{{-- Leaderboard Section --}}
 		<div class="min-h-fit pb-20">
 			<div class="relative max-w-[1440px] mx-auto py-20 px-4 sm:px-6">
-				<div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-4">
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 					<div
-						class="w-[36rem] h-[530px] bg-gray shadow-lg rounded-2xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
+						class="col-span-1 max-w-[36rem] h-[530px] bg-gray shadow-lg rounded-2xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
 						<div class="grid grid-cols-5 gap-y-4 px-6 py-4 text-lg">
 							<span class="col-span-1">No</span>
 							<span class="col-span-3">Nama</span>
@@ -129,34 +135,35 @@
 								<span class="col-span-1 font-semibold">{{ $user->profile->point ?? '0' }}</span>
 							@endforeach
 						</div>
-
 					</div>
-					<div>
-						<h2 class="text-amber-500 text-3xl font-semibold mb-6">Leaderboard</h2>
+
+					<div class="col-span-1">
+						<h2 class="text-amber-500 text-3xl font-semibold mb-2 md:mb-6">Leaderboard</h2>
 						<p class="text-slate-700 text-lg">
 							Kerjakan soalnya dan dapatkan poin untuk masuk ke dalam leaderboard, setiap soal memiliki poin masing masing dan
 							jangan lupa untuk rajin mengerjakan soal agar mendapatkan poin tambahan.
 						</p>
 
+						{{-- Chart --}}
 						<div class="flex items-end justify-center mt-12">
 							<div class="flex flex-col items-center">
 								<img src="{{ asset('shapes/crown-blue.svg') }}" alt="Crown Blue">
 								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-								<div class="w-32 h-36 bg-sky-400 rounded-tl-2xl flex items-center justify-center mt-2">
+								<div class="w-24 md:w-32 h-36 bg-sky-400 rounded-tl-2xl flex items-center justify-center mt-2">
 									<span class="text-7xl text-white font-bold">2</span>
 								</div>
 							</div>
 							<div class="flex flex-col items-center">
 								<img src="{{ asset('shapes/crown-yellow.svg') }}" alt="Crown Yellow">
 								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-								<div class="w-32 h-52 bg-amber-400 rounded-t-2xl flex items-center justify-center mt-2">
+								<div class="w-24 md:w-32 h-52 bg-amber-400 rounded-t-2xl flex items-center justify-center mt-2">
 									<span class="text-8xl text-white font-bold">1</span>
 								</div>
 							</div>
 							<div class="flex flex-col items-center">
 								<img src="{{ asset('shapes/crown-red.svg') }}" alt="Crown Red">
 								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-								<div class="w-32 h-24 bg-red-500 rounded-tr-2xl flex items-center justify-center mt-2">
+								<div class="w-24 md:w-32 h-24 bg-red-500 rounded-tr-2xl flex items-center justify-center mt-2">
 									<span class="text-7xl text-white font-bold">3</span>
 								</div>
 							</div>
@@ -166,21 +173,22 @@
 
 				{{-- Quotes --}}
 				<div class="relative flex justify-center py-20 mt-12">
-					<span class="absolute -top-4 left-0 text-[120px] leading-0 rotate-12 italic font-semibold">"</span>
-					<h2 class="text-5xl text-slate-800 text-center italic font-bold">
+					<span class="absolute -top-4 -left-5 md:left-0 text-[120px] leading-0 rotate-12 italic font-semibold">"</span>
+					<h2 class="text-4xl md:text-5xl text-slate-800 text-center italic font-bold">
 						The more that you read, the more things you will know. The more that you learn, the more places you'll go.
 					</h2>
 				</div>
 
 				{{-- Statistik --}}
-				<div class="relative flex justify-center py-20">
+				<div class="relative flex justify-center py-16 md:py-20">
 					<div
-						class="py-14 px-16 bg-gray shadow-lg rounded-3xl border border-zinc-500 border-opacity-10 backdrop-blur z-10 flex flex-col items-center">
-						<h2 class="text-8xl text-slate-800 text-center font-bold">123.000.000</h2>
-						<span class="uppercase text-slate-800 text-4xl font-bold">PENGGUNA</span>
+						class="py-14 px-8 md:px-16 bg-gray shadow-lg rounded-3xl border border-zinc-500 border-opacity-10 backdrop-blur z-10 flex flex-col items-center">
+						<h2 class="text-5xl md:text-8xl text-slate-800 text-center font-bold">123.000.000</h2>
+						<span class="uppercase text-slate-600 text-2xl md:text-4xl font-bold">PENGGUNA</span>
 					</div>
 
-					<img src="{{ asset('logo/maskot-shadow.png') }}" alt="Maskot" class="absolute -bottom-32 left-24 z-20">
+					<img src="{{ asset('logo/maskot-shadow.png') }}" alt="Maskot"
+						class="absolute -bottom-32 left-24 z-20 w-60 md:w-80 lg:w-auto">
 				</div>
 
 				{{-- Shapes --}}
@@ -201,47 +209,50 @@
 
 		{{-- Testimoni Section --}}
 		<div class="bg-accent bg-opacity-10">
-			<div class="max-w-[1440px] mx-auto py-12 px-4 sm:px-6">
-				<div class="flex items-center justify-between pb-8">
-					<h4 class="text-2xl text-red-500 font-bold">Testimoni Siswa</h4>
-					<div>
-						<button class="bg-white border shadow px-2 py-1">Next</button>
-						<button class="bg-white border shadow px-2 py-1">Prev</button>
+			<div class="max-w-[1440px] mx-auto py-6 px-4 sm:px-6">
+				<div class="swiper mySwiper">
+					<div class="flex items-center justify-between pb-8">
+						<h4 class="text-2xl text-red-500 font-bold">Testimoni Siswa</h4>
+						<div>
+							<button class="btn-slide-prev bg-white border shadow px-2 py-1">Prev</button>
+							<button class="btn-slide-next bg-white border shadow px-2 py-1">Next</button>
+						</div>
 					</div>
-				</div>
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 items-center justify-between">
+					<div
+						class="swiper-wrapper py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 items-center justify-between">
 
-					<div class="bg-white rounded-2xl shadow-lg py-6 px-8">
-						<div class="flex items-center space-x-4 mb-3">
-							<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-							<h4 class="font-semibold">Paul Greyrad</h4>
+						<div class="swiper-slide bg-white rounded-2xl shadow-lg py-6 px-8">
+							<div class="flex items-center space-x-4 mb-3">
+								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
+								<h4 class="font-semibold">Paul Greyrad</h4>
+							</div>
+							<p>
+								Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
+								Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
+							</p>
 						</div>
-						<p>
-							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
-							Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
-						</p>
-					</div>
-					<div class="bg-white rounded-2xl shadow-lg py-6 px-8">
-						<div class="flex items-center space-x-4 mb-3">
-							<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-							<h4 class="font-semibold">John Doe</h4>
+						<div class="swiper-slide bg-white rounded-2xl shadow-lg py-6 px-8">
+							<div class="flex items-center space-x-4 mb-3">
+								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
+								<h4 class="font-semibold">John Doe</h4>
+							</div>
+							<p>
+								Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
+								Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
+							</p>
 						</div>
-						<p>
-							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
-							Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
-						</p>
-					</div>
-					<div class="bg-white rounded-2xl shadow-lg py-6 px-8">
-						<div class="flex items-center space-x-4 mb-3">
-							<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
-							<h4 class="font-semibold">Junaedi Ruslia</h4>
+						<div class="swiper-slide bg-white rounded-2xl shadow-lg py-6 px-8">
+							<div class="flex items-center space-x-4 mb-3">
+								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
+								<h4 class="font-semibold">Junaedi Ruslia</h4>
+							</div>
+							<p>
+								Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
+								Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
+							</p>
 						</div>
-						<p>
-							Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consectetur amet aliquid explicabo natus. Cum, sit.
-							Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
-						</p>
-					</div>
 
+					</div>
 				</div>
 			</div>
 		</div>
@@ -249,31 +260,31 @@
 		{{-- Footer section --}}
 		<div class="bg-slate-900">
 			<div class="max-w-[1440px] mx-auto py-12 px-4 sm:px-6">
-				<div class="grid grid-cols-1 lg:grid-cols-2 items-center">
-					<div class="flex items-center space-x-4">
-						<img src="{{ asset('logo/logo-ori.png') }}" alt="Formustaqbal" class="h-24 w-auto">
-						<h1 class="text-4xl text-amber-400 font-bold">Formustaqbal</h1>
+				<div class="grid grid-cols-1 md:grid-cols-2 items-center">
+					<div class="flex items-center space-x-2 md:space-x-4">
+						<img src="{{ asset('logo/logo-ori.png') }}" alt="Formustaqbal" class="h-20 md:h-24 w-auto">
+						<h1 class="text-2xl md:text-4xl text-amber-400 font-bold">Formustaqbal</h1>
 					</div>
 
-					<div class="grid grid-cols-1 lg:grid-cols-2 items-start">
-						<div class="flex items-start space-x-16">
+					<div class="grid grid-cols-2 items-start mt-10 md:mt-0 text-white">
+						<div class="flex items-start space-x-4 lg:space-x-16">
 							<div class="flex flex-col">
-								<span class="font-semibold text-white mb-4">Navigasi</span>
-								<a href="/" class="text-white">Beranda</a>
-								<a href="{{ route('login') }}" class="text-white">Masuk</a>
-								<a href="{{ route('register') }}" class="text-white">Daftar</a>
-								<a href="#" class="text-white">Pricing</a>
+								<span class="font-semibold mb-4">Navigasi</span>
+								<a href="/">Beranda</a>
+								<a href="{{ route('login') }}">Masuk</a>
+								<a href="{{ route('register') }}">Daftar</a>
+								<a href="#">Pricing</a>
 							</div>
 							<div class="flex flex-col">
-								<span class="font-semibold text-white mb-4">Bahasa</span>
-								<a href="#" class="text-white">Bahasa Arab</a>
-								<a href="#" class="text-white">Bahasa Inggris</a>
+								<span class="font-semibold mb-4">Bahasa</span>
+								<a href="#">Bahasa Arab</a>
+								<a href="#">Bahasa Inggris</a>
 							</div>
 						</div>
 						<div class="flex flex-col ml-auto">
-							<span class="font-semibold text-white mb-4">Kontak</span>
-							<a href="#" class="text-white">+6281234567890</a>
-							<a href="#" class="text-white">@@formustaqbal</a>
+							<span class="font-semibold mb-4">Kontak</span>
+							<a href="#">+6281234567890</a>
+							<a href="#">@@formustaqbal</a>
 						</div>
 					</div>
 				</div>
@@ -291,6 +302,39 @@
 		</div>
 
 	</div>
+
+	<!-- Swiper JS -->
+	<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+	<!-- Initialize Swiper -->
+	<script>
+		const mediaQuery = window.matchMedia('(max-width: 640px)');
+		var totalSlide = 3
+
+		mediaQuery.addListener(handleDeviceChange);
+
+		function handleDeviceChange(e) {
+			if (e.matches) totalSlide = 1;
+			else totalSlide = 3;
+		}
+
+		// Run it initially
+		handleDeviceChange(mediaQuery);
+		// if (mediaQuery.matches) {
+		// 	totalSlide = 1
+		// } else {
+		// 	totalSlide = 3
+		// }
+
+		var swiper = new Swiper(".mySwiper", {
+			slidesPerView: totalSlide,
+			// spaceBetween: 30,
+			navigation: {
+				nextEl: ".btn-slide-next",
+				prevEl: ".btn-slide-prev",
+			},
+		});
+	</script>
 </body>
 
 </html>
