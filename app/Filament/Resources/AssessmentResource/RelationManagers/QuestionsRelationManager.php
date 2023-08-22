@@ -31,7 +31,7 @@ class QuestionsRelationManager extends RelationManager
                         ->reactive(),
 
                     Forms\Components\FileUpload::make('file_path')
-                        ->label(fn (callable $get): string => $get('type') == 3 ? 'Audio' : 'Image')
+                        ->label('Audio/Image')
                         ->directory(fn (callable $get): string => $get('type') == 3 ? 'question-audio' : 'question-images')
                         ->acceptedFileTypes(['audio/mpeg', 'audio/ogg', 'audio/wav', 'image/jpeg', 'image/png', 'image/webp'])
                         ->imageResizeMode('cover')
