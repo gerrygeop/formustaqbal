@@ -19,7 +19,7 @@ class ProfileFactory extends Factory
     {
         return [
             'phone' => fake()->phoneNumber(),
-            'point' => 10,
+            'gender' => (mt_rand(0, 1) == 0) ? 'P' : 'L',
             'bio' => fake()->sentence(),
             'joined_at' => now(),
         ];
