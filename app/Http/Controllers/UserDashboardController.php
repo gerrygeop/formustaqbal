@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Test;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -15,21 +16,30 @@ class UserDashboardController extends Controller
             ->courses()
             ->where('is_visible', true)
             ->where(function ($query) {
-                $query->where('published_at', NULL)
+                $query->whereNull('published_at')
                     ->orWhere('published_at', '<=', date('Y-m-d'));
             })
+            ->with(['modules' => function ($query) {
+                $query->whereHas('users', function ($userQuery) {
+                    $userQuery->where('user_id', Auth::id());
+                });
+            }])
             ->get();
 
-        $test = Auth::user()
-            ->answers()
-            ->whereHasMorph('answerable', Test::class, function (Builder $query) {
-                $query->where('is_active', true);
-            })
-            ->get();
+        // Query untuk mengambil data assessment yang memiliki tipe 2 dan relasi dengan Subject
+        // $assessments = Answer::select('assessments.*')
+        //     ->join('questions', 'answers.question_id', '=', 'questions.id')
+        //     ->join('assessments', 'questions.assessment_id', '=', 'assessments.id')
+        //     ->join('users', 'answers.user_id', '=', 'users.id')
+        //     ->where('users.id', Auth::id())
+        //     ->where('assessments.type', 2)
+        //     ->whereNotNull('assessments.assessmentable_id')
+        //     ->distinct()
+        //     ->get();
 
+        // dd($assessments);
         return view('dashboard', [
             'myCourses' => $myCourses,
-            'test' => $test->last(),
             'profile' => Auth::user()->profile,
         ]);
     }

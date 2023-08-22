@@ -30,7 +30,11 @@
 								<img src="{{ asset('storage/' . $my->cover_path) }}" alt="{{ $my->name }}" class="h-8 w-auto">
 							</div>
 
-							<span class="text-sm text-emerald-500 font-medium">Level 2</span>
+							@foreach ($my->modules as $module)
+								<span class="text-sm text-emerald-500 font-medium">
+									{{ $module->title }}
+								</span>
+							@endforeach
 
 							<div class="flex items-center justify-between gap-x-6 mt-4">
 								<div class="h-2.5 w-full bg-slate-200 rounded overflow-hidden">
@@ -48,15 +52,7 @@
 						<div class="p-6 text-gray-900 dark:text-gray-100">
 							<div class="flex items-center justify-center space-x-2">
 								<h2 class="text-lg text-slate-600 dark:text-gray-50">
-									@if ($test)
-										@if ($test->created_at != $test->updated_at)
-											Terima kasih telah menunggu. Point anda {{ auth()->user()->profile->point }}
-										@else
-											Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
-										@endif
-									@else
-										Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
-									@endif
+									Terimah kasih telah bergabung. Kami akan mereview hasil tes anda.
 								</h2>
 							</div>
 						</div>
