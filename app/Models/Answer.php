@@ -16,9 +16,9 @@ class Answer extends Model
 
     protected $guarded = ['id'];
 
-    protected $dispatchesEvents = [
-        'updated' => AnswerUpdated::class,
-    ];
+    // protected $dispatchesEvents = [
+    //     'updated' => AnswerUpdated::class,
+    // ];
 
     public function user(): BelongsTo
     {
@@ -27,7 +27,7 @@ class Answer extends Model
 
     public function questions(): BelongsTo
     {
-        return $this->belongsTo(Question::class);
+        return $this->belongsTo(Question::class, 'question_id');
     }
 
     public function assessment(): BelongsTo

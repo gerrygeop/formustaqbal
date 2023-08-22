@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Subject extends Model
 {
@@ -24,8 +25,8 @@ class Subject extends Model
         return $this->hasMany(Course::class);
     }
 
-    public function assessments(): MorphMany
+    public function assessment(): MorphOne
     {
-        return $this->morphMany(Assessment::class, 'assessmentable');
+        return $this->morphOne(Assessment::class, 'assessmentable');
     }
 }

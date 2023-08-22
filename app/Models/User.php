@@ -71,12 +71,12 @@ class User extends Authenticatable implements FilamentUser
 
     public function courses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
+        return $this->belongsToMany(Course::class, 'course_user');
     }
 
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
+        return $this->belongsToMany(Module::class, 'course_user');
     }
 
     public function progress(): HasMany
@@ -87,5 +87,15 @@ class User extends Authenticatable implements FilamentUser
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function assessment(): HasMany
+    {
+        return $this->hasMany(Assessment::class, 'creator_id');
+    }
+
+    public function assessments(): BelongsToMany
+    {
+        return $this->belongsToMany(Assessment::class, 'assessment_user', 'user_id');
     }
 }
