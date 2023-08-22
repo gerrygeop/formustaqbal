@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
-use App\Models\Question;
+use App\Models\Assessment;
 use App\Models\Subject;
-use App\Models\Test;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class TestController extends Controller
 {
@@ -21,7 +18,8 @@ class TestController extends Controller
     // Choose language
     public function language()
     {
-        $subjects = Subject::whereHas('test')->get();
+        $subjects = Subject::whereHas('assessment')->get();
+
         return view('choose-language', [
             'subjects' => $subjects
         ]);
@@ -30,17 +28,25 @@ class TestController extends Controller
     // Placement test
     public function test(Subject $subject)
     {
-        $test = Test::query()
-            ->where('subject_id', $subject->id)
+        $assessment = Assessment::whereHasMorph('assessmentable', Subject::class, function ($query) use ($subject) {
+            $query->where('id', $subject->id);
+        })
             ->where('is_active', true)
-            ->where('start_at', '<=', Carbon::now())
-            ->where('end_at', '>=', Carbon::now())
-            ->with(['questions'])
+            ->where([
+                ['published_at', '<=', Carbon::now()],
+                ['start_time', '<=', Carbon::now()],
+                ['end_time', '>=', Carbon::now()]
+            ])
+            ->orWhere(function ($query) {
+                $query->where('published_at', NULL)
+                    ->where('start_time', NULL)
+                    ->where('end_time', NULL);
+            })
             ->get()
             ->first();
 
         return view('placement-test', [
-            'test' => $test,
+            'assessment' => $assessment,
         ]);
     }
 }

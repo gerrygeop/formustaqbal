@@ -4,15 +4,15 @@
 		@if ($questions->isNotEmpty())
 			<div class="flex flex-col">
 				<div class="flex items-center justify-between mb-2">
-					<p class="text-gray-600 font-semibold">
+					<p class="text-gray-600">
 						Question: {{ $questionIndex + 1 }} of {{ $questions->count() }}
 					</p>
-					<p class="text-gray-600 font-semibold mb-4">
+					<p class="text-gray-600 mb-4">
 						<x-question-type :type="$question->type" />
 					</p>
 				</div>
 
-				<div class="my-4">
+				<div class="mt-4 mb-6">
 					@if ($question->file_path)
 						<div class="mb-4">
 							@if ($question->type == 3)
@@ -20,12 +20,12 @@
 									<source src="{{ asset('storage/' . $question->file_path) }}" type="audio/mpeg">
 								</audio>
 							@else
-								<img src="{{ asset('storage/' . $question->file_path) }}" alt="Image">
+								<img src="{{ asset('storage/' . $question->file_path) }}" alt="Image" class="h-48 w-auto border">
 							@endif
 						</div>
 					@endif
 
-					<p class="text-xl lg:text-2xl text-gray-700 font-medium">
+					<p class="text-xl text-gray-700 font-normal">
 						{{ $question->question }}
 					</p>
 				</div>
@@ -33,13 +33,14 @@
 				<div class="flex flex-col gap-4">
 					@if ($question->type == 1)
 						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
-							@foreach ($question->choices->options as $choice)
+							@foreach ($question->choices as $choice)
 								<label class="text-lg font-medium flex items-center gap-x-4">
-									@if ($choice['image_path'])
-										<img src="{{ asset('storage/' . $choice['image_path']) }}" alt="choice">
+									@if ($choice->image_path)
+										<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
 									@endif
 									<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
-										value="{{ $choice['choice'] ?? $choice['image_path'] }}"> {{ $choice['choice'] }}
+										value="{{ $choice->id }}">
+									{{ $choice->choice }}
 								</label>
 							@endforeach
 						</div>
