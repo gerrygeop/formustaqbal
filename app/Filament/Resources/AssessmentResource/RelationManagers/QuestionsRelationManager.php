@@ -40,7 +40,7 @@ class QuestionsRelationManager extends RelationManager
                         ->maxSize(3024),
 
                     Forms\Components\Textarea::make('question'),
-                    Forms\Components\TextInput::make('point')->numeric(),
+                    Forms\Components\TextInput::make('point')->numeric()->default(0)->minValue(0),
                 ]),
 
                 Forms\Components\Section::make('Options')

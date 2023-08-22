@@ -31,6 +31,11 @@ class ModuleResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('standard_point')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->minValue(0),
                     ])
             ]);
     }

@@ -25,9 +25,6 @@ class AnswerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                    Forms\Components\TextInput::make('answerable_type')
-                        ->disabled()
-                        ->dehydrated(fn ($state): string => substr($state, 12)),
                     Forms\Components\Select::make('user')->relationship('user', 'name')->disabled(),
                     Forms\Components\Repeater::make('answer')
                         ->schema([
@@ -50,7 +47,7 @@ class AnswerResource extends Resource
                                 )
                                 ->disabled(),
 
-                            Forms\Components\TextInput::make('response')
+                            Forms\Components\TextInput::make('answer_text')
                                 ->disabled()
                                 ->visible(function (callable $get) {
                                     return ($get('question_type') != '4') ? true : false;
@@ -109,7 +106,6 @@ class AnswerResource extends Resource
     {
         return [
             'index' => Pages\ListAnswers::route('/'),
-            // 'create' => Pages\CreateAnswer::route('/create'),
             'edit' => Pages\EditAnswer::route('/{record}/edit'),
         ];
     }

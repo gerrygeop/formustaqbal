@@ -27,12 +27,14 @@ class AssessmentResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Select::make('user_id')
-                            ->relationship('user', 'name')
+                        Forms\Components\Select::make('creator_id')
+                            ->relationship('creator', 'name')
                             ->default(auth()->user()->id)
+                            ->label('Creator')
                             ->required(),
 
                         Forms\Components\Select::make('type')
+                            ->label('Type Assessment')
                             ->options([
                                 '1' => 'Quiz',
                                 '2' => 'Placement Test',
@@ -57,6 +59,7 @@ class AssessmentResource extends Resource
                             ->maxLength(255),
 
                         Forms\Components\Textarea::make('instruction')
+                            ->label('Description')
                             ->maxLength(65535),
                         Forms\Components\Toggle::make('is_active')
                             ->default(true)
@@ -78,9 +81,13 @@ class AssessmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('creator.name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('type')->searchable(),
+                Tables\Columns\TextColumn::make('type')->enum([
+                    '1' => 'Quiz',
+                    '2' => 'Placement Test',
+                    '3' => 'Exam',
+                ]),
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
             ])
@@ -103,7 +110,8 @@ class AssessmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\QuestionsRelationManager::class
+            RelationManagers\QuestionsRelationManager::class,
+            RelationManagers\UsersRelationManager::class
         ];
     }
 
