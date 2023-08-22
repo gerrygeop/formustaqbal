@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\Subject;
+use App\Models\Submodule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,6 +70,60 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function mulai(Module $module)
+    {
+        $submodule = $module->submodules->first();
+
+        return to_route('courses.learn', [
+            'module' => $module,
+            'submodule' => $submodule,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function learn(Module $module, Submodule $submodule)
+    {
+        $submodules = $module->submodules;
+
+        $currentIndex = $submodules->search(function ($item) use ($submodule) {
+            return $item->id === $submodule->id;
+        });
+
+        $prevSubmodule = null;
+        $nextSubmodule = null;
+
+        if ($currentIndex !== false) {
+            if ($currentIndex > 0) {
+                $prevSubmodule = $submodules->get($currentIndex - 1);
+            }
+            if ($currentIndex < $submodules->count() - 1) {
+                $nextSubmodule = $submodules->get($currentIndex + 1);
+            }
+        }
+        return view('learns.learn', [
+            'module' => $module,
+            'currentIndex' => $currentIndex,
+            'currentSubmodule' => $submodule,
+            'prevSubmodule' => $prevSubmodule,
+            'nextSubmodule' => $nextSubmodule,
+        ]);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Course $course)
+    {
+        return view('courses.show', [
+            'course' => $course->load(['modules', 'users'])
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         //
@@ -87,16 +143,6 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Course $course)
-    {
-        return view('courses.show', [
-            'course' => $course->load(['modules', 'users'])
-        ]);
     }
 
     /**
