@@ -1,14 +1,14 @@
 <x-blank-layout>
 	<section class="fixed inset-0 overflow-y-auto z-50">
 		<div
-			class="relative min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+			class="relative min-h-screen overflow-hidden flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-gray-900">
 
-			<div class="w-full z-[55]">
+			<div class="w-full z-[55] bg-gray backdrop-blur">
 				@livewire('test-questions', ['assessment' => $assessment])
 			</div>
 
 			{{-- Confetti --}}
-			<div class="absolute left-0 z-[52]">
+			<div class="absolute bottom-10 md:bottom-auto left-0 z-[52]">
 				<div class="flex">
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="conffeti" class="h-32 w-auto">
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="conffeti" class="h-32 w-auto">
@@ -18,7 +18,7 @@
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="conffeti" class="h-32 w-auto">
 				</div>
 			</div>
-			<div class="absolute right-0 z-[52]">
+			<div class="absolute bottom-10 md:bottom-auto right-0 z-[52]">
 				<div class="flex">
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="conffeti" class="h-32 w-auto">
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="conffeti" class="h-32 w-auto">

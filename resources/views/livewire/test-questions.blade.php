@@ -1,5 +1,5 @@
-<div class="max-w-5xl mx-auto w-full">
-	<div class="bg-white/80 backdrop-blur border rounded-xl shadow py-8 px-10">
+<div class="max-w-5xl mx-auto w-full h-screen md:h-auto flex flex-col justify-between pb-10">
+	<div class="bg-white/80 h-full md:h-auto backdrop-blur border rounded-xl shadow py-8 px-10">
 
 		@if ($questions->isNotEmpty())
 			<div class="flex flex-col">
@@ -15,9 +15,10 @@
 				<div class="mt-4 mb-6">
 					@if ($question->file_path)
 						<div class="mb-4">
-							@if ($question->type == 3)
-								<audio controls class="bg-yellow-400" id="player">
+							@if (str($question->file_path)->endsWith('.mp3'))
+								<audio controls class="bg-yellow-400 w-full">
 									<source src="{{ asset('storage/' . $question->file_path) }}" type="audio/mpeg">
+									Your browser does not support the audio element.
 								</audio>
 							@else
 								<img src="{{ asset('storage/' . $question->file_path) }}" alt="Image" class="h-48 w-auto border">
@@ -66,15 +67,15 @@
 		@endif
 	</div>
 
-	<div class="flex justify-center mt-8">
+	<div class="flex justify-center px-4 md:px-0 mt-8">
 		@if ($questionIndex == $questions->count() - 1)
 			<button wire:click.prevent="submitAnswers"
-				class="max-w-3xl w-full bg-gray-200 py-3 px-4 text-yellow-500 font-bold uppercase border focus:border-yellow-400 rounded-lg shadow">
+				class="max-w-3xl w-full bg-white py-3 px-4 text-yellow-500 font-bold uppercase border focus:border-yellow-400 rounded-lg shadow">
 				Submit
 			</button>
 		@else
 			<button wire:click.prevent="nextQuestion" type="button"
-				class="max-w-3xl w-full bg-gray-200 py-3 px-4 text-yellow-500 font-bold uppercase border focus:border-yellow-400 rounded-lg shadow">
+				class="max-w-3xl w-full bg-white py-3 px-4 text-yellow-500 font-bold uppercase border focus:border-yellow-400 rounded-lg shadow">
 				Lanjut
 			</button>
 		@endif
