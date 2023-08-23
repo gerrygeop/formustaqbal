@@ -74,6 +74,10 @@ class CourseController extends Controller
     {
         $submodule = $module->submodules->first();
 
+        if (is_null($submodule)) {
+            return back();
+        }
+
         return to_route('courses.learn', [
             'module' => $module,
             'submodule' => $submodule,
