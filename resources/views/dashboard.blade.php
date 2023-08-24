@@ -5,9 +5,9 @@
 			<div class="col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 				<div class="flex items-center space-x-2 p-6 text-gray-900 dark:text-gray-100">
 					<div class="h-2 w-2 bg-green-500 rounded-full"></div>
-					<span>{{ __('Greeting') }},</span>
+					<span>Point</span>
 					<span class="font-semibold">
-						{{ auth()->user()->name }}
+						{{ auth()->user()->profile->point }}
 					</span>
 				</div>
 			</div>
