@@ -26,25 +26,48 @@
 						</div>
 					@endif
 
-					<p class="text-xl text-gray-700 font-normal">
-						{{ $question->question }}
-					</p>
+					@if ($subject == 'bahasa-arab')
+						<p class="text-xl text-gray-700 font-normal" dir="rtl">
+							{{ $question->question }}
+						</p>
+					@else
+						<p class="text-xl text-gray-700 font-normal">
+							{{ $question->question }}
+						</p>
+					@endif
 				</div>
 
 				<div class="flex flex-col gap-4">
 					@if ($question->type == 1)
-						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
-							@foreach ($question->choices as $choice)
-								<label class="text-lg font-medium flex items-center gap-x-4">
-									@if ($choice->image_path)
-										<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
-									@endif
-									<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
-										value="{{ $choice->id }}">
-									{{ $choice->choice }}
-								</label>
-							@endforeach
-						</div>
+
+						@if ($subject == 'bahasa-arab')
+							<div class="grid grid-cols-1 lg:grid-cols-1 gap-4" dir="rtl">
+								@foreach ($question->choices as $choice)
+									<label class="text-lg font-medium flex items-center gap-x-4">
+										@if ($choice->image_path)
+											<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+										@endif
+										<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
+											value="{{ $choice->id }}">
+										{{ $choice->choice }}
+									</label>
+								@endforeach
+							</div>
+						@else
+							<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
+								@foreach ($question->choices as $choice)
+									<label class="text-lg font-medium flex items-center gap-x-4">
+										@if ($choice->image_path)
+											<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+										@endif
+										<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
+											value="{{ $choice->id }}">
+										{{ $choice->choice }}
+									</label>
+								@endforeach
+							</div>
+
+						@endif
 					@elseif ($question->type == 2 || $question->type == 3)
 						<x-textarea name="response_{{ $question->id }}" cols="30" rows="10"
 							placeholder="Tuliskan jawaban anda..." wire:model="answers.{{ $question->id }}" />

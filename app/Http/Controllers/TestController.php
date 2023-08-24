@@ -47,6 +47,7 @@ class TestController extends Controller
 
         return view('placement-test', [
             'assessment' => $assessment,
+            'subject' => $subject->slug
         ]);
     }
 }

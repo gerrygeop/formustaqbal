@@ -13,6 +13,7 @@ class TestQuestions extends Component
 {
     use WithFileUploads;
 
+    public $subject;
     public $assessment;
     public $questions;
     public $questionNull = false;
@@ -24,9 +25,10 @@ class TestQuestions extends Component
         'answers.*.speaking' => 'The Audio file must be a file of type: audio/mpeg, audio/ogg.',
     ];
 
-    public function mount(Assessment $assessment)
+    public function mount(Assessment $assessment, $subject)
     {
         $this->assessment = $assessment;
+        $this->subject = $subject;
         $this->loadQuestions();
     }
 
