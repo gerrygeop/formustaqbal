@@ -29,6 +29,12 @@
 					</x-slot>
 
 					<x-slot name="content">
+						<span class="block w-full px-4 py-2 text-left text-sm leading-5 font-semibold text-gray-800 dark:text-gray-300">
+							{{ auth()->user()->profile->point }} Point
+						</span>
+
+						<div class="border-t"></div>
+
 						<x-dropdown-link :href="route('profile.edit')">
 							{{ __('Setting') }}
 						</x-dropdown-link>

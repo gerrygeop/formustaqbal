@@ -4,7 +4,7 @@
 
 			<section class="col-span-1">
 				<div class="flex mb-3">
-					<h3 class="text-lg text-slate-600 leading-0 dark:text-slate-300">
+					<h3 class="text-lg text-slate-800 leading-0 dark:text-slate-100">
 						Daftar Kelas {{ $subject }}
 					</h3>
 				</div>

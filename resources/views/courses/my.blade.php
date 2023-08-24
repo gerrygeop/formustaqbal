@@ -4,7 +4,7 @@
 
 			<section class="col-span-1">
 				<div class="flex mb-3">
-					<h3 class="text-lg text-slate-500 leading-0 dark:text-slate-300">
+					<h3 class="text-lg text-slate-800 leading-0 dark:text-slate-100">
 						Kelas Saya
 					</h3>
 				</div>
@@ -32,9 +32,17 @@
 						<div class="col-span-full bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 							<div class="p-6 text-gray-900 dark:text-gray-100">
 								<div class="flex items-center justify-center space-x-2">
-									<h2 class="text-lg text-slate-600 dark:text-gray-50">
-										Ayo mulai belajar sekarang! Temukan kelas yang menarik dan daftar sekarang.
-									</h2>
+									<p>
+										@if (auth()->user()->assessments->isNotEmpty())
+											Ayo mulai belajar sekarang! Temukan kelas yang menarik dan daftar sekarang.
+										@else
+											Silahkan mengambil
+											<a href="{{ route('language') }}" class="font-semibold text-amber-600 underline">
+												Placement Test
+											</a>
+											untuk memilih Bahasa dan menentukan Level anda.
+										@endif
+									</p>
 								</div>
 							</div>
 						</div>
@@ -45,7 +53,7 @@
 
 			<section class="col-span-1">
 				<div class="flex mb-3">
-					<h3 class="text-lg text-slate-500 leading-0 dark:text-slate-300">
+					<h3 class="text-lg text-slate-800 leading-0 dark:text-slate-100">
 						Bahasa Lainnya
 					</h3>
 				</div>
