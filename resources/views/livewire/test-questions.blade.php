@@ -3,7 +3,7 @@
 
 		@if ($questions->isNotEmpty())
 			<div class="flex flex-col">
-				<div class="flex items-center justify-between mb-2">
+				<div class="flex items-center justify-between">
 					<p class="text-gray-600">
 						Question: {{ $questionIndex + 1 }} of {{ $questions->count() }}
 					</p>
@@ -12,7 +12,7 @@
 					</p>
 				</div>
 
-				<div class="mt-4 mb-6">
+				<div class="my-6">
 					@if ($question->file_path)
 						<div class="mb-4">
 							@if (str($question->file_path)->endsWith('.mp3'))
@@ -26,48 +26,25 @@
 						</div>
 					@endif
 
-					@if ($subject == 'bahasa-arab')
-						<p class="text-xl text-gray-700 font-normal" dir="rtl">
-							{{ $question->question }}
-						</p>
-					@else
-						<p class="text-xl text-gray-700 font-normal">
-							{{ $question->question }}
-						</p>
-					@endif
+					<div class="lg:text-lg text-gray-900">
+						{!! $question->question !!}
+					</div>
 				</div>
 
-				<div class="flex flex-col gap-4">
+				<div class="flex flex-col gap-4 mt-2">
 					@if ($question->type == 1)
-
-						@if ($subject == 'bahasa-arab')
-							<div class="grid grid-cols-1 lg:grid-cols-1 gap-4" dir="rtl">
-								@foreach ($question->choices as $choice)
-									<label class="text-lg font-medium flex items-center gap-x-4">
-										@if ($choice->image_path)
-											<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
-										@endif
-										<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
-											value="{{ $choice->id }}">
-										{{ $choice->choice }}
-									</label>
-								@endforeach
-							</div>
-						@else
-							<div class="grid grid-cols-1 lg:grid-cols-1 gap-4">
-								@foreach ($question->choices as $choice)
-									<label class="text-lg font-medium flex items-center gap-x-4">
-										@if ($choice->image_path)
-											<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
-										@endif
-										<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
-											value="{{ $choice->id }}">
-										{{ $choice->choice }}
-									</label>
-								@endforeach
-							</div>
-
-						@endif
+						<div class="grid grid-cols-1 lg:grid-cols-1 gap-4" @if ($question->is_choice_rtl) dir="rtl" @endif>
+							@foreach ($question->choices as $choice)
+								<label class="text-lg flex items-center gap-x-4">
+									@if ($choice->image_path)
+										<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+									@endif
+									<input type="radio" name="choice_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
+										value="{{ $choice->id }}">
+									{{ $choice->choice }}
+								</label>
+							@endforeach
+						</div>
 					@elseif ($question->type == 2 || $question->type == 3)
 						<x-textarea name="response_{{ $question->id }}" cols="30" rows="10"
 							placeholder="Tuliskan jawaban anda..." wire:model="answers.{{ $question->id }}" />
@@ -80,7 +57,7 @@
 					@endif
 
 					@if ($questionNull)
-						<p class="text-red-500">Pastikan anda jawaban anda telah terisi</p>
+						<p class="text-red-500">Pastikan jawaban anda telah terisi</p>
 					@endif
 					@error('answers.*.speaking')
 						<span class="text-red-500">{{ $message }}</span>
