@@ -47,7 +47,7 @@ class AssessmentResource extends Resource
                         Forms\Components\MorphToSelect::make('assessmentable')
                             ->types(function (callable $get) {
                                 if ($get('type') == '2') {
-                                    return [Forms\Components\MorphToSelect\Type::make(Subject::class)->titleColumnName('name')];
+                                    return [Forms\Components\MorphToSelect\Type::make(Subject::class)->titleColumnName('name')->label('Bahasa')];
                                 } else {
                                     return [Forms\Components\MorphToSelect\Type::make(Submodule::class)->titleColumnName('title')];
                                 }
