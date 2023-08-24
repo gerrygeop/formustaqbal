@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('questions', function (Blueprint $table) {
             $table->boolean('is_choice_rtl')->default(false);
-            $table->boolean('is_random_choices')->default(false);
+        });
+        Schema::table('assessments', function (Blueprint $table) {
+            $table->boolean('is_random_choices')->after('is_random_questions')->default(false);
         });
     }
 
@@ -24,6 +26,8 @@ return new class extends Migration
     {
         Schema::table('questions', function (Blueprint $table) {
             $table->dropColumn('is_choice_rtl');
+        });
+        Schema::table('assessments', function (Blueprint $table) {
             $table->dropColumn('is_random_choices');
         });
     }

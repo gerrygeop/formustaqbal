@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('type');
             $table->text('instruction')->nullable();
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(true);
             $table->dateTime('published_at')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
