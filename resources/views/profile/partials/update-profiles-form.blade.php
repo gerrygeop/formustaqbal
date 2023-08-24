@@ -15,18 +15,20 @@
 
 		<div>
 			<x-input-label for="phone" :value="__('No Telp')" />
-			<x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required />
+			<x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->profile->phone)" required />
 			<x-input-error class="mt-2" :messages="$errors->get('phone')" />
 		</div>
 
 		<div>
 			<x-input-label for="gender" :value="__('Jenis Kelamin')" />
 			<label for="P" class="flex items-center space-x-2">
-				<x-text-input id="gender" name="gender" type="radio" :value="old('gender', $user->gender)" />
+				<input id="P" name="gender" type="radio" value="P" @checked(old('gender', $user->profile->gender))
+					class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-yellow-500 dark:focus:border-yellow-600 focus:ring-yellow-500 dark:focus:ring-yellow-600 rounded-md shadow-sm">
 				<span>Perempuan</span>
 			</label>
 			<label for="L" class="flex items-center space-x-2">
-				<x-text-input id="gender" name="gender" type="radio" :value="old('gender', $user->gender)" />
+				<input id="L" name="gender" type="radio" value="L" @checked(old('gender', $user->profile->gender))
+					class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-yellow-500 dark:focus:border-yellow-600 focus:ring-yellow-500 dark:focus:ring-yellow-600 rounded-md shadow-sm">
 				<span>Laki-laki</span>
 			</label>
 			<x-input-error class="mt-2" :messages="$errors->get('gender')" />
@@ -34,7 +36,7 @@
 
 		<div>
 			<x-input-label for="bio" :value="__('Bio')" />
-			<x-text-input id="bio" name="bio" type="text" class="mt-1 block w-full" :value="old('bio', $user->bio)" />
+			<x-text-input id="bio" name="bio" type="text" class="mt-1 block w-full" :value="old('bio', $user->profile->bio)" />
 			<x-input-error class="mt-2" :messages="$errors->get('bio')" />
 		</div>
 
