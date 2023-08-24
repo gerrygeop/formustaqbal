@@ -13,7 +13,6 @@ class TestQuestions extends Component
 {
     use WithFileUploads;
 
-    public $subject;
     public $assessment;
     public $questions;
     public $questionNull = false;
@@ -22,19 +21,19 @@ class TestQuestions extends Component
     public $answers = [];
 
     protected $messages = [
-        'answers.*.speaking' => 'The Audio file must be a file of type: audio/mpeg, audio/ogg.',
+        'answers.*.speaking' => 'The Audio file must be a file of type: mpeg, ogg.',
     ];
 
-    public function mount(Assessment $assessment, $subject)
+    public function mount(Assessment $assessment)
     {
         $this->assessment = $assessment;
-        $this->subject = $subject;
         $this->loadQuestions();
     }
 
     public function loadQuestions()
     {
         $this->questions = $this->assessment->questions()
+            ->inRandomOrder()
             ->with('choices')
             ->get();
 
@@ -145,7 +144,7 @@ class TestQuestions extends Component
                 }
             });
 
-            return redirect()->to('/dashboard');
+            return redirect()->to('/finish');
         }
     }
 }

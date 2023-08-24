@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/start', [TestController::class, 'start'])->name('start');
     Route::get('/language', [TestController::class, 'language'])->name('language');
     Route::get('/placement-test/{subject:id}', [TestController::class, 'test'])->name('placement.test');
+    Route::get('/finish', [TestController::class, 'finish'])->name('finish');
 
     Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
