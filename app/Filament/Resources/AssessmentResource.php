@@ -58,21 +58,31 @@ class AssessmentResource extends Resource
                             ->required()
                             ->maxLength(255),
 
-                        Forms\Components\Textarea::make('instruction')
-                            ->label('Description')
-                            ->maxLength(65535),
-                        Forms\Components\Toggle::make('is_active')
-                            ->default(true)
-                            ->required(),
-                        Forms\Components\DateTimePicker::make('published_at'),
+                        Forms\Components\RichEditor::make('instruction')
+                            ->disableAllToolbarButtons()
+                            ->label('Description'),
 
-                        Forms\Components\Grid::make(3)->schema([
+
+                        Forms\Components\Grid::make(4)->schema([
+                            Forms\Components\DateTimePicker::make('published_at'),
                             Forms\Components\TimePicker::make('start_time'),
                             Forms\Components\TimePicker::make('end_time'),
                             Forms\Components\TextInput::make('duration_minutes')
                                 ->numeric()
                                 ->minValue(1),
-                        ])
+                        ]),
+
+                        // Forms\Components\Grid::make()->schema([
+                        Forms\Components\Toggle::make('is_active')
+                            ->label('Aktif')
+                            ->default(true),
+                        Forms\Components\Toggle::make('is_random_questions')
+                            ->label('Soal acak')
+                            ->default(false),
+                        Forms\Components\Toggle::make('is_random_choices')
+                            ->label('Pilihan ganda acak')
+                            ->default(false),
+                        // ]),
                     ])
             ]);
     }

@@ -59,11 +59,6 @@ class QuestionsRelationManager extends RelationManager
                             ->inline(false)
                             ->default(false)
                             ->visible(fn (callable $get): bool => $get('type') == 1 ? true : false),
-                        Forms\Components\Toggle::make('is_random_choices')
-                            ->label('Acak Pilihan')
-                            ->inline(false)
-                            ->default(false)
-                            ->visible(fn (callable $get): bool => $get('type') == 1 ? true : false),
                     ]),
 
                     Forms\Components\Repeater::make('choices')
