@@ -19,7 +19,7 @@
 </head>
 
 <body class="font-sans antialiased">
-	<div class="min-h-fit bg-slate-50">
+	<div class="min-h-fit bg-slate-50 overflow-hidden">
 
 		{{-- Navbar --}}
 		<div class="bg-white shadow-sm">
@@ -34,20 +34,65 @@
 					</div>
 
 					{{-- Menu --}}
-					<nav class="flex items-center space-x-4 md:space-x-10 text-slate-700 font-semibold">
+					<nav class="flex items-center gap-x-4 md:gap-x-10 text-slate-700 font-semibold">
 						<a href="#" class="hover:text-slate-900">
 							{{ __('Pricing') }}
 						</a>
 
-						<div class="flex items-center space-x-2 md:space-x-4">
-							<a href="{{ route('login') }}"
-								class="bg-transparent ring-2 ring-accent ring-inset rounded-full px-4 py-1.5 text-accent">
-								{{ __('Login') }}
-							</a>
-							<a href="{{ route('register') }}" class="bg-accent rounded-full px-4 py-1.5 text-white">
-								{{ __('Sign Up') }}
-							</a>
-						</div>
+						@guest
+							<div class="flex items-center space-x-2 md:space-x-4">
+								<a href="{{ route('login') }}"
+									class="bg-transparent ring-2 ring-accent ring-inset rounded-full px-4 py-1.5 text-accent">
+									{{ __('Login') }}
+								</a>
+								<a href="{{ route('register') }}" class="bg-accent rounded-full px-4 py-1.5 text-white">
+									{{ __('Sign Up') }}
+								</a>
+							</div>
+						@endguest
+
+						@auth
+							<!-- Settings Dropdown -->
+							<div class="hidden md:flex md:items-center">
+								<x-dropdown align="right" width="48">
+									<x-slot name="trigger">
+										<button
+											class="inline-flex items-center px-3 py-2 border border-yellow-600/30 rounded-2xl leading-4 font-medium text-sm text-yellow-800 bg-yellow-50 hover:bg-yellow-100/80 focus:outline-none transition ease-in-out duration-150">
+											<div>{{ Auth::user()->name }}</div>
+
+											<div class="ml-1">
+												<svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+													<path fill-rule="evenodd"
+														d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+														clip-rule="evenodd" />
+												</svg>
+											</div>
+										</button>
+									</x-slot>
+
+									<x-slot name="content">
+										<x-dropdown-link :href="route('dashboard')">
+											{{ __('Dashboard') }}
+										</x-dropdown-link>
+
+										<x-dropdown-link :href="route('profile.edit')">
+											{{ __('Setting') }}
+										</x-dropdown-link>
+
+										<!-- Authentication -->
+										<form method="POST" action="{{ route('logout') }}">
+											@csrf
+
+											<x-dropdown-link :href="route('logout')"
+												onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+												{{ __('Log Out') }}
+											</x-dropdown-link>
+										</form>
+									</x-slot>
+								</x-dropdown>
+							</div>
+						@endauth
 					</nav>
 				</div>
 			</div>
@@ -121,18 +166,18 @@
 			<div class="relative max-w-[1440px] mx-auto py-20 px-4 sm:px-6">
 				<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 					<div
-						class="col-span-1 max-w-[36rem] h-[530px] bg-gray shadow-lg rounded-2xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
+						class="col-span-1 max-w-[36rem] h-fit bg-gray shadow-lg rounded-2xl border border-zinc-500 border-opacity-10 backdrop-blur-lg z-10">
 						<div class="grid grid-cols-5 gap-y-4 px-6 py-4 text-lg">
-							<span class="col-span-1">No</span>
-							<span class="col-span-3">Nama</span>
-							<span class="col-span-1">Poin</span>
+							<span class="col-span-1 text-sm lg:text-base text-gray-800 font-semibold">No</span>
+							<span class="col-span-3 text-sm lg:text-base text-gray-800 font-semibold">Nama</span>
+							<span class="col-span-1 text-sm lg:text-base text-gray-800 font-semibold">Poin</span>
 
 							<span class="col-span-full border-t"></span>
 
 							@foreach (\App\Models\User::with('profile')->get()->take(10) as $user)
-								<span class="col-span-1 font-semibold">{{ $loop->iteration }}</span>
-								<span class="col-span-3 font-semibold">{{ $user->name }}</span>
-								<span class="col-span-1 font-semibold">{{ $user->profile->point ?? '0' }}</span>
+								<span class="col-span-1 text-sm lg:text-base">{{ $loop->iteration }}</span>
+								<span class="col-span-3 text-sm lg:text-base">{{ $user->name }}</span>
+								<span class="col-span-1 text-sm lg:text-base">{{ $user->profile->point ?? '0' }}</span>
 							@endforeach
 						</div>
 					</div>
@@ -173,18 +218,19 @@
 
 				{{-- Quotes --}}
 				<div class="relative flex justify-center py-20 mt-12">
-					<span class="absolute -top-4 -left-5 md:left-0 text-[120px] leading-0 rotate-12 italic font-semibold">"</span>
-					<h2 class="text-4xl md:text-5xl text-slate-800 text-center italic font-bold">
+					<span class="absolute top-2 -left-5 md:-left-5 text-[100px] leading-0 rotate-12 italic font-medium">"</span>
+					<h2 class="text-3xl md:text-4xl text-slate-800 text-center italic font-bold">
 						The more that you read, the more things you will know. The more that you learn, the more places you'll go.
 					</h2>
 				</div>
 
 				{{-- Statistik --}}
 				<div class="relative flex justify-center py-16 md:py-20">
-					<div
-						class="py-14 px-8 md:px-16 bg-gray shadow-lg rounded-3xl border border-zinc-500 border-opacity-10 backdrop-blur z-10 flex flex-col items-center">
-						<h2 class="text-5xl md:text-8xl text-slate-800 text-center font-bold">123.000.000</h2>
-						<span class="uppercase text-slate-600 text-2xl md:text-4xl font-bold">PENGGUNA</span>
+					<div class="bg-gray shadow-lg rounded-3xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
+						<div class="flex flex-col items-center space-y-2 py-14 px-8 md:px-16">
+							<h2 class="text-5xl md:text-7xl text-slate-800 text-center font-bold">{{ \App\Models\User::count() }}.000</h2>
+							<p class="uppercase text-slate-700 text-xl md:text-3xl font-bold tracking-wide">PENGGUNA</p>
+						</div>
 					</div>
 
 					<img src="{{ asset('logo/maskot-shadow.png') }}" alt="Maskot"
@@ -211,17 +257,18 @@
 		<div class="bg-accent bg-opacity-10">
 			<div class="max-w-[1440px] mx-auto py-6 px-4 sm:px-6">
 				<div class="swiper mySwiper">
-					<div class="flex items-center justify-between pb-8">
+					<div class="flex items-center justify-between">
 						<h4 class="text-2xl text-red-500 font-bold">Testimoni Siswa</h4>
 						<div>
 							<button class="btn-slide-prev bg-white border shadow px-2 py-1">Prev</button>
 							<button class="btn-slide-next bg-white border shadow px-2 py-1">Next</button>
 						</div>
 					</div>
-					<div
-						class="swiper-wrapper py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 items-center justify-between">
 
-						<div class="swiper-slide bg-white rounded-2xl shadow-lg py-6 px-8">
+					<div
+						class="swiper-wrapper py-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4 items-center justify-between">
+
+						<div class="swiper-slide bg-white rounded-2xl shadow-md py-6 px-8">
 							<div class="flex items-center space-x-4 mb-3">
 								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
 								<h4 class="font-semibold">Paul Greyrad</h4>
@@ -231,7 +278,7 @@
 								Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
 							</p>
 						</div>
-						<div class="swiper-slide bg-white rounded-2xl shadow-lg py-6 px-8">
+						<div class="swiper-slide bg-white rounded-2xl shadow-md py-6 px-8">
 							<div class="flex items-center space-x-4 mb-3">
 								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
 								<h4 class="font-semibold">John Doe</h4>
@@ -241,7 +288,7 @@
 								Vitae provident maxime, eos sapiente numquam esse, atque veritatis minus, suscipit velit quo? Culpa, maxime.
 							</p>
 						</div>
-						<div class="swiper-slide bg-white rounded-2xl shadow-lg py-6 px-8">
+						<div class="swiper-slide bg-white rounded-2xl shadow-md py-6 px-8">
 							<div class="flex items-center space-x-4 mb-3">
 								<img src="{{ asset('shapes/ava.svg') }}" alt="Avatar">
 								<h4 class="font-semibold">Junaedi Ruslia</h4>
