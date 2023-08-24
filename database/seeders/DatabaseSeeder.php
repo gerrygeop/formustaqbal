@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             FacultySeeder::class,
-            // SiaSeeder::class,
+            SiaSeeder::class,
         ]);
 
         DB::table('role_user')->insert([
