@@ -28,9 +28,7 @@ class TestController extends Controller
     // Placement test
     public function test(Subject $subject)
     {
-        $assessment = Assessment::whereHasMorph('assessmentable', Subject::class, function ($query) use ($subject) {
-            $query->where('id', $subject->id);
-        })
+        $assessment = Assessment::query()
             ->where('is_active', true)
             ->where([
                 ['published_at', '<=', Carbon::now()],
@@ -42,12 +40,20 @@ class TestController extends Controller
                     ->where('start_time', NULL)
                     ->where('end_time', NULL);
             })
+            ->whereHasMorph('assessmentable', Subject::class, function ($query) use ($subject) {
+                $query->where('id', $subject->id);
+            })
             ->get()
             ->first();
 
         return view('placement-test', [
             'assessment' => $assessment,
-            'subject' => $subject->slug
         ]);
+    }
+
+    // Choose language
+    public function finish()
+    {
+        return view('finish');
     }
 }
