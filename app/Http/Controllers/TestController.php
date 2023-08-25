@@ -46,9 +46,13 @@ class TestController extends Controller
             ->get()
             ->first();
 
-        return view('placement-test', [
-            'assessment' => $assessment,
-        ]);
+        if ($assessment->users()->where('user_id', auth()->id())->exists()) {
+            return view('info');
+        } else {
+            return view('placement-test', [
+                'assessment' => $assessment,
+            ]);
+        }
     }
 
     // Choose language

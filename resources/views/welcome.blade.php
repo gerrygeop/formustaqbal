@@ -53,7 +53,7 @@
 
 						@auth
 							<!-- Settings Dropdown -->
-							<div class="hidden md:flex md:items-center">
+							<div class="flex items-center">
 								<x-dropdown align="right" width="48">
 									<x-slot name="trigger">
 										<button
