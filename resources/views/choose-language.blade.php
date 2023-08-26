@@ -13,7 +13,7 @@
 						<div class="flex flex-col md:flex-row items-center justify-center md:justify-evenly w-full mt-10">
 							@foreach ($subjects as $subject)
 								<a href="{{ route('placement.test', $subject) }}"
-									class="flex flex-col items-center gap-y-4 border hover:border-b-2 hover:border-yellow-200 rounded-lg p-6 shadow">
+									class="flex flex-col items-center gap-y-4 bg-white border hover:border-yellow-200 rounded-lg p-6 shadow">
 									<img src="{{ asset('storage/' . $subject->cover_path) }}" alt="{{ $subject->name }}" class="w-30 h-auto">
 									<h4 class="text-xl text-gray-800 dark:text-gray-50 font-semibold">
 										{{ $subject->name }}
