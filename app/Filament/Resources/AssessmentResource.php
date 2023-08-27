@@ -30,7 +30,7 @@ class AssessmentResource extends Resource
                         Forms\Components\Select::make('creator_id')
                             ->relationship('creator', 'name')
                             ->default(auth()->user()->id)
-                            ->label('Creator')
+                            ->label('Created by')
                             ->required(),
 
                         Forms\Components\Select::make('type')
@@ -62,17 +62,23 @@ class AssessmentResource extends Resource
                             ->disableAllToolbarButtons()
                             ->label('Description'),
 
-
-                        Forms\Components\Grid::make(4)->schema([
-                            Forms\Components\DateTimePicker::make('published_at'),
-                            Forms\Components\TimePicker::make('start_time'),
-                            Forms\Components\TimePicker::make('end_time'),
+                        Forms\Components\Grid::make(3)->schema([
+                            Forms\Components\DateTimePicker::make('published_at')->default(now()),
+                            // Forms\Components\TimePicker::make('start_time'),
+                            // Forms\Components\TimePicker::make('end_time'),
                             Forms\Components\TextInput::make('duration_minutes')
                                 ->numeric()
+                                ->default(5)
                                 ->minValue(1),
+                            Forms\Components\TextInput::make('question_limit')
+                                ->numeric()
+                                ->minValue(0),
                         ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
 
-                        // Forms\Components\Grid::make()->schema([
+                Forms\Components\Section::make('Opsi')
+                    ->schema([
                         Forms\Components\Toggle::make('is_active')
                             ->label('Aktif')
                             ->default(true),
@@ -82,9 +88,10 @@ class AssessmentResource extends Resource
                         Forms\Components\Toggle::make('is_random_choices')
                             ->label('Pilihan ganda acak')
                             ->default(false),
-                        // ]),
                     ])
-            ]);
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

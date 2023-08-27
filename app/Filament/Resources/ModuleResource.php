@@ -31,11 +31,27 @@ class ModuleResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\RichEditor::make('description')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'strike',
+                                'blockquote',
+                                'bulletList',
+                                'link',
+                                'orderedList',
+                            ]),
                         Forms\Components\TextInput::make('standard_point')
+                            ->label('Minimal Point')
                             ->required()
                             ->numeric()
                             ->default(0)
                             ->minValue(0),
+                        Forms\Components\Toggle::make('is_visible')
+                            ->default(true)
+                            ->inline(false)
+                            ->required(),
                     ])
             ]);
     }
