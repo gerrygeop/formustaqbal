@@ -11,12 +11,20 @@
 								Terima kasih telah melakukan Tes
 							</h4>
 							<h2 class="text-2xl lg:text-4xl text-center text-amber-500 font-semibold">
-								Point: {{ auth()->user()->profile->point }}
+								Point:
+								@if (session('messages.score'))
+									{{ session('messages.score') }}
+								@else
+									-
+								@endif
 							</h2>
+
 							<h3 class="text-center text-gray-800 dark:text-gray-50 mt-8">
 								<span class="text-xl lg:text-2xl">Anda masuk dalam</span> <br />
 								<span class="text-2xl lg:text-4xl text-amber-500 font-semibold">
-									{{ auth()->user()->modules()->first()->title }}
+									@if (session('messages.level'))
+										{{ session('messages.level') }}
+									@endif
 								</span>
 							</h3>
 						</div>
