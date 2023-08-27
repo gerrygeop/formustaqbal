@@ -228,7 +228,7 @@
 				<div class="relative flex justify-center py-16 md:py-20">
 					<div class="bg-gray shadow-lg rounded-3xl border border-zinc-500 border-opacity-10 backdrop-blur z-10">
 						<div class="flex flex-col items-center space-y-2 py-14 px-8 md:px-16">
-							<h2 class="text-5xl md:text-7xl text-slate-800 text-center font-bold">{{ \App\Models\User::count() }}.000</h2>
+							<h2 class="text-5xl md:text-7xl text-slate-800 text-center font-bold">{{ \App\Models\User::count() }}</h2>
 							<p class="uppercase text-slate-700 text-xl md:text-3xl font-bold tracking-wide">PENGGUNA</p>
 						</div>
 					</div>
