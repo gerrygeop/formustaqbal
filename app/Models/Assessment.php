@@ -27,7 +27,7 @@ class Assessment extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'assessment_user');
+        return $this->belongsToMany(User::class, 'assessment_user')->withTimestamps();
     }
 
     public function questions(): HasMany
