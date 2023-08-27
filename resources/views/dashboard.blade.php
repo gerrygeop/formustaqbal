@@ -58,15 +58,11 @@
 						<div class="p-6 text-gray-800 dark:text-gray-100">
 							<div class="flex items-center justify-center space-x-2">
 								<p>
-									@if (auth()->user()->assessments->isNotEmpty())
-										true
-									@else
-										Silahkan mengambil
-										<a href="{{ route('language') }}" class="font-semibold text-amber-600 underline">
-											Placement Test
-										</a>
-										untuk memilih Bahasa dan menentukan Level anda.
-									@endif
+									Silahkan mengambil
+									<a href="{{ route('language') }}" class="font-semibold text-amber-600 underline">
+										Placement Test
+									</a>
+									untuk memilih Bahasa dan menentukan Level anda.
 								</p>
 							</div>
 						</div>
