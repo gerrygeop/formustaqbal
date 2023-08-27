@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Assessment;
 use App\Models\Subject;
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
@@ -28,6 +28,8 @@ class TestController extends Controller
     // Placement test
     public function test(Subject $subject)
     {
+        $userId = request()->user()->id;
+
         $assessment = Assessment::query()
             ->where('is_active', true)
             ->where([
@@ -46,7 +48,13 @@ class TestController extends Controller
             ->get()
             ->first();
 
-        if ($assessment->users()->where('user_id', auth()->id())->exists()) {
+        $assessmentUser = $assessment->users()->get();
+
+        if ($assessmentUser->where('user_id', $userId)->isEmpty()) {
+            $assessment->users()->attach($userId);
+        }
+
+        if ($assessmentUser->where('is_completed', true)->isNotEmpty()) {
             return view('info');
         } else {
             return view('placement-test', [
@@ -55,7 +63,7 @@ class TestController extends Controller
         }
     }
 
-    // Choose language
+    // Finish
     public function finish()
     {
         return view('finish');
