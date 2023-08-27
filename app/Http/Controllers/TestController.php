@@ -28,7 +28,7 @@ class TestController extends Controller
     // Placement test
     public function test(Subject $subject)
     {
-        $userId = request()->user()->id;
+        $user = request()->user();
 
         $assessment = Assessment::query()
             ->where('is_active', true)
@@ -48,13 +48,13 @@ class TestController extends Controller
             ->get()
             ->first();
 
-        $assessmentUser = $assessment->users()->get();
+        $assessmentUser = $user->assessments();
 
-        if ($assessmentUser->where('user_id', $userId)->isEmpty()) {
-            $assessment->users()->attach($userId);
+        if (!$assessmentUser->where('assessment_id', $assessment->id)->exists()) {
+            $assessment->users()->attach($user->id);
         }
 
-        if ($assessmentUser->where('is_completed', true)->isNotEmpty()) {
+        if ($assessmentUser->wherePivot('is_completed', true)->exists()) {
             return view('info');
         } else {
             return view('placement-test', [

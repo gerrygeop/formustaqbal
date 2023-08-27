@@ -4,7 +4,7 @@
 			class="relative min-h-screen overflow-hidden flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-gray-900">
 
 			<div class="w-full z-[55] bg-gray backdrop-blur">
-				@livewire('test-questions', ['assessment' => $assessment])
+				@livewire('placemen-test', ['assessment' => $assessment])
 			</div>
 
 			{{-- Confetti --}}
