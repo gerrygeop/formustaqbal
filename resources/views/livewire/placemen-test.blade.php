@@ -6,7 +6,13 @@
 					Question: {{ $currentQuestionIndex + 1 }} / {{ $totalQuestions }}
 				</p>
 				<p class="text-gray-600 mb-4">
-					Time left: 00:00
+					Time left:
+					<span id="countdown" class="text-red-600" wire:poll.1000ms>
+						{{ gmdate('H:i:s', $remainingTime) }}
+						@if ($remainingTime < 0)
+							Selesai
+						@endif
+					</span>
 				</p>
 			</div>
 

@@ -19,6 +19,8 @@ class PlacemenTest extends Component
     public $answeredQuestions = [];
     public $answers = [];
 
+    public $endTime;
+
     public function mount()
     {
         if (session()->has('current_question_index')) {
@@ -26,6 +28,33 @@ class PlacemenTest extends Component
         }
 
         $this->loadQuestion();
+
+        if (!session()->has('end_time')) {
+            session(['end_time' => now()->addMinutes($this->assessment->duration_minutes)]);
+        }
+
+        $this->endTime = session('end_time');
+    }
+
+    public function getRemainingTime()
+    {
+        $currentTime = now();
+        $remainingTime = $this->endTime->diffInSeconds($currentTime);
+
+        if ($remainingTime <= 0 || $this->endTime < now()) {
+            $this->resetSessionData();
+            $this->finishAssessment();
+        }
+
+        return max($remainingTime, 0); // Pastikan waktu tidak negatif
+    }
+
+    public function render()
+    {
+        return view('livewire.placemen-test', [
+            'currentQuestionIndex' => $this->currentQuestionIndex,
+            'remainingTime' => $this->getRemainingTime(),
+        ]);
     }
 
     public function loadQuestion()
@@ -114,6 +143,7 @@ class PlacemenTest extends Component
             'current_question_index',
             'random_questions',
             'answered_questions',
+            'end_time',
         ]);
     }
 
@@ -156,11 +186,7 @@ class PlacemenTest extends Component
             Answer::create($response);
             $this->savePoint($response['point']);
 
-            // $assessmentUser = $authUser->assessments()->where('assessment_id', $this->assessment->id)->get()->first();
-            // $assessmentUser->update(['score' => $response['point']]);
-
             $authUser->assessments()->updateExistingPivot($this->assessment->id, ['score' => array_sum(session('score'))]);
-
             $authUser->profile()->increment('point', $response['point']);
         });
     }
@@ -176,13 +202,17 @@ class PlacemenTest extends Component
 
     public function finishAssessment()
     {
-        DB::transaction(function () {
-            $this->updateUserCourseModule();
-            $this->assessment->users()->update(['is_completed' => true]);
+        $scoreUser = array_sum(session('score'));
+
+        $level = DB::transaction(function () {
+            $level = $this->updateUserCourseModule();
+            auth()->user()->assessments()->updateExistingPivot($this->assessment->id, ['is_completed' => true]);
             session()->forget('score');
+
+            return $level;
         });
 
-        return redirect()->to('/finish');
+        return redirect()->route('finish')->with('messages', ['score' => $scoreUser, 'level' => $level]);
     }
 
     protected function updateUserCourseModule()
@@ -192,22 +222,22 @@ class PlacemenTest extends Component
 
         if ($course) {
             $module = $course->modules()
-                ->where('standard_point', '<=', $user->profile->point)
+                ->where('standard_point', '<=', array_sum(session('score')))
                 ->orderBy('standard_point', 'desc')
                 ->first();
 
             if ($module) {
+
                 $user->courses()->attach($course->id, [
                     'module_id' => $module->id
                 ]);
-            }
-        }
-    }
 
-    public function render()
-    {
-        return view('livewire.placemen-test', [
-            'currentQuestionIndex' => $this->currentQuestionIndex,
-        ]);
+                return $module->title;
+            } else {
+                return '-';
+            }
+        } else {
+            return '-';
+        }
     }
 }
