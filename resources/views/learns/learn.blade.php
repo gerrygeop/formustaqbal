@@ -1,10 +1,11 @@
 <x-app-layout>
 	<section class="fixed inset-0 overflow-y-auto z-50 bg-gray-50 dark:bg-gray-900" x-data="{ listMenu: false }">
 
-		<div class="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-b-gray-700/60 py-5 px-8 z-[51]">
+		<div
+			class="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-b-gray-700/60 py-3 md:py-4 px-4 md:px-8 z-[51]">
 			<div class="flex items-center justify-between">
 				<a href="{{ route('courses.show', $module->course) }}"
-					class="flex items-center gap-x-2 text-gray-800 dark:text-gray-50">
+					class="flex-1 flex items-center gap-x-2 text-gray-600 dark:text-gray-50">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 						class="w-6 h-6">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
@@ -12,31 +13,97 @@
 					<p class="font-semibold text-base hidden md:block">{{ $module->course->name }}</p>
 				</a>
 
-				<button type="button" class="text-gray-800 dark:text-white" x-on:click="listMenu = !listMenu">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-						class="w-6 h-6">
-						<path stroke-linecap="round" stroke-linejoin="round"
-							d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-					</svg>
-				</button>
-			</div>
-		</div>
-
-		<div class="relative h-fit flex">
-
-			<div class="max-w-4xl mx-auto w-full px-4 mb-28 py-10 sm:px-0">
-				<h2 class="text-3xl text-gray-800 dark:text-white font-semibold">
+				<h2 class="hidden md:flex flex-1 justify-center text-xl text-gray-800 dark:text-white font-semibold">
 					{{ $currentSubmodule->title }}
 				</h2>
 
-				<article class="py-10 prose dark:prose-invert lg:prose-xl">
-					{!! $currentSubmodule->material->content !!}
-				</article>
+				<div class="flex-1 flex justify-end">
+					<button type="button" class="text-gray-800 dark:text-white border p-2 rounded-full shadow-sm"
+						x-on:click="listMenu = !listMenu">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+							stroke="currentColor" class="w-5 h-5 md:w-6 md:h-6">
+							<path stroke-linecap="round" stroke-linejoin="round"
+								d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+						</svg>
+					</button>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="relative min-h-screen flex">
+			<div class="max-w-5xl mx-auto w-full p-4 flex flex-col justify-between">
+
+				{{-- Content --}}
+				<div class="py-6 mb-20 grid grid-cols-1 gap-y-10">
+					@if ($currentSubmodule->material->embed_links)
+						@foreach ($currentSubmodule->material->embed_links as $link)
+							@if ($link)
+								<iframe class="w-full h-[300px] md:h-[600px]" src="{{ $link['link'] }}" frameborder="0" allowfullscreen="true"
+									mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+							@endif
+						@endforeach
+					@endif
+
+					<article class="prose dark:prose-invert lg:prose-xl">
+						{!! $currentSubmodule->material->content !!}
+					</article>
+				</div>
+
+				{{-- Navigations --}}
+				<div
+					class="bg-white dark:bg-gray-800 py-4 md:py-6 px-4 md:px-10 border dark:border-gray-700/60 shadow-sm rounded-lg">
+					<div class="flex items-center justify-between">
+						@if ($prevSubmodule)
+							<a href="{{ route('courses.learn', [$module, $prevSubmodule]) }}"
+								class="flex items-center space-x-1 px-6 py-2 text-gray-700 hover:text-richblack font-medium bg-gray-50 border border-gray-300 rounded hover:bg-gray-200">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+								</svg>
+
+								<span class="hidden md:block">Sebelumnya</span>
+							</a>
+						@else
+							<p
+								class="flex items-center space-x-1 px-6 py-2 text-gray-400 font-medium bg-gray-50 border border-gray-200 rounded">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+								</svg>
+
+								<span class="hidden md:block">Sebelumnya</span>
+							</p>
+						@endif
+
+						@if ($nextSubmodule)
+							<a href="{{ route('courses.learn', [$module, $nextSubmodule]) }}"
+								class="flex items-center space-x-1 px-6 py-2 text-white hover:text-white font-semibold capitalize bg-amber-500 rounded hover:bg-amber-500/80">
+								<span class="hidden md:block">Selanjutnya</span>
+
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+								</svg>
+							</a>
+						@else
+							<p
+								class="flex items-center space-x-1 px-6 py-2 text-gray-400 font-medium uppcase bg-gray-50 border border-gray-200 rounded">
+								<span class="hidden md:block">Selanjutnya</span>
+
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+								</svg>
+							</p>
+						@endif
+					</div>
+				</div>
 			</div>
 
 			{{-- List modules --}}
-			<div x-cloak :class="listMenu ? 'translate-x-0' : 'translate-x-96'"
-				class="fixed right-0 p-6 overflow-y-auto border-l w-96 h-full bg-white dark:bg-slate-700 dark:border-l-gray-700/60 transition duration-300">
+			<aside x-cloak :class="listMenu ? 'translate-x-0' : 'translate-x-96'"
+				class="fixed right-0 p-6 overflow-y-auto border-l shadow w-96 h-full bg-white dark:bg-slate-700 dark:border-l-gray-700/60 transition duration-300">
 
 				<h3 class="font-semibold text-xl text-gray-800 dark:text-white">
 					Daftar Submodul
@@ -57,39 +124,9 @@
 						@endforeach
 					</div>
 				</div>
-			</div>
+			</aside>
 		</div>
 
-		<div class="fixed bottom-0 inset-x-0 z-[60]">
-			<div
-				class="w-full flex items-center justify-between bg-white dark:bg-gray-800 py-4 px-4 md:px-10 border-t dark:border-t-gray-700/60">
-				@if ($prevSubmodule)
-					<a href="{{ route('courses.learn', [$module, $prevSubmodule]) }}"
-						class="px-6 py-1 text-gray-700 hover:text-richblack font-medium bg-gray-50 border border-gray-300 rounded hover:bg-gray-200">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-							stroke="currentColor" class="w-5 h-5">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-						</svg>
-					</a>
-				@else
-					<p class="px-6 py-1 text-gray-400 font-medium bg-gray-50 border border-gray-200 rounded">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-							stroke="currentColor" class="w-5 h-5">
-							<path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-						</svg>
-					</p>
-				@endif
-
-				@if ($nextSubmodule)
-					<a href="{{ route('courses.learn', [$module, $nextSubmodule]) }}"
-						class="px-6 py-1 text-white hover:text-white font-semibold capitalize bg-amber-500 border-b-2 border-r-2 border-amber-600 rounded hover:bg-amber-500/80">
-						Lanjut
-					</a>
-				@else
-					<p class="px-6 py-1 text-gray-400 font-medium uppcase bg-gray-50 border border-gray-200 rounded">Lanjut</p>
-				@endif
-			</div>
-		</div>
 
 	</section>
 </x-app-layout>
