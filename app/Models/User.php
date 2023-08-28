@@ -23,7 +23,7 @@ class User extends Authenticatable implements FilamentUser
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
