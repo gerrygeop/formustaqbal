@@ -31,7 +31,7 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('submodule_id')->constrained('submodules')->cascadeOnDelete();
-            $table->longText('content');
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }
