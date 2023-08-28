@@ -54,22 +54,6 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function attach(Course $course)
-    {
-        if (!$course->users->contains(Auth::id())) {
-            $course->users()->attach(Auth::id());
-        }
-
-        $firstSubmodule = $course->modules->flatMap(function ($module) {
-            return $module->submodules;
-        })->first();
-
-        return to_route('courses.lesson', [$course, $firstSubmodule]);
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
     public function mulai(Module $module)
     {
         $submodule = $module->submodules->first();

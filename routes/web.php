@@ -40,8 +40,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/courses/{module}/get', [CourseController::class, 'mulai'])->name('courses.mulai');
     Route::get('/courses/{module}/learn/{submodule}', [CourseController::class, 'learn'])->name('courses.learn');
 
-    Route::get('/courses/{course}/lesson/{submodule}', [SubmoduleController::class, 'lesson'])->name('courses.lesson');
-
     Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
     // Leaderboard
