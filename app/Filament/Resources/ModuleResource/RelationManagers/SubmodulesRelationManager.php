@@ -28,6 +28,9 @@ class SubmodulesRelationManager extends RelationManager
                         Forms\Components\TextInput::make('list_sort')
                             ->required()
                             ->maxLength(100),
+                        Forms\Components\Toggle::make('is_visible')
+                            ->default(true)
+                            ->required(),
                     ])
             ]);
     }
