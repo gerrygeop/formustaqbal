@@ -47,7 +47,8 @@ class QuestionsRelationManager extends RelationManager
                             'bold',
                             'italic',
                             'underline',
-                        ]),
+                        ])
+                        ->required(),
 
                     Forms\Components\Grid::make(3)->schema([
                         Forms\Components\TextInput::make('point')
