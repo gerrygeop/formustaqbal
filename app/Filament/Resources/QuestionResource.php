@@ -54,7 +54,8 @@ class QuestionResource extends Resource
                             'bold',
                             'italic',
                             'underline',
-                        ]),
+                        ])
+                        ->required(),
 
                     Forms\Components\Grid::make(3)->schema([
                         Forms\Components\TextInput::make('point')
