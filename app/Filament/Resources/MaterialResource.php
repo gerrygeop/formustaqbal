@@ -29,9 +29,14 @@ class MaterialResource extends Resource
                         Forms\Components\Select::make('submodule_id')
                             ->relationship('submodule', 'title')
                             ->required(),
+                        Forms\Components\Repeater::make('embed_links')
+                            ->schema([
+                                Forms\Components\Textarea::make('link'),
+                            ])
+                            ->label('Sematkan')
+                            ->defaultItems(0),
                         Forms\Components\RichEditor::make('content')
-                            ->fileAttachmentsDirectory('attachments')
-                            ->required(),
+                            ->fileAttachmentsDirectory('attachments'),
                     ])
             ]);
     }

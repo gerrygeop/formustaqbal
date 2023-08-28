@@ -11,6 +11,10 @@ class Material extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'embed_links' => 'array',
+    ];
+
     public function submodule()
     {
         return $this->belongsTo(Submodule::class);

@@ -19,10 +19,17 @@ class MaterialRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\RichEditor::make('content')
-                    ->fileAttachmentsDirectory('attachments')
-                    ->required()
-                    ->columnSpanFull(),
+                Forms\Components\Grid::make(1)
+                    ->schema([
+                        Forms\Components\Repeater::make('embed_links')
+                            ->schema([
+                                Forms\Components\Textarea::make('link'),
+                            ])
+                            ->label('Sematkan')
+                            ->defaultItems(0),
+                        Forms\Components\RichEditor::make('content')
+                            ->fileAttachmentsDirectory('attachments'),
+                    ])
             ]);
     }
 
