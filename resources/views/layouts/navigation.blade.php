@@ -29,9 +29,11 @@
 					</x-slot>
 
 					<x-slot name="content">
-						<span class="block w-full px-4 py-2 text-left text-sm leading-5 font-semibold text-gray-800 dark:text-gray-300">
-							{{ auth()->user()->profile->point }} Point
-						</span>
+						@if (auth()->user()->profile)
+							<span class="block w-full px-4 py-2 text-left text-sm leading-5 font-semibold text-gray-800 dark:text-gray-300">
+								{{ auth()->user()->profile->point }} Point
+							</span>
+						@endif
 
 						<div class="border-t"></div>
 
@@ -74,9 +76,19 @@
 			<x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
 				{{ __('Dashboard') }}
 			</x-responsive-nav-link>
-			<x-responsive-nav-link :href="route('courses.my')" :active="request()->routeIs('courses.*')">
-				{{ __('Courses') }}
-			</x-responsive-nav-link>
+
+			@can('teacher')
+				<x-responsive-nav-link :href="route('teacher.room')" :active="request()->routeIs('teacher.*')">
+					{{ __('Class') }}
+				</x-responsive-nav-link>
+			@endcan
+
+			@cannot('teacher')
+				<x-responsive-nav-link :href="route('courses.my')" :active="request()->routeIs('courses.*')">
+					{{ __('Courses') }}
+				</x-responsive-nav-link>
+			@endcannot
+
 			<x-responsive-nav-link :href="route('leader.index')" :active="request()->routeIs('leader.*')">
 				{{ __('Leaderboard') }}
 			</x-responsive-nav-link>

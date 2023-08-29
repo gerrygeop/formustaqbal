@@ -4,6 +4,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmoduleController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,15 @@ Route::middleware(['auth'])->group(function () {
 
     // Leaderboard
     Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');
+
+    // Teacher
+    Route::get('/class', [TeacherController::class, 'room'])->name('teacher.room');
+
+    // Teacher testing placement-test
+    Route::middleware('can:teacher')->group(function () {
+        Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
+        Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
+    });
 });
 
 Route::middleware('auth')->group(function () {
