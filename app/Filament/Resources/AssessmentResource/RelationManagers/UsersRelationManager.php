@@ -60,7 +60,7 @@ class UsersRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
             ])
             ->filters([
                 //
@@ -71,6 +71,11 @@ class UsersRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('Reset')
+                    ->action(fn (User $record) => redirect()->route('reset.assessment', $record))
+                    ->color('danger')
+                    ->icon('heroicon-s-x')
+                    ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

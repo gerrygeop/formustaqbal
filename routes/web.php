@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssessmentUserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ProfileController;
@@ -54,6 +55,11 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('can:teacher')->group(function () {
         Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
         Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
+    });
+
+    // Assessment user reset
+    Route::middleware('can:superadmin')->group(function () {
+        Route::get('/reset/{user}', [AssessmentUserController::class, 'reset'])->name('reset.assessment');
     });
 });
 
