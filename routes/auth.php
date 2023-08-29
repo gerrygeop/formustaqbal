@@ -13,16 +13,19 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
+    // Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    // Route::post('register', [RegisteredUserController::class, 'store']);
 
     // Login with email
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    // Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    // Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     // Login Siakad
-    Route::get('login-nim', [AuthenticatedSiakadController::class, 'create'])->name('siakad.login');
-    Route::post('login-nim', [AuthenticatedSiakadController::class, 'store'])->name('siakad.login.store');
+    Route::get('login', [AuthenticatedSiakadController::class, 'create'])->name('siakad.login');
+    Route::post('login', [AuthenticatedSiakadController::class, 'store'])->name('siakad.login.store');
+
+    // Route::get('login-nim', [AuthenticatedSiakadController::class, 'create'])->name('siakad.login');
+    // Route::post('login-nim', [AuthenticatedSiakadController::class, 'store'])->name('siakad.login.store');
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
 

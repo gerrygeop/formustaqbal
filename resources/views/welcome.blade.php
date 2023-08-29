@@ -41,13 +41,13 @@
 
 						@guest
 							<div class="flex items-center space-x-2 md:space-x-4">
-								<a href="{{ route('login') }}"
+								<a href="{{ route('siakad.login') }}"
 									class="bg-transparent ring-2 ring-accent ring-inset rounded-full px-4 py-1.5 text-accent">
 									{{ __('Login') }}
 								</a>
-								<a href="{{ route('register') }}" class="bg-accent rounded-full px-4 py-1.5 text-white">
+								{{-- <a href="{{ route('register') }}" class="bg-accent rounded-full px-4 py-1.5 text-white">
 									{{ __('Sign Up') }}
-								</a>
+								</a> --}}
 							</div>
 						@endguest
 
@@ -318,8 +318,8 @@
 							<div class="flex flex-col">
 								<span class="font-semibold mb-4">Navigasi</span>
 								<a href="/">Beranda</a>
-								<a href="{{ route('login') }}">Masuk</a>
-								<a href="{{ route('register') }}">Daftar</a>
+								<a href="{{ route('siakad.login') }}">Masuk</a>
+								{{-- <a href="{{ route('register') }}">Daftar</a> --}}
 								<a href="#">Pricing</a>
 							</div>
 							<div class="flex flex-col">

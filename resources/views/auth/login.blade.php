@@ -28,14 +28,14 @@
 				{{ __('Masuk') }}
 			</x-primary-button>
 
-			<p>
+			{{-- <p>
 				Belum punya akun?
 				<a
 					class="underline text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none"
 					href="{{ route('register') }}">
 					{{ __('Buat akun') }}
 				</a>
-			</p>
+			</p> --}}
 
 			<a
 				class="underline text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none"

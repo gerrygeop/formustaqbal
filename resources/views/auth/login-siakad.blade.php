@@ -27,14 +27,14 @@
 				{{ __('Masuk') }}
 			</x-primary-button>
 
-			<p>
+			{{-- <p>
 				Tidak punya NIM?
 				<a
 					class="underline text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none"
 					href="{{ route('login') }}">
 					{{ __('Login dengan Email') }}
 				</a>
-			</p>
+			</p> --}}
 		</div>
 	</form>
 </x-guest-layout>
