@@ -207,7 +207,7 @@ class PlacemenTest extends Component
 
     public function finishAssessment()
     {
-        $scoreUser = array_sum(session('score'));
+        $scoreUser = session('score') ? array_sum(session('score')) : 0;
 
         $level = DB::transaction(function () {
             $level = $this->updateUserCourseModule();
@@ -224,10 +224,11 @@ class PlacemenTest extends Component
     {
         $user = auth()->user();
         $course = Course::where('subject_id', $this->assessment->assessmentable_id)->first();
+        $point = session('score') ? array_sum(session('score')) : 0;
 
         if ($course) {
             $module = $course->modules()
-                ->where('standard_point', '<=', array_sum(session('score')))
+                ->where('standard_point', '<=', $point)
                 ->orderBy('standard_point', 'desc')
                 ->first();
 

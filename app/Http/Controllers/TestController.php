@@ -6,6 +6,7 @@ use App\Models\Assessment;
 use App\Models\Subject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TestController extends Controller
 {
@@ -47,7 +48,15 @@ class TestController extends Controller
             $assessment->users()->attach($user->id);
         }
 
-        if ($assessmentUser->wherePivot('is_completed', true)->exists()) {
+
+        $created = DB::table('assessment_user')->where([
+            ['user_id', $user->id],
+            ['assessment_id', $assessment->id],
+        ])->get()->first()->created_at;
+
+        $createdTime = new Carbon($created);
+
+        if ($assessmentUser->wherePivot('is_completed', true)->exists() || $createdTime->addMinutes($assessment->duration_minutes) < now()) {
             return view('info');
         } else {
             return view('placement-test', [
