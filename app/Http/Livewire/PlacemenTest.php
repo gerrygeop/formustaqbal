@@ -233,9 +233,16 @@ class PlacemenTest extends Component
 
             if ($module) {
 
-                $user->courses()->attach($course->id, [
-                    'module_id' => $module->id
-                ]);
+                if ($user->courses()->where('course_id', $course->id)->count() == 0) {
+                    $user->courses()->attach($course->id, [
+                        'module_id' => $module->id
+                    ]);
+                } else {
+                    $user->courses()->detach($course->id);
+                    $user->courses()->attach($course->id, [
+                        'module_id' => $module->id
+                    ]);
+                }
 
                 return $module->title;
             } else {

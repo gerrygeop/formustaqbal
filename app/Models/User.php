@@ -67,7 +67,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function courses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'course_user');
+        return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
     }
 
     public function modules(): BelongsToMany

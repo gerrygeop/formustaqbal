@@ -34,23 +34,16 @@ class TestController extends Controller
             ->where('is_active', true)
             ->where([
                 ['published_at', '<=', Carbon::now()],
-                ['start_time', '<=', Carbon::now()],
-                ['end_time', '>=', Carbon::now()]
             ])
-            ->orWhere(function ($query) {
-                $query->where('published_at', NULL)
-                    ->where('start_time', NULL)
-                    ->where('end_time', NULL);
-            })
             ->whereHasMorph('assessmentable', Subject::class, function ($query) use ($subject) {
                 $query->where('id', $subject->id);
             })
             ->get()
             ->first();
 
-        $assessmentUser = $user->assessments();
+        $assessmentUser = $user->assessments()->where('assessment_id', $assessment->id);
 
-        if (!$assessmentUser->where('assessment_id', $assessment->id)->exists()) {
+        if (!$assessmentUser->exists()) {
             $assessment->users()->attach($user->id);
         }
 
