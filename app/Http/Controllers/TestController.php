@@ -26,6 +26,13 @@ class TestController extends Controller
         ]);
     }
 
+    public function reminder(Subject $subject)
+    {
+        return view('reminder', [
+            'subject' => $subject
+        ]);
+    }
+
     // Placement test
     public function test(Subject $subject)
     {

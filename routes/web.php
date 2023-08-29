@@ -29,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     // placement test
     Route::get('/start', [TestController::class, 'start'])->name('start');
     Route::get('/language', [TestController::class, 'language'])->name('language');
+    Route::get('/reminder/{subject:id}', [TestController::class, 'reminder'])->name('reminder');
     Route::get('/placement-test/{subject:id}', [TestController::class, 'test'])->name('placement.test');
     Route::get('/finish', [TestController::class, 'finish'])->name('finish');
 

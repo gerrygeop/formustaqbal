@@ -6,20 +6,16 @@
 			<div class="w-full z-[55]">
 				<div class="max-w-5xl mx-auto w-full">
 					<div class="bg-white/50 backdrop-blur border border-b-4 rounded-xl shadow py-20">
-						<h2 class="text-4xl text-center text-gray-800 dark:text-gray-50 font-semibold">
-							Pilih Bahasa yang ingin dipelajari
-						</h2>
+						<p class="text-xl text-center text-gray-800 dark:text-gray-50">
+							<span class="text-2xl text-red-500 font-semibold">Pengingat:</span> <br>
+							Jika anda sudah siap silahkan mulai. <br>
+							Waktu akan mulai berjalan sejak anda membuka soal pertama. <br>
+							Dan anda tidak akan bisa mengulang dari awal
+						</p>
 
-						<div class="flex flex-col md:flex-row items-center justify-center md:justify-evenly w-full mt-10">
-							@foreach ($subjects as $subject)
-								<a href="{{ route('reminder', $subject) }}"
-									class="flex flex-col items-center gap-y-4 bg-white border hover:border-yellow-200 rounded-lg p-6 shadow">
-									<img src="{{ asset('storage/' . $subject->cover_path) }}" alt="{{ $subject->name }}" class="w-30 h-auto">
-									<h4 class="text-xl text-gray-800 dark:text-gray-50 font-semibold">
-										{{ $subject->name }}
-									</h4>
-								</a>
-							@endforeach
+						<div class="flex items-center justify-center w-full mt-14 px-6 md:px-0">
+							<a href="{{ route('placement.test', $subject) }}"
+								class="text-xl font-semibold text-center text-white bg-yellow-500 rounded-lg border border-amber-500 w-96 py-3">Mulai</a>
 						</div>
 					</div>
 				</div>
@@ -44,8 +40,7 @@
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="confetti" class="h-32 w-auto">
 					<img src="{{ asset('shapes/confeti.svg') }}" alt="confetti" class="h-32 w-auto">
 				</div>
-				<img src="{{ asset('logo/maskot-shadow.png') }}" alt="maskot"
-					class="absolute right-32 top-10 z-[53] h-64 w-auto">
+				<img src="{{ asset('logo/maskot-shadow.png') }}" alt="maskot" class="absolute right-32 top-10 z-[53] h-64 w-auto">
 			</div>
 
 		</div>
