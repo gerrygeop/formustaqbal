@@ -22,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::before(function ($user, $role) {
-            $user->hasRole($role);
+            return $user->hasRole($role);
         });
     }
 }
