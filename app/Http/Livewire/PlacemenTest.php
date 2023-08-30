@@ -83,12 +83,20 @@ class PlacemenTest extends Component
 
     private function loadRandomQuestions()
     {
-        $this->questions = $this->assessment
-            ->questions()
-            ->inRandomOrder()
-            ->limit($this->assessment->question_limit)
-            ->with('choices')
-            ->get();
+        if ($this->assessment->is_random_questions) {
+            $this->questions = $this->assessment
+                ->questions()
+                ->inRandomOrder()
+                ->limit($this->assessment->question_limit)
+                ->with('choices')
+                ->get();
+        } else {
+            $this->questions = $this->assessment
+                ->questions()
+                ->limit($this->assessment->question_limit)
+                ->with('choices')
+                ->get();
+        }
     }
 
     private function getAvailableQuestions()
@@ -105,7 +113,9 @@ class PlacemenTest extends Component
     private function randomizeChoiceOrder($choices)
     {
         $order = range(0, count($choices) - 1);
-        shuffle($order);
+        if ($this->assessment->is_random_choices) {
+            shuffle($order);
+        }
         return $order;
     }
 
