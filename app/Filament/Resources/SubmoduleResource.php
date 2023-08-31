@@ -47,7 +47,8 @@ class SubmoduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('module.title')->label('Module Name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('module.course.name')->label('Course Name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('module.title')->label('Level Title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -73,6 +74,7 @@ class SubmoduleResource extends Resource
     {
         return [
             RelationManagers\MaterialRelationManager::class,
+            RelationManagers\AssessmentsRelationManager::class,
         ];
     }
 

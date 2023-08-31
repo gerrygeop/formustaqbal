@@ -18,8 +18,8 @@ class AssessmentResource extends Resource
     protected static ?string $model = Assessment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Assessment Management';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Quiz/Exam/Test';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -59,37 +59,40 @@ class AssessmentResource extends Resource
                             ->maxLength(255),
 
                         Forms\Components\RichEditor::make('instruction')
-                            ->disableAllToolbarButtons()
-                            ->label('Description'),
-
-                        Forms\Components\Grid::make(3)->schema([
-                            Forms\Components\DateTimePicker::make('published_at')->default(now()),
-                            // Forms\Components\TimePicker::make('start_time'),
-                            // Forms\Components\TimePicker::make('end_time'),
-                            Forms\Components\TextInput::make('duration_minutes')
-                                ->numeric()
-                                ->default(5)
-                                ->minValue(1),
-                            Forms\Components\TextInput::make('question_limit')
-                                ->numeric()
-                                ->minValue(0),
-                        ]),
+                            ->disableAllToolbarButtons(),
                     ])
                     ->columnSpan(['lg' => 2]),
 
-                Forms\Components\Section::make('Opsi')
+
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Toggle::make('is_active')
-                            ->label('Aktif')
-                            ->default(true),
-                        Forms\Components\Toggle::make('is_random_questions')
-                            ->label('Soal acak')
-                            ->default(false),
-                        Forms\Components\Toggle::make('is_random_choices')
-                            ->label('Pilihan ganda acak')
-                            ->default(false),
-                    ])
-                    ->columnSpan(1),
+                        Forms\Components\Section::make('Opsi')
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('published_at')->default(now()),
+                                // Forms\Components\TimePicker::make('start_time'),
+                                // Forms\Components\TimePicker::make('end_time'),
+                                Forms\Components\TextInput::make('duration_minutes')
+                                    ->numeric()
+                                    ->default(5)
+                                    ->minValue(1),
+                                Forms\Components\TextInput::make('question_limit')
+                                    ->numeric()
+                                    ->minValue(0),
+                            ]),
+
+                        Forms\Components\Section::make('Opsi')
+                            ->schema([
+                                Forms\Components\Toggle::make('is_active')
+                                    ->label('Aktif')
+                                    ->default(true),
+                                Forms\Components\Toggle::make('is_random_questions')
+                                    ->label('Soal acak')
+                                    ->default(false),
+                                Forms\Components\Toggle::make('is_random_choices')
+                                    ->label('Pilihan ganda acak')
+                                    ->default(false),
+                            ]),
+                    ])->columnSpan(1),
             ])
             ->columns(3);
     }

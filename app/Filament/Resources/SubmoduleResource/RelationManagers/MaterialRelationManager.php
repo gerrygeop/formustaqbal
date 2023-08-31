@@ -12,7 +12,7 @@ use Filament\Tables;
 class MaterialRelationManager extends RelationManager
 {
     protected static string $relationship = 'material';
-
+    protected static ?string $label = 'Materi';
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function form(Form $form): Form

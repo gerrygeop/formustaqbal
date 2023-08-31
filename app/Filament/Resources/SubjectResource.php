@@ -42,7 +42,13 @@ class SubjectResource extends Resource
                             ->imagePreviewHeight('200')
                             ->enableOpen()
                             ->maxSize(3024),
-                        Forms\Components\RichEditor::make('description'),
+                        Forms\Components\RichEditor::make('description')
+                            ->disableToolbarButtons([
+                                'h2',
+                                'h3',
+                                'attachFiles',
+                                'codeBlock'
+                            ]),
                     ])
             ]);
     }

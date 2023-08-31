@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CourseResource\Pages;
-use App\Filament\Resources\CourseResource\RelationManagers\ModulesRelationManager;
+use App\Filament\Resources\CourseResource\RelationManagers;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -24,40 +24,72 @@ class CourseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Select::make('subject_id')
-                            ->relationship('subject', 'name')
-                            ->label('Bahasa')
-                            ->required(),
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->lazy()
-                            ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : $set('slug', Str::slug($state))),
-                        Forms\Components\TextInput::make('slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique(Course::class, 'slug', ignoreRecord: true),
-                        Forms\Components\Select::make('level')
-                            ->required()
-                            ->options([
-                                'dasar' => 'Dasar',
-                                'pemula' => 'Pemula',
-                                'menengah' => 'Menengah',
-                                'mahir' => 'Mahir',
-                            ]),
-                        Forms\Components\Toggle::make('is_visible')->required()->inline(false)->default(true),
-                        Forms\Components\FileUpload::make('cover_path')
-                            ->label('Cover')
-                            ->directory('course-cover')
-                            ->image()
-                            ->imageResizeMode('cover')
-                            ->imagePreviewHeight('200')
-                            ->enableOpen()
-                            ->maxSize(3024),
-                        Forms\Components\RichEditor::make('description'),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->lazy()
+                                    ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : $set('slug', Str::slug($state))),
+
+                                Forms\Components\TextInput::make('slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->unique(Course::class, 'slug', ignoreRecord: true),
+
+                                Forms\Components\RichEditor::make('description')
+                                    ->disableToolbarButtons([
+                                        'h2',
+                                        'h3',
+                                        'attachFiles',
+                                        'codeBlock'
+                                    ])
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
+
+                        Forms\Components\Section::make('Cover')
+                            ->schema([
+                                Forms\Components\FileUpload::make('cover_path')
+                                    ->directory('course-cover')
+                                    ->image()
+                                    ->imageResizeMode('cover')
+                                    ->imagePreviewHeight('200')
+                                    ->enableOpen()
+                                    ->maxSize(3024),
+                            ])
+                            ->collapsible(),
                     ])
-            ]);
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make('Status')
+                            ->schema([
+                                Forms\Components\Toggle::make('is_visible')
+                                    ->required()
+                                    ->inline(false)
+                                    ->default(true),
+
+                                Forms\Components\Select::make('subject_id')
+                                    ->relationship('subject', 'name')
+                                    ->label('Bahasa')
+                                    ->required(),
+
+                                Forms\Components\Select::make('level')
+                                    ->required()
+                                    ->options([
+                                        'dasar' => 'Dasar',
+                                        'pemula' => 'Pemula',
+                                        'menengah' => 'Menengah',
+                                        'mahir' => 'Mahir',
+                                    ]),
+                            ])
+                            ->collapsible(),
+                    ])
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -91,7 +123,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ModulesRelationManager::class
+            RelationManagers\ModulesRelationManager::class
         ];
     }
 

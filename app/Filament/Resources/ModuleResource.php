@@ -17,6 +17,7 @@ class ModuleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'System Management';
+    protected static ?string $label = 'Level';
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -42,18 +43,26 @@ class ModuleResource extends Resource
                                 'link',
                                 'orderedList',
                             ]),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Toggle::make('is_visible')
+                            ->default(true)
+                            ->inline(false)
+                            ->required(),
+
                         Forms\Components\TextInput::make('standard_point')
                             ->label('Minimal Point')
                             ->required()
                             ->numeric()
                             ->default(0)
                             ->minValue(0),
-                        Forms\Components\Toggle::make('is_visible')
-                            ->default(true)
-                            ->inline(false)
-                            ->required(),
                     ])
-            ]);
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

@@ -36,6 +36,7 @@ class QuestionResource extends Resource
                             '3' => 'Listening',
                             '4' => 'Speaking',
                         ])
+                        ->default('1')
                         ->reactive(),
 
                     Forms\Components\FileUpload::make('file_path')

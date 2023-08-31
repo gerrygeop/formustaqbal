@@ -12,39 +12,41 @@ use Filament\Tables;
 class ModulesRelationManager extends RelationManager
 {
     protected static string $relationship = 'modules';
-
+    protected static ?string $label = 'Level';
     protected static ?string $recordTitleAttribute = 'title';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(1)->schema([
-                    Forms\Components\TextInput::make('title')
-                        ->required()
-                        ->maxLength(255),
-                    Forms\Components\RichEditor::make('description')
-                        ->toolbarButtons([
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strike',
-                            'blockquote',
-                            'bulletList',
-                            'link',
-                            'orderedList',
-                        ]),
-                    Forms\Components\TextInput::make('standard_point')
-                        ->label('Minimal Point')
-                        ->required()
-                        ->numeric()
-                        ->default(0)
-                        ->minValue(0),
-                    Forms\Components\Toggle::make('is_visible')
-                        ->default(true)
-                        ->inline(false)
-                        ->required(),
-                ])
+                Forms\Components\Grid::make(1)
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->required()
+                            ->maxLength(255),
+
+                        Forms\Components\RichEditor::make('description')
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'strike',
+                                'blockquote',
+                                'bulletList',
+                                'link',
+                                'orderedList',
+                            ]),
+                        Forms\Components\TextInput::make('standard_point')
+                            ->label('Minimal Point')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->minValue(0),
+                        Forms\Components\Toggle::make('is_visible')
+                            ->default(true)
+                            ->inline(false)
+                            ->required(),
+                    ])
             ]);
     }
 

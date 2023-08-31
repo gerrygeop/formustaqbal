@@ -8,6 +8,8 @@ use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Contracts\HasTable;
+use stdClass;
 
 class QuestionsRelationManager extends RelationManager
 {
@@ -29,6 +31,7 @@ class QuestionsRelationManager extends RelationManager
                             '3' => 'Listening',
                             '4' => 'Speaking',
                         ])
+                        ->default('1')
                         ->reactive(),
 
                     Forms\Components\FileUpload::make('file_path')
@@ -113,10 +116,10 @@ class QuestionsRelationManager extends RelationManager
                     ]),
                 Tables\Columns\TextColumn::make('question')
                     ->label('Pertanyaan')
-                    ->words(10)
+                    ->wrap()
+                    ->html()
                     ->searchable()
-                    ->placeholder('-')
-                    ->html(),
+                    ->placeholder('-'),
                 Tables\Columns\TextColumn::make('point')->sortable(),
             ])
             ->filters([
