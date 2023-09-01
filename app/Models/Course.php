@@ -33,9 +33,4 @@ class Course extends Model
     {
         return $this->belongsToMany(User::class, 'course_user');
     }
-
-    public function progress()
-    {
-        return $this->hasMany(Progress::class);
-    }
 }

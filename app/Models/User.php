@@ -75,11 +75,6 @@ class User extends Authenticatable implements FilamentUser
         return $this->belongsToMany(Module::class, 'course_user');
     }
 
-    public function progress(): HasMany
-    {
-        return $this->hasMany(Progress::class);
-    }
-
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
