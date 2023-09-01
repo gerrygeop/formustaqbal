@@ -26,15 +26,15 @@ class CourseController extends Controller
             ->with(['modules' => function ($query) {
                 $query->whereHas('users', function ($userQuery) {
                     $userQuery->where('user_id', Auth::id());
-                });
+                })->where('is_visible', 1);
             }])
             ->get();
 
-        $subjects = Subject::withCount(['courses'])->get();
+        $courses = Course::withCount(['modules'])->get();
 
         return view('courses.my', [
             'myCourses' => $myCourses,
-            'subjects' => $subjects,
+            'courses' => $courses,
         ]);
     }
 
@@ -48,6 +48,15 @@ class CourseController extends Controller
         return view('courses.courses', [
             'courses' => $courses,
             'subject' => $subject->name,
+        ]);
+    }
+
+    public function levels(Course $course)
+    {
+        $course = $course->load('modules.submodules');
+
+        return view('courses.levels', [
+            'course' => $course,
         ]);
     }
 

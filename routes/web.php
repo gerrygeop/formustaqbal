@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssessmentUserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubmoduleController;
 use App\Http\Controllers\TeacherController;
@@ -39,12 +40,16 @@ Route::middleware(['auth'])->group(function () {
 
     // courses
     Route::get('/courses/my', [CourseController::class, 'my'])->name('courses.my');
+    Route::get('/courses/{course}/levels', [CourseController::class, 'levels'])->name('courses.levels');
     Route::get('/courses/{subject}/list', [CourseController::class, 'courses'])->name('courses.list');
     Route::get('/courses/{course}/attach', [CourseController::class, 'attach'])->name('courses.attach');
     Route::get('/courses/{module}/get', [CourseController::class, 'mulai'])->name('courses.mulai');
     Route::get('/courses/{module}/learn/{submodule}', [CourseController::class, 'learn'])->name('courses.learn');
 
     Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+
+    // LEVEL / MODULE
+    Route::get('/levels/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
 
     // Leaderboard
     Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');

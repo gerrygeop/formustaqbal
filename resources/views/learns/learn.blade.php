@@ -4,13 +4,13 @@
 		<div
 			class="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-b-gray-700/60 py-3 md:py-4 px-4 md:px-8 z-[51]">
 			<div class="flex items-center justify-between">
-				<a href="{{ route('courses.show', $module->course) }}"
+				<a href="{{ route('courses.modules.show', $module) }}"
 					class="flex-1 flex items-center gap-x-2 text-gray-600 dark:text-gray-50">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 						class="w-6 h-6">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
 					</svg>
-					<p class="font-semibold text-base hidden md:block">{{ $module->course->name }}</p>
+					<p class="font-semibold text-base hidden md:block">{{ $module->course->name }} - {{ $module->title }}</p>
 				</a>
 
 				<h2 class="hidden md:flex flex-1 justify-center text-xl text-gray-800 dark:text-white font-semibold">
