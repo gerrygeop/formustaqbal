@@ -1,6 +1,6 @@
 <div class="mt-10">
 
-	<div class="grid grid-cols-1 lg:grid-cols-4">
+	<div class="grid grid-cols-1 lg:grid-cols-4 gap-4 px-4 sm:px-0">
 		<div class="col-span-1 lg:col-span-2 order-first flex rounded-md">
 			<span
 				class="inline-flex items-center px-2 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
