@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\Department;
+use App\Models\Faculty;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
@@ -31,10 +33,6 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Select::make('roles')
-                            ->multiple()
-                            ->relationship('roles', 'name')
-                            ->options(Role::all()->pluck('name', 'id')),
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
@@ -61,7 +59,65 @@ class UserResource extends Resource
                             ->minLength(8)
                             ->dehydrated(false),
                     ])
-            ]);
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make('Role')
+                            ->schema([
+                                Forms\Components\Select::make('roles')
+                                    ->multiple()
+                                    ->relationship('roles', 'name')
+                                    ->options(Role::all()->pluck('name', 'id'))
+                                    ->reactive(),
+                            ]),
+
+                        Forms\Components\Section::make('Fakultas/Prodi')
+                            ->relationship('siakad')
+                            ->schema([
+                                Forms\Components\Select::make('faculty_id')
+                                    ->relationship('faculty', 'name')
+                                    ->options(Faculty::all()->pluck('name', 'id'))
+                                    ->required()
+                                    ->reactive(),
+
+                                Forms\Components\Select::make('department_id')
+                                    ->relationship('department', 'name')
+                                    ->options(function (callable $get) {
+                                        $faculties = Faculty::find($get('faculty_id'));
+
+                                        return is_null($faculties) ?
+                                            Department::all()->pluck('name', 'id') :
+                                            $faculties->departments->pluck('name', 'id');
+                                    })
+                                    ->required(),
+                            ])
+                            ->visible(function (callable $get) {
+                                return (in_array(4, $get('roles'))) ? true : false;
+                            })
+                    ])
+                    ->columnSpan(1),
+
+                Forms\Components\Section::make('Info Tambahan')
+                    ->relationship('profile')
+                    ->schema([
+                        Forms\Components\TextInput::make('phone')
+                            ->label('No Telp')
+                            ->tel()
+                            ->telRegex('/^(?:\+62|0)[1-9][0-9]{8,}$/'),
+
+                        Forms\Components\Radio::make('gender')
+                            ->label('Jenis Kelamin')
+                            ->options([
+                                'L' => 'Laki-laki',
+                                'P' => 'Perempuan',
+                            ]),
+
+                        Forms\Components\Textarea::make('bio'),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

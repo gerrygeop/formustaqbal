@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\AnswerUpdated;
-use App\Listeners\CountAnswerUpdatedPoint;
+use App\Events\UserCreated;
+use App\Listeners\CreateNewProfile;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,9 +17,6 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        AnswerUpdated::class => [
-            CountAnswerUpdatedPoint::class,
-        ],
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
