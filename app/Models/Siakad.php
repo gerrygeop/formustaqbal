@@ -21,12 +21,12 @@ class Siakad extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function faculties(): BelongsTo
+    public function faculty(): BelongsTo
     {
         return $this->belongsTo(Faculty::class);
     }
 
-    public function departments(): BelongsTo
+    public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
