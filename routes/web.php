@@ -66,6 +66,10 @@ Route::middleware(['auth'])->group(function () {
     // Assessment user reset
     Route::middleware('can:superadmin')->group(function () {
         Route::get('/reset/{user}', [AssessmentUserController::class, 'reset'])->name('reset.assessment');
+
+        // Get all users who have siakad
+        Route::get('/dapur/espresso/{assessment}', [AssessmentUserController::class, 'espresso'])->name('dapur.espresso');
+        Route::get('/dapur/latte/{assessment}', [AssessmentUserController::class, 'latte'])->name('dapur.latte');
     });
 });
 
