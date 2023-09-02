@@ -61,6 +61,8 @@ class UsersRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('score')->searchable()->sortable(),
+                Tables\Columns\IconColumn::make('is_completed')->boolean(),
             ])
             ->filters([
                 //
