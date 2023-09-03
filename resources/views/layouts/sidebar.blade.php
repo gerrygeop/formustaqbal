@@ -1,5 +1,5 @@
 <aside
-	class="fixed hidden md:flex md:flex-col w-80 h-screen py-4 overflow-y-auto bg-white dark:bg-gray-800 border-r dark:border-gray-700/60">
+	class="fixed hidden lg:flex lg:flex-col w-80 h-screen py-4 overflow-y-auto bg-white dark:bg-gray-800 border-r dark:border-gray-700/60">
 	<a href="/" class="flex items-center space-x-2 px-4">
 		<x-app-logo class="w-auto h-16" />
 		<h4 class="text-2xl text-slate-800 dark:text-accent font-bold">Formustaqbal</h4>

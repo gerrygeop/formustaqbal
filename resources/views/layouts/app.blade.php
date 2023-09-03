@@ -30,7 +30,7 @@
 		<div class="flex">
 			@include('layouts.sidebar')
 
-			<div class="md:ml-80 w-full">
+			<div class="lg:ml-80 w-full">
 				@include('layouts.navigation')
 
 				<main class="p-4 sm:p-6 lg:p-12">

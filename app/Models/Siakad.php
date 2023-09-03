@@ -31,7 +31,7 @@ class Siakad extends Model
         return $this->belongsTo(Department::class);
     }
 
-    public function locals(): BelongsTo
+    public function local(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
