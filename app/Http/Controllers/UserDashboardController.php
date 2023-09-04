@@ -17,7 +17,11 @@ class UserDashboardController extends Controller
 
         $modules->map(function ($module) {
             $completedSubmodules = json_decode($module->pivot->completed_submodules);
-            $totalCompletedSubmodules = count($completedSubmodules);
+            if (!is_null($completedSubmodules)) {
+                $totalCompletedSubmodules = count($completedSubmodules);
+            } else {
+                $totalCompletedSubmodules = 0;
+            }
 
             $totalSubmodules = $module->submodules_count;
             $completionPercentage = ($totalCompletedSubmodules / $totalSubmodules) * 100;
