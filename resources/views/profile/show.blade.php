@@ -3,7 +3,7 @@
 		<div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg">
 			<div>
 				<div class="p-4 sm:p-6">
-					<div class="flex items-start justify-between">
+					<div class="flex flex-col md:flex-row items-start justify-between gap-y-6 md:gap-y-0">
 						<div class="flex items-start space-x-4">
 							<img src="https://i.postimg.cc/WzjSQ1Gz/dummy-profile-pic.png" alt="" class="h-14 w-14 rounded">
 							<div>
@@ -13,7 +13,7 @@
 						</div>
 
 						<a href="{{ route('profile.edit') }}"
-							class="px-5 py-1.5 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">Edit</a>
+							class="w-full md:w-auto text-center px-5 py-1.5 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">Edit</a>
 					</div>
 				</div>
 				<div class="px-4 sm:px-6 border-t border-gray-100">
