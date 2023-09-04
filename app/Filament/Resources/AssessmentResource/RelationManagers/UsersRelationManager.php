@@ -72,7 +72,7 @@ class UsersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
                 Tables\Actions\Action::make('Reset')
                     ->action(fn (User $record) => redirect()->route('reset.assessment', $record))
                     ->color('danger')
