@@ -19,7 +19,6 @@ class ModuleController extends Controller
             ->where('user_id', $user->id)
             ->first();
 
-        // $lastVisitSubmodule = $courseUser->last_visit;
         $completedSubmodules = json_decode($courseUser->completed_submodules);
 
         return view('modules.show', [
