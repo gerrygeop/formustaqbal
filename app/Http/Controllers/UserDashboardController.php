@@ -2,44 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
-use App\Models\Test;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserDashboardController extends Controller
 {
     public function dashboard()
     {
-        $myCourses = Auth::user()
-            ->courses()
+        $modules = Auth::user()
+            ->modules()
             ->where('is_visible', true)
-            ->where(function ($query) {
-                $query->whereNull('published_at')
-                    ->orWhere('published_at', '<=', date('Y-m-d'));
-            })
-            ->with(['modules' => function ($query) {
-                $query->whereHas('users', function ($userQuery) {
-                    $userQuery->where('user_id', Auth::id());
-                });
-            }])
+            ->with('course')
+            ->withCount('submodules')
             ->get();
 
-        // Query untuk mengambil data assessment yang memiliki tipe 2 dan relasi dengan Subject
-        // $assessments = Answer::select('assessments.*')
-        //     ->join('questions', 'answers.question_id', '=', 'questions.id')
-        //     ->join('assessments', 'questions.assessment_id', '=', 'assessments.id')
-        //     ->join('users', 'answers.user_id', '=', 'users.id')
-        //     ->where('users.id', Auth::id())
-        //     ->where('assessments.type', 2)
-        //     ->whereNotNull('assessments.assessmentable_id')
-        //     ->distinct()
-        //     ->get();
+        $modules->map(function ($module) {
+            $completedSubmodules = json_decode($module->pivot->completed_submodules);
+            $totalCompletedSubmodules = count($completedSubmodules);
 
-        // dd($assessments);
+            $totalSubmodules = $module->submodules_count;
+            $completionPercentage = ($totalCompletedSubmodules / $totalSubmodules) * 100;
+            $module->completion_percentage = $completionPercentage;
+
+            return $module;
+        });
+
         return view('dashboard', [
-            'myCourses' => $myCourses,
+            'modules' => $modules,
             'profile' => Auth::user()->profile,
         ]);
     }
