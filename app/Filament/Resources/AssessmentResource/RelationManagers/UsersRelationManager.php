@@ -74,7 +74,9 @@ class UsersRelationManager extends RelationManager
                 Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
                 Tables\Actions\Action::make('Reset')
-                    ->action(fn (User $record) => redirect()->route('reset.assessment', $record))
+                    ->action(function (RelationManager $livewire, User $record) {
+                        return redirect()->route('reset.assessment', [$livewire->ownerRecord->id, $record]);
+                    })
                     ->color('danger')
                     ->icon('heroicon-s-x')
                     ->requiresConfirmation(),

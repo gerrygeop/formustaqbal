@@ -2,15 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assessment;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AssessmentUserController extends Controller
 {
-    public function reset(User $user)
+    public function reset(Assessment $assessment, User $user)
     {
-        DB::transaction(function () use ($user) {
+        DB::transaction(function () use ($assessment, $user) {
+            $score = DB::table('assessment_user')
+                ->where('user_id', $user->id)
+                ->where('assessment_id', $assessment->id)
+                ->value('score');
+
+            $profile = User::find($user->id)->profile;
+
+            $profile->update([
+                'point' => $profile->point - $score
+            ]);
+
             DB::table('assessment_user')->where('user_id', $user->id)->delete();
             DB::table('answers')->where('user_id', $user->id)->delete();
         });
