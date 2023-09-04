@@ -86,7 +86,7 @@
 		<div class="px-4 pt-2 pb-4">
 			<a href="{{ route('profile.show') }}">
 				<div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-				<div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+				<div class="font-medium text-sm text-gray-500">{{ Auth::user()->username ?? Auth::user()->email }}</div>
 			</a>
 
 			@if (auth()->user()->profile)
