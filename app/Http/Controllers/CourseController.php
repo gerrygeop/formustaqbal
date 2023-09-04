@@ -8,11 +8,13 @@ use App\Models\Subject;
 use App\Models\Submodule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a list of courses owned by the current user.
+     * This includes courses visible to the user and their associated modules.
      */
     public function my()
     {
@@ -51,6 +53,9 @@ class CourseController extends Controller
         ]);
     }
 
+    /**
+     * Display a list of levels.
+     */
     public function levels(Course $course)
     {
         $course = $course->load('modules.submodules');
@@ -61,11 +66,28 @@ class CourseController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the first submodule within a module to start learning.
      */
-    public function mulai(Module $module)
+    public function start(Module $module)
     {
-        $submodule = $module->submodules->first();
+        if (!$module->users()->where('user_id', auth()->id())->exists()) {
+            abort(404);
+        }
+
+        $module->load([
+            'submodules',
+            'users' => function ($query) {
+                $query->where('user_id', auth()->id());
+            },
+        ]);
+
+        $lastVisit = $module->users->first()->pivot->last_visit;
+
+        if (is_null($lastVisit)) {
+            $submodule = $module->submodules->where('list_sort', 1)->first();
+        } else {
+            $submodule = $module->submodules->where('id', $lastVisit)->first();
+        }
 
         if (is_null($submodule)) {
             return back();
@@ -78,11 +100,22 @@ class CourseController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display the learning view for a specific submodule within a module.
      */
     public function learn(Module $module, Submodule $submodule)
     {
-        $submodules = $module->submodules;
+        if (!$module->users()->where('user_id', auth()->id())->exists() || !$module->submodules()->where('id', $submodule->id)->exists()) {
+            abort(404);
+        }
+
+        $module->load([
+            'submodules',
+            'users' => function ($query) {
+                $query->where('user_id', auth()->id());
+            },
+        ]);
+
+        $submodules = $module->submodules->sortBy('list_sort');
 
         $currentIndex = $submodules->search(function ($item) use ($submodule) {
             return $item->id === $submodule->id;
@@ -98,13 +131,34 @@ class CourseController extends Controller
             if ($currentIndex < $submodules->count() - 1) {
                 $nextSubmodule = $submodules->get($currentIndex + 1);
             }
+
+            $completedSubmodules = DB::transaction(function () use ($module, $submodule) {
+                $module->users()->syncWithoutDetaching([auth()->id() => ['last_visit' => $submodule->id]]);
+
+                $completedSubmodules = json_decode($module->users->first()->pivot->completed_submodules);
+                if (is_null($completedSubmodules)) {
+                    $completedSubmodules[] = $module->submodules->sortBy('list_sort')->first()->id;
+                    $module->users()->updateExistingPivot(auth()->id(), ['completed_submodules' => json_encode($completedSubmodules)]);
+                } else {
+                    if (!in_array($submodule->id, $completedSubmodules)) {
+                        $completedSubmodules[] = $submodule->id;
+                        $module->users()->updateExistingPivot(auth()->id(), ['completed_submodules' => json_encode($completedSubmodules)]);
+                    }
+                }
+
+                return $completedSubmodules;
+            });
+        } else {
+            abort(404);
         }
+
         return view('learns.learn', [
             'module' => $module,
             'currentIndex' => $currentIndex,
             'currentSubmodule' => $submodule,
             'prevSubmodule' => $prevSubmodule,
             'nextSubmodule' => $nextSubmodule,
+            'completedSubmodules' => $completedSubmodules,
         ]);
     }
 
@@ -113,9 +167,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('courses.show', [
-            'course' => $course->load(['modules', 'users'])
-        ]);
+        //
     }
 
     /**

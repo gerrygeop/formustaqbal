@@ -36,18 +36,25 @@
 
 				{{-- Content --}}
 				<div class="py-6 mb-20 grid grid-cols-1 gap-y-10">
-					@if ($currentSubmodule->material->embed_links)
-						@foreach ($currentSubmodule->material->embed_links as $link)
-							@if ($link)
-								<iframe class="w-full h-[300px] md:h-[600px]" src="{{ $link['link'] }}" frameborder="0" allowfullscreen="true"
-									mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-							@endif
-						@endforeach
+					@if ($currentSubmodule->material)
+						@if ($currentSubmodule->material->embed_links)
+							@foreach ($currentSubmodule->material->embed_links as $link)
+								@if ($link)
+									<iframe class="w-full h-[300px] md:h-[600px]" src="{{ $link['link'] }}" frameborder="0" allowfullscreen="true"
+										mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+								@endif
+							@endforeach
+						@endif
+						<article class="prose dark:prose-invert lg:prose-xl">
+							{!! $currentSubmodule->material->content !!}
+						</article>
+					@else
+						<div class="py-6 bg-slate-200">
+							<p class="text-center md:text-lg text-gray-600 italic">
+								Tidak ada materi
+							</p>
+						</div>
 					@endif
-
-					<article class="prose dark:prose-invert lg:prose-xl">
-						{!! $currentSubmodule->material->content !!}
-					</article>
 				</div>
 
 				{{-- Navigations --}}
@@ -101,12 +108,12 @@
 				</div>
 			</div>
 
-			{{-- List modules --}}
+			{{-- List Submodules --}}
 			<aside x-cloak :class="listMenu ? 'translate-x-0' : 'translate-x-96'"
 				class="fixed right-0 p-6 overflow-y-auto border-l shadow w-96 h-full bg-white dark:bg-slate-700 dark:border-l-gray-700/60 transition duration-300">
 
 				<h3 class="font-semibold text-xl text-gray-800 dark:text-white">
-					Daftar Submodul
+					Daftar Materi
 				</h3>
 
 				<div class="border-t my-6"></div>
@@ -116,11 +123,25 @@
 						{{ $module->title }}
 					</p>
 
-					<div class="pl-6 flex flex-col space-y-4">
+					<div class="pl-2 flex flex-col space-y-4">
 						@foreach ($module->submodules->sortBy('list_sort') as $submodule)
-							<x-nav-module href="{{ route('courses.learn', [$module, $submodule]) }}" :active="$currentSubmodule->id === $submodule->id">
-								{{ $submodule->title }}
-							</x-nav-module>
+							<div class="flex items-center">
+
+								@if (in_array($submodule->id, $completedSubmodules))
+									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+										stroke="currentColor" class="w-4 h-4 text-green-600 mr-2">
+										<path stroke-linecap="round" stroke-linejoin="round"
+											d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+									</svg>
+									<x-nav-module href="{{ route('courses.learn', [$module, $submodule]) }}" :active="$currentSubmodule->id === $submodule->id">
+										{{ $submodule->title }}
+									</x-nav-module>
+								@else
+									<div class="w-3 h-3 rounded-full border bg-gray-100 mr-2"></div>
+									<p class="text-gray-400 dark:text-gray-500 select-none">{{ $submodule->title }}</p>
+								@endif
+
+							</div>
 						@endforeach
 					</div>
 				</div>

@@ -5,31 +5,17 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SubmoduleController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserDashboardController;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::middleware(['auth'])->group(function () {
-    // placement test
+    // PLACEMENT TEST
     Route::get('/start', [TestController::class, 'start'])->name('start');
     Route::get('/language', [TestController::class, 'language'])->name('language');
     Route::get('/reminder/{subject:id}', [TestController::class, 'reminder'])->name('reminder');
@@ -38,20 +24,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
-    // courses
+    // COURSES
     Route::get('/courses/my', [CourseController::class, 'my'])->name('courses.my');
+    Route::get('{subject}/courses', [CourseController::class, 'courses'])->name('courses.list');
     Route::get('/courses/{course}/levels', [CourseController::class, 'levels'])->name('courses.levels');
-    Route::get('/courses/{subject}/list', [CourseController::class, 'courses'])->name('courses.list');
-    Route::get('/courses/{course}/attach', [CourseController::class, 'attach'])->name('courses.attach');
-    Route::get('/courses/{module}/get', [CourseController::class, 'mulai'])->name('courses.mulai');
+    Route::get('/courses/{module}/learn', [CourseController::class, 'start'])->name('courses.start');
     Route::get('/courses/{module}/learn/{submodule}', [CourseController::class, 'learn'])->name('courses.learn');
-
-    Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
     // LEVEL / MODULE
     Route::get('/levels/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
 
-    // Leaderboard
+    // LEADERBOARD
     Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');
 
     // Teacher
@@ -63,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
     });
 
-    // Assessment user reset
+    // Assessment user
     Route::middleware('can:superadmin')->group(function () {
         Route::get('/reset/{user}', [AssessmentUserController::class, 'reset'])->name('reset.assessment');
 

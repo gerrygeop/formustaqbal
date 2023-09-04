@@ -53,9 +53,9 @@
 
 			<div class="col-span-1">
 				<div class="flex flex-col items-center justify-center gap-y-4 bg-white dark:bg-gray-800 p-6 shadow-sm rounded-md">
-					<a href="{{ route('courses.mulai', $module) }}"
+					<a href="{{ route('courses.start', $module) }}"
 						class="bg-slate-800 hover:bg-slate-900 px-6 py-2 text-white rounded w-full text-center">
-						Belajar sekarang
+						{{ is_null($completedSubmodules) ? 'Mulai Belajar' : 'Lanjut Belajar' }}
 					</a>
 
 					<a href="#"
