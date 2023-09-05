@@ -2,49 +2,47 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SubmoduleResource\Pages;
-use App\Filament\Resources\SubmoduleResource\RelationManagers;
-use App\Models\Module;
-use App\Models\Submodule;
+use App\Filament\Resources\ChapterResource\Pages;
+use App\Filament\Resources\ChapterResource\RelationManagers;
+use App\Models\Chapter;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-class SubmoduleResource extends Resource
+class ChapterResource extends Resource
 {
-    protected static ?string $model = Submodule::class;
+    protected static ?string $model = Chapter::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'System Management';
-    protected static ?string $navigationLabel = 'Module';
-    protected static ?string $label = 'Module';
-    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Submodule';
+    protected static ?string $label = 'Submodule';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Card::make()->schema([
-                    Forms\Components\Select::make('module_id')
-                        ->relationship('module', 'title')
-                        ->options(Module::all()->pluck('title', 'id'))
-                        ->label('Level')
-                        ->required()
-                        ->searchable(),
+                    Forms\Components\Select::make('submodule_id')
+                        ->label('Module')
+                        ->relationship('submodule', 'title')
+                        ->required(),
                     Forms\Components\TextInput::make('title')
                         ->label('Judul')
                         ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('list_sort')
-                        ->label('No Urut')
+                        ->label('No Urutan')
                         ->required()
+                        ->numeric()
+                        ->minValue(1)
                         ->maxLength(100),
                     Forms\Components\Toggle::make('is_visible')
                         ->label('Aktif')
                         ->default(true)
-                        ->inline(false)
                         ->required(),
                 ])
             ]);
@@ -54,14 +52,17 @@ class SubmoduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('module.title')
-                    ->label('Level')
+                Tables\Columns\TextColumn::make('submodule.title')
+                    ->label('Module')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Judul Module')
+                    ->label('Judul')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->sortable()
@@ -72,7 +73,9 @@ class SubmoduleResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('Level')->relationship('module', 'title')->searchable()
+                Tables\Filters\SelectFilter::make('Module')
+                    ->relationship('submodule', 'title')
+                    ->searchable()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -85,17 +88,17 @@ class SubmoduleResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ChaptersRelationManager::class,
-            RelationManagers\AssessmentsRelationManager::class,
+            RelationManagers\MaterialRelationManager::class,
+            RelationManagers\AssessmentRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSubmodules::route('/'),
-            'create' => Pages\CreateSubmodule::route('/create'),
-            'edit' => Pages\EditSubmodule::route('/{record}/edit'),
+            'index' => Pages\ListChapters::route('/'),
+            'create' => Pages\CreateChapter::route('/create'),
+            'edit' => Pages\EditChapter::route('/{record}/edit'),
         ];
     }
 }

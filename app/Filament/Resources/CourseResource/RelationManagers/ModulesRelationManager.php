@@ -22,10 +22,12 @@ class ModulesRelationManager extends RelationManager
                 Forms\Components\Grid::make(1)
                     ->schema([
                         Forms\Components\TextInput::make('title')
+                            ->label('Nama Level')
                             ->required()
                             ->maxLength(255),
 
                         Forms\Components\RichEditor::make('description')
+                            ->label('Deskripsi')
                             ->toolbarButtons([
                                 'bold',
                                 'italic',
@@ -37,12 +39,13 @@ class ModulesRelationManager extends RelationManager
                                 'orderedList',
                             ]),
                         Forms\Components\TextInput::make('standard_point')
-                            ->label('Minimal Point')
+                            ->label('Minimal Poin')
                             ->required()
                             ->numeric()
                             ->default(0)
                             ->minValue(0),
                         Forms\Components\Toggle::make('is_visible')
+                            ->label('Aktif')
                             ->default(true)
                             ->inline(false)
                             ->required(),
@@ -54,8 +57,13 @@ class ModulesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
-                Tables\Columns\IconColumn::make('is_visible')->boolean(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Nama Level')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Terakhir diperbarui')
                     ->dateTime()

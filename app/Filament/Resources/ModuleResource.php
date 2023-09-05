@@ -18,7 +18,7 @@ class ModuleResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'System Management';
     protected static ?string $label = 'Level';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -28,11 +28,14 @@ class ModuleResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('course_id')
                             ->relationship('course', 'name')
+                            ->label('Bahasa')
                             ->required(),
                         Forms\Components\TextInput::make('title')
+                            ->label('Nama Level')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\RichEditor::make('description')
+                            ->label('Deskripsi')
                             ->toolbarButtons([
                                 'bold',
                                 'italic',
@@ -49,12 +52,12 @@ class ModuleResource extends Resource
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Toggle::make('is_visible')
+                            ->label('Aktif')
                             ->default(true)
-                            ->inline(false)
                             ->required(),
 
                         Forms\Components\TextInput::make('standard_point')
-                            ->label('Minimal Point')
+                            ->label('Minimal Poin')
                             ->required()
                             ->numeric()
                             ->default(0)
@@ -69,16 +72,25 @@ class ModuleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course.name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('title')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('course.name')
+                    ->label('Bahasa')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Nama Level')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->label('Terakhir diperbarui')
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('Course')
-                    ->relationship('course', 'name')
+                Tables\Filters\SelectFilter::make('Bahasa')
+                    ->relationship('course', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

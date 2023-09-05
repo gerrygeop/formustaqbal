@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\SubmoduleResource\RelationManagers;
+namespace App\Filament\Resources\ChapterResource\RelationManagers;
 
 use App\Models\Assessment;
 use App\Models\User;
@@ -10,7 +10,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-class AssessmentsRelationManager extends RelationManager
+class AssessmentRelationManager extends RelationManager
 {
     protected static string $relationship = 'assessment';
     protected static ?string $label = 'Quiz';
@@ -75,8 +75,13 @@ class AssessmentsRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Judul'),
+                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->sortable()
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->sortable()
+                    ->dateTime(),
             ])
             ->filters([
                 //

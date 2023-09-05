@@ -18,7 +18,6 @@ class MaterialResource extends Resource
     protected static ?string $navigationGroup = 'System Management';
     protected static ?string $navigationLabel = 'Materi';
     protected static ?int $navigationSort = 5;
-    // protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -26,16 +25,19 @@ class MaterialResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Select::make('submodule_id')
-                            ->relationship('submodule', 'title')
+                        Forms\Components\Select::make('chapter_id')
+                            ->relationship('chapter', 'title')
+                            ->label('Submodule')
                             ->required(),
                         Forms\Components\Repeater::make('embed_links')
                             ->schema([
                                 Forms\Components\Textarea::make('link'),
                             ])
-                            ->label('Sematkan')
-                            ->defaultItems(0),
+                            ->label('Link (Google Slide/Youtube)')
+                            ->defaultItems(0)
+                            ->createItemButtonLabel('Tambahkan Link'),
                         Forms\Components\RichEditor::make('content')
+                            ->label('Teks')
                             ->fileAttachmentsDirectory('attachments'),
                     ])
             ]);
@@ -45,18 +47,23 @@ class MaterialResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('submodule.title')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('chapter.title')
+                    ->label('Judul Submodule')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Dibuat')
                     ->sortable()
-                    ->label('Dibuat'),
+                    ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Terakhir Diperbarui')
                     ->sortable()
-                    ->label('Terkahir diperbarui'),
+                    ->dateTime(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('Submodule')->relationship('submodule', 'title')
+                Tables\Filters\SelectFilter::make('Chapter')
+                    ->label('Submodule')
+                    ->relationship('chapter', 'title')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

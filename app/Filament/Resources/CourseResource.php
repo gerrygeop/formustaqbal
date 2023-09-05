@@ -18,7 +18,8 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'System Management';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $label = 'Bahasa';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -29,6 +30,7 @@ class CourseResource extends Resource
                         Forms\Components\Card::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->label('Nama')
                                     ->required()
                                     ->lazy()
                                     ->afterStateUpdated(fn (string $context, $state, callable $set) => $context === 'create' ? $set('slug', Str::slug($state)) : $set('slug', Str::slug($state))),
@@ -39,6 +41,7 @@ class CourseResource extends Resource
                                     ->unique(Course::class, 'slug', ignoreRecord: true),
 
                                 Forms\Components\RichEditor::make('description')
+                                    ->label('Deskripsi')
                                     ->disableToolbarButtons([
                                         'h2',
                                         'h3',
@@ -52,6 +55,7 @@ class CourseResource extends Resource
                         Forms\Components\Section::make('Cover')
                             ->schema([
                                 Forms\Components\FileUpload::make('cover_path')
+                                    ->disableLabel()
                                     ->directory('course-cover')
                                     ->image()
                                     ->imageResizeMode('cover')
@@ -68,23 +72,10 @@ class CourseResource extends Resource
                         Forms\Components\Section::make('Status')
                             ->schema([
                                 Forms\Components\Toggle::make('is_visible')
+                                    ->label('Aktif')
                                     ->required()
                                     ->inline(false)
                                     ->default(true),
-
-                                Forms\Components\Select::make('subject_id')
-                                    ->relationship('subject', 'name')
-                                    ->label('Bahasa')
-                                    ->required(),
-
-                                Forms\Components\Select::make('level')
-                                    ->required()
-                                    ->options([
-                                        'dasar' => 'Dasar',
-                                        'pemula' => 'Pemula',
-                                        'menengah' => 'Menengah',
-                                        'mahir' => 'Mahir',
-                                    ]),
                             ])
                             ->collapsible(),
                     ])
@@ -96,21 +87,20 @@ class CourseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('level')->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Terakhir diperbarui')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('Level')
-                    ->options([
-                        'dasar' => 'Dasar',
-                        'pemula' => 'Pemula',
-                        'menengah' => 'Menengah',
-                        'mahir' => 'Mahir',
-                    ])
+                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

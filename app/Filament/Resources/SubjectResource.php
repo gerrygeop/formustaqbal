@@ -17,8 +17,10 @@ class SubjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $navigationGroup = 'System Management';
-    protected static ?string $navigationLabel = 'Bahasa';
+    protected static ?string $navigationLabel = 'Kategori';
+    protected static ?string $label = 'Kategori';
     protected static ?int $navigationSort = 0;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
