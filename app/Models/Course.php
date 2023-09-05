@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Course extends Model
 {
@@ -32,5 +33,10 @@ class Course extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'course_user');
+    }
+
+    public function assessment(): MorphOne
+    {
+        return $this->morphOne(Assessment::class, 'assessmentable');
     }
 }

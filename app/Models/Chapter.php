@@ -5,25 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class Submodule extends Model
+class Chapter extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 'submodules';
+    protected $table = 'chapters';
 
-    public function module(): BelongsTo
+    public function submodule(): BelongsTo
     {
-        return $this->belongsTo(Module::class);
+        return $this->belongsTo(Submodule::class);
     }
 
-    public function chapters(): HasMany
+    public function material(): HasOne
     {
-        return $this->hasMany(Chapter::class);
+        return $this->hasOne(Material::class);
     }
 
     public function assessment(): MorphOne
