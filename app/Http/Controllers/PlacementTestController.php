@@ -3,38 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assessment;
-use App\Models\Subject;
+use App\Models\Course;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TestController extends Controller
+class PlacementTestController extends Controller
 {
     // Choose language
     public function start()
     {
-        return view('greeting');
+        return view('placement-test.greeting');
     }
 
     // Choose language
     public function language()
     {
-        $subjects = Subject::whereHas('assessment')->get();
+        $courses = Course::whereHas('assessment')->get();
 
-        return view('choose-language', [
-            'subjects' => $subjects
+        return view('placement-test.choose-language', [
+            'courses' => $courses
         ]);
     }
 
-    public function reminder(Subject $subject)
+    public function reminder(Course $course)
     {
-        return view('reminder', [
-            'subject' => $subject
+        return view('placement-test.reminder', [
+            'course' => $course
         ]);
     }
 
     // Placement test
-    public function test(Subject $subject)
+    public function test(Course $course)
     {
         $user = request()->user();
 
@@ -43,8 +42,8 @@ class TestController extends Controller
             ->where([
                 ['published_at', '<=', Carbon::now()],
             ])
-            ->whereHasMorph('assessmentable', Subject::class, function ($query) use ($subject) {
-                $query->where('id', $subject->id);
+            ->whereHasMorph('assessmentable', Course::class, function ($query) use ($course) {
+                $query->where('id', $course->id);
             })
             ->get()
             ->first();
@@ -64,9 +63,9 @@ class TestController extends Controller
         $createdTime = new Carbon($created);
 
         if ($assessmentUser->wherePivot('is_completed', true)->exists() || $createdTime->addMinutes($assessment->duration_minutes) < now()) {
-            return view('info');
+            return view('placement-test.info');
         } else {
-            return view('placement-test', [
+            return view('placement-test.placement-test', [
                 'assessment' => $assessment,
             ]);
         }
@@ -75,6 +74,6 @@ class TestController extends Controller
     // Finish
     public function finish()
     {
-        return view('finish');
+        return view('placement-test.finish');
     }
 }

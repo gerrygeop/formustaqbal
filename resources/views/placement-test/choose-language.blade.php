@@ -11,12 +11,12 @@
 						</h2>
 
 						<div class="flex flex-col md:flex-row items-center justify-center md:justify-evenly w-full mt-10">
-							@foreach ($subjects as $subject)
-								<a href="{{ route('reminder', $subject) }}"
+							@foreach ($courses as $course)
+								<a href="{{ route('reminder', $course) }}"
 									class="flex flex-col items-center gap-y-4 bg-white border hover:border-yellow-200 rounded-lg p-6 shadow">
-									<img src="{{ asset('storage/' . $subject->cover_path) }}" alt="{{ $subject->name }}" class="w-30 h-auto">
+									<img src="{{ asset('storage/' . $course->cover_path) }}" alt="{{ $course->name }}" class="w-30 h-auto">
 									<h4 class="text-xl text-gray-800 dark:text-gray-50 font-semibold">
-										{{ $subject->name }}
+										{{ $course->name }}
 									</h4>
 								</a>
 							@endforeach

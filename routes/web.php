@@ -4,9 +4,9 @@ use App\Http\Controllers\AssessmentUserController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\PlacementTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +16,11 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
     // PLACEMENT TEST
-    Route::get('/start', [TestController::class, 'start'])->name('start');
-    Route::get('/language', [TestController::class, 'language'])->name('language');
-    Route::get('/reminder/{subject:id}', [TestController::class, 'reminder'])->name('reminder');
-    Route::get('/placement-test/{subject:id}', [TestController::class, 'test'])->name('placement.test');
-    Route::get('/finish', [TestController::class, 'finish'])->name('finish');
+    Route::get('/start', [PlacementTestController::class, 'start'])->name('start');
+    Route::get('/language', [PlacementTestController::class, 'language'])->name('language');
+    Route::get('/reminder/{course}', [PlacementTestController::class, 'reminder'])->name('reminder');
+    Route::get('/placement-test/{course}', [PlacementTestController::class, 'test'])->name('placement.test');
+    Route::get('/finish', [PlacementTestController::class, 'finish'])->name('finish');
 
     Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 

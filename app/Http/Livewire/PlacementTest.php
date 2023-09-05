@@ -7,7 +7,7 @@ use App\Models\Course;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class PlacemenTest extends Component
+class PlacementTest extends Component
 {
     public $assessment;
     public $totalQuestions;
@@ -233,7 +233,8 @@ class PlacemenTest extends Component
     protected function updateUserCourseModule()
     {
         $user = auth()->user();
-        $course = Course::where('subject_id', $this->assessment->assessmentable_id)->first();
+        // $course = Course::where('subject_id', $this->assessment->assessmentable_id)->first();
+        $course = Course::find($this->assessment->assessmentable_id);
         $point = session('score') ? array_sum(session('score')) : 0;
 
         if ($course) {
@@ -243,7 +244,6 @@ class PlacemenTest extends Component
                 ->first();
 
             if ($module) {
-
                 if ($user->courses()->where('course_id', $course->id)->count() == 0) {
                     $user->courses()->attach($course->id, [
                         'module_id' => $module->id

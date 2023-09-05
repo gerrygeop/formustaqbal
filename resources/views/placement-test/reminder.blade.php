@@ -14,7 +14,7 @@
 						</p>
 
 						<div class="flex items-center justify-center w-full mt-14 px-6 md:px-0">
-							<a href="{{ route('placement.test', $subject) }}"
+							<a href="{{ route('placement.test', $course) }}"
 								class="text-xl font-semibold text-center text-white bg-yellow-500 rounded-lg border border-amber-500 w-96 py-3">Mulai</a>
 						</div>
 					</div>
