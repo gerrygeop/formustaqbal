@@ -44,6 +44,10 @@ class SubmodulesRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                TextColumn::make('list_sort')
+                    ->label('No Urut')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('title')
                     ->label('Judul')
                     ->sortable()

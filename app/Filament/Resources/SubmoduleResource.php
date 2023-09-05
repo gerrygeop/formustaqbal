@@ -86,7 +86,7 @@ class SubmoduleResource extends Resource
     {
         return [
             RelationManagers\ChaptersRelationManager::class,
-            RelationManagers\AssessmentsRelationManager::class,
+            // RelationManagers\AssessmentsRelationManager::class,
         ];
     }
 

@@ -44,15 +44,23 @@ class ChaptersRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('list_sort')
+                    ->label('No Urut')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Judul')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->sortable()
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Terakhir diperbarui')
                     ->sortable()
                     ->dateTime(),
             ])

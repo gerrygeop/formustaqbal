@@ -54,6 +54,7 @@ class ModuleResource extends Resource
                         Forms\Components\Toggle::make('is_visible')
                             ->label('Aktif')
                             ->default(true)
+                            ->inline(false)
                             ->required(),
 
                         Forms\Components\TextInput::make('standard_point')
@@ -72,17 +73,22 @@ class ModuleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('course.name')
-                    ->label('Bahasa')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Nama Level')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Deskripsi')
+                    ->sortable()
+                    ->searchable()
+                    ->html(),
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Aktif')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('course.name')
+                    ->label('Bahasa')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->label('Terakhir diperbarui')
