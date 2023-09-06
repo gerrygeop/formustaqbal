@@ -22,17 +22,18 @@ class AssessmentRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Select::make('creator_id')
-                            ->relationship('creator', 'name')
-                            ->options(User::whereHas('roles', fn ($query) => $query->where('name', 'teacher'))->pluck('name', 'id'))
-                            ->default(auth()->user()->id)
-                            ->label('Created by')
-                            ->required(),
+                        // Forms\Components\Select::make('creator_id')
+                        //     ->relationship('creator', 'name')
+                        //     ->options(User::whereHas('roles', fn ($query) => $query->where('name', 'teacher'))->pluck('name', 'id'))
+                        //     ->default(auth()->user()->id)
+                        //     ->label('Created by')
+                        //     ->required(),
 
                         Forms\Components\Select::make('type')
                             ->label('Type Assessment')
                             ->options([
                                 '1' => 'Quiz',
+                                '3' => 'Exam',
                             ])
                             ->default(1)
                             ->required(),

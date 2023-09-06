@@ -64,6 +64,7 @@ class ChaptersRelationManager extends RelationManager
                     ->sortable()
                     ->dateTime(),
             ])
+            ->defaultSort('list_sort')
             ->filters([
                 Tables\Filters\SelectFilter::make('Module')
                     ->relationship('submodule', 'title')

@@ -77,11 +77,6 @@ class ModuleResource extends Resource
                     ->label('Nama Level')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Deskripsi')
-                    ->sortable()
-                    ->searchable()
-                    ->html(),
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Aktif')
                     ->boolean(),

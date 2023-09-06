@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ChapterResource\Pages;
 use App\Filament\Resources\ChapterResource\RelationManagers;
 use App\Models\Chapter;
+use App\Models\Submodule;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -27,8 +28,9 @@ class ChapterResource extends Resource
             ->schema([
                 Forms\Components\Card::make()->schema([
                     Forms\Components\Select::make('submodule_id')
-                        ->label('Module')
                         ->relationship('submodule', 'title')
+                        ->getOptionLabelFromRecordUsing(fn (Submodule $record) => "{$record->module->title} - {$record->title}")
+                        ->label('Level - Module')
                         ->required(),
                     Forms\Components\TextInput::make('title')
                         ->label('Judul')
@@ -52,17 +54,17 @@ class ChapterResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('submodule.title')
-                    ->label('Module')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Judul')
+                    ->label('Judul Submodule')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_visible')
                     ->label('Aktif')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('submodule.title')
+                    ->label('Module')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
                     ->sortable()
@@ -75,7 +77,10 @@ class ChapterResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('Module')
                     ->relationship('submodule', 'title')
-                    ->searchable()
+                    ->searchable(),
+                Tables\Filters\TernaryFilter::make('is_visible')
+                    ->label('Aktif')
+                    ->searchable(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

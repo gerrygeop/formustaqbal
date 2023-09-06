@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MaterialResource\Pages;
+use App\Models\Chapter;
 use App\Models\Material;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -27,7 +28,8 @@ class MaterialResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('chapter_id')
                             ->relationship('chapter', 'title')
-                            ->label('Submodule')
+                            ->getOptionLabelFromRecordUsing(fn (Chapter $record) => "{$record->submodule->title} - {$record->title}")
+                            ->label('Module - Submodule')
                             ->required(),
                         Forms\Components\Repeater::make('embed_links')
                             ->schema([

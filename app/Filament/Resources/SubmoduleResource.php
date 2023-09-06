@@ -54,12 +54,15 @@ class SubmoduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('module.title')
-                    ->label('Level')
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul Module')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('module.title')
+                    ->label('Level')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -72,7 +75,10 @@ class SubmoduleResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('Level')->relationship('module', 'title')->searchable()
+                Tables\Filters\SelectFilter::make('Level')->relationship('module', 'title')->searchable(),
+                Tables\Filters\TernaryFilter::make('is_visible')
+                    ->label('Aktif')
+                    ->searchable(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

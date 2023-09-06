@@ -62,6 +62,7 @@ class SubmodulesRelationManager extends RelationManager
                     ->label('Terakhir diperbarui')
                     ->dateTime(),
             ])
+            ->defaultSort('list_sort')
             ->filters([
                 //
             ])
