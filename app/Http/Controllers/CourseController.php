@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Subject;
-use App\Models\Submodule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -70,80 +70,88 @@ class CourseController extends Controller
      */
     public function start(Module $module)
     {
-        if (!$module->users()->where('user_id', auth()->id())->exists()) {
+        $userId = auth()->id();
+
+        if (!$module->users()->where('user_id', $userId)->exists()) {
             abort(404);
         }
 
         $module->load([
             'submodules',
-            'users' => function ($query) {
-                $query->where('user_id', auth()->id());
+            'users' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
             },
         ]);
 
         $lastVisit = $module->users->first()->pivot->last_visit;
 
         if (is_null($lastVisit)) {
-            $submodule = $module->submodules->where('list_sort', 1)->first();
+            $chapter = $module->getFirstChapterFromFirstSubmodule();
         } else {
-            $submodule = $module->submodules->where('id', $lastVisit)->first();
+            $chapter = Chapter::find($lastVisit);
         }
 
-        if (is_null($submodule)) {
+        if (is_null($chapter)) {
             return back();
         }
 
         return to_route('courses.learn', [
             'module' => $module,
-            'submodule' => $submodule,
+            'chapter' => $chapter,
         ]);
     }
 
     /**
      * Display the learning view for a specific submodule within a module.
      */
-    public function learn(Module $module, Submodule $submodule)
+    public function learn(Module $module, Chapter $chapter)
     {
-        if (!$module->users()->where('user_id', auth()->id())->exists() || !$module->submodules()->where('id', $submodule->id)->exists()) {
+        if (!$module->isUSerValid() || !$module->isSubmoduleExists($chapter->submodule->id)) {
             abort(404);
         }
 
+        $user = auth()->user();
+
         $module->load([
             'submodules',
-            'users' => function ($query) {
-                $query->where('user_id', auth()->id());
+            'users' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
             },
         ]);
 
-        $submodules = $module->submodules->sortBy('list_sort');
+        $chapters = $module->getAllChapters();
 
-        $currentIndex = $submodules->search(function ($item) use ($submodule) {
-            return $item->id === $submodule->id;
+        $currentIndex = $chapters->search(function ($item) use ($chapter) {
+            return $item->id == $chapter->id;
         });
 
-        $prevSubmodule = null;
-        $nextSubmodule = null;
+        $prevChapter = null;
+        $nextChapter = null;
 
         if ($currentIndex !== false) {
             if ($currentIndex > 0) {
-                $prevSubmodule = $submodules->get($currentIndex - 1);
+                $prevChapter = $chapters->get($currentIndex - 1);
             }
-            if ($currentIndex < $submodules->count() - 1) {
-                $nextSubmodule = $submodules->get($currentIndex + 1);
+            if ($currentIndex < $chapters->count() - 1) {
+                $nextChapter = $chapters->get($currentIndex + 1);
             }
 
-            $completedSubmodules = DB::transaction(function () use ($module, $submodule) {
-                $module->users()->syncWithoutDetaching([auth()->id() => ['last_visit' => $submodule->id]]);
+            $completedSubmodules = DB::transaction(function () use ($module, $chapter, $user) {
+                $module->users()
+                    ->syncWithoutDetaching([
+                        $user->id => ['last_visit' => $chapter->id]
+                    ]);
 
-                $completedSubmodules = json_decode($module->users->first()->pivot->completed_submodules);
-                if (is_null($completedSubmodules)) {
-                    $completedSubmodules[] = $module->submodules->sortBy('list_sort')->first()->id;
-                    $module->users()->updateExistingPivot(auth()->id(), ['completed_submodules' => json_encode($completedSubmodules)]);
+                $completedSubmodules = json_decode(
+                    $module->users->first()->pivot->completed_submodules
+                );
+
+                if (is_null($completedSubmodules) || !in_array($chapter->id, $completedSubmodules)) {
+                    $completedSubmodules[] = $chapter->id;
+                    $module->updateUserCompletedSubmodules($completedSubmodules);
+                    $user->profile->increment('xp', 10);
                 } else {
-                    if (!in_array($submodule->id, $completedSubmodules)) {
-                        $completedSubmodules[] = $submodule->id;
-                        $module->users()->updateExistingPivot(auth()->id(), ['completed_submodules' => json_encode($completedSubmodules)]);
-                    }
+                    $user->profile->increment('xp');
                 }
 
                 return $completedSubmodules;
@@ -155,9 +163,9 @@ class CourseController extends Controller
         return view('learns.learn', [
             'module' => $module,
             'currentIndex' => $currentIndex,
-            'currentSubmodule' => $submodule,
-            'prevSubmodule' => $prevSubmodule,
-            'nextSubmodule' => $nextSubmodule,
+            'currentChapter' => $chapter,
+            'prevChapter' => $prevChapter,
+            'nextChapter' => $nextChapter,
             'completedSubmodules' => $completedSubmodules,
         ]);
     }

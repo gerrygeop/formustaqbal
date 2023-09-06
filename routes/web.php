@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('{subject}/courses', [CourseController::class, 'courses'])->name('courses.list');
     Route::get('/courses/{course}/levels', [CourseController::class, 'levels'])->name('courses.levels');
     Route::get('/courses/{module}/learn', [CourseController::class, 'start'])->name('courses.start');
-    Route::get('/courses/{module}/learn/{submodule}', [CourseController::class, 'learn'])->name('courses.learn');
+    Route::get('/courses/{module}/learn/{chapter}', [CourseController::class, 'learn'])->name('courses.learn');
 
     // LEVEL / MODULE
     Route::get('/levels/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
