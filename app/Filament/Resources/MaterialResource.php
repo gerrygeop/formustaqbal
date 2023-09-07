@@ -28,9 +28,17 @@ class MaterialResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('chapter_id')
                             ->relationship('chapter', 'title')
-                            ->getOptionLabelFromRecordUsing(fn (Chapter $record) => "{$record->submodule->title} - {$record->title}")
-                            ->label('Module - Submodule')
+                            ->getOptionLabelFromRecordUsing(function (Chapter $record) {
+                                return "Level: {$record->submodule->module->title} > Module: {$record->submodule->title} > Sub: {$record->title}";
+                            })
+                            ->label('Submodule')
+                            ->searchable()
+                            ->preload()
                             ->required(),
+                    ]),
+
+                Forms\Components\Section::make('Sematan')
+                    ->schema([
                         Forms\Components\Repeater::make('embed_links')
                             ->schema([
                                 Forms\Components\Textarea::make('link'),
@@ -38,10 +46,16 @@ class MaterialResource extends Resource
                             ->label('Link (Google Slide/Youtube)')
                             ->defaultItems(0)
                             ->createItemButtonLabel('Tambahkan Link'),
+                    ])
+                    ->collapsible(),
+
+                Forms\Components\Section::make('Teks')
+                    ->schema([
                         Forms\Components\RichEditor::make('content')
                             ->label('Teks')
                             ->fileAttachmentsDirectory('attachments'),
                     ])
+                    ->collapsible(),
             ]);
     }
 
