@@ -2,6 +2,7 @@
 	<section class="fixed inset-0 overflow-y-auto z-50 bg-gray-50 dark:bg-gray-900 selection:bg-amber-300"
 		x-data="{ listMenu: false }">
 
+		{{-- Navbar --}}
 		<div
 			class="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-b-gray-700/60 py-3 md:py-4 px-4 md:px-8 z-[51]">
 			<div class="flex items-center justify-between">
@@ -33,23 +34,73 @@
 		</div>
 
 		<div class="relative min-h-screen flex">
-			<div class="max-w-5xl mx-auto w-full p-4 flex flex-col justify-between">
 
-				{{-- Content --}}
-				<div class="py-6 mb-20 grid grid-cols-1 gap-y-10">
+			{{-- Content --}}
+			<div class="max-w-6xl mx-auto w-full md:p-4 flex flex-col justify-between">
+				<div class="py-6 mb-20 grid grid-cols-1 gap-y-4">
 					@if ($currentChapter->material)
-						@if ($currentChapter->material->embed_links)
-							@foreach ($currentChapter->material->embed_links as $link)
-								@if ($link)
-									<iframe class="w-full h-[300px] md:h-[600px]" src="{{ $link['link'] }}" frameborder="0" allowfullscreen="true"
-										mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-								@endif
-							@endforeach
-						@endif
-						<article class="prose dark:prose-invert lg:prose-xl">
-							{!! $currentChapter->material->content !!}
-						</article>
-					@else
+						@foreach ($currentChapter->material->embed_links as $link)
+							@if ($link)
+								<div x-data="{ embed: 1 }" class="bg-white border shadow-sm lg:rounded-lg overflow-hidden">
+									<div class="bg-gray-100 flex items-center justify-end p-4 border-b cursor-pointer"
+										x-on:click="embed !== 1 ? embed = 1 : embed = null">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+											stroke="currentColor" x-bind:class="embed == 1 ? 'rotate-180' : ''"
+											class="w-5 h-5 font-semibold text-gray-800 transition-all duration-500">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+										</svg>
+									</div>
+
+									<div x-ref="container" x-bind:style="embed == 1 ? 'max-height:' + $refs.container.scrollHeight + 'px' : ''"
+										class="relative overflow-hidden max-h-0 transition-all duration-500">
+										<div class="p-6">
+											<iframe class="w-full h-[300px] md:h-[600px]" src="{{ $link['link'] }}" frameborder="0"
+												allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+										</div>
+									</div>
+								</div>
+							@endif
+						@endforeach
+
+						<div x-data="{ content: 1 }" class="bg-white border shadow-sm lg:rounded-lg overflow-hidden">
+							<div class="bg-gray-100 flex items-center justify-end p-4 border-b cursor-pointer"
+								x-on:click="content !== 1 ? content = 1 : content = null">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" x-bind:class="content == 1 ? 'rotate-180' : ''"
+									class="w-5 h-5 font-semibold text-gray-800 transition-all duration-500">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+								</svg>
+							</div>
+
+							<div x-ref="container" x-bind:style="content == 1 ? 'max-height:' + $refs.container.scrollHeight + 'px' : ''"
+								class="relative overflow-hidden max-h-0 transition-all duration-500 px-6 lg:px-0">
+								<article class="prose dark:prose-invert lg:prose-xl py-8 mx-auto">
+									{!! $currentChapter->material->content !!}
+								</article>
+							</div>
+						</div>
+					@endif
+
+					@if ($currentChapter->assessment)
+						<div class="my-20 min-h-[8rem]">
+							<div class="px-6 h-full">
+								<div class="flex flex-col items-center justify-between h-full">
+									<p class="text-gray-600 md:text-lg">
+										{{ $currentChapter->assessment->instruction ?? 'Latihan' }}
+									</p>
+
+									<div>
+										<a href="#"
+											class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">
+											Mulai
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					@endif
+
+					@if (!$currentChapter->assessment && !$currentChapter->material)
 						<div class="py-6 bg-slate-200">
 							<p class="text-center md:text-lg text-gray-600 italic">
 								Tidak ada materi

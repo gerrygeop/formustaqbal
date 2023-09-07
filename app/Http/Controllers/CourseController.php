@@ -178,9 +178,12 @@ class CourseController extends Controller
             abort(404);
         }
 
+        if ($chapter->material && is_null($chapter->material->embed_links)) {
+            $chapter->material->embed_links = [];
+        }
+
         return view('learns.learn', [
             'module' => $module,
-            'currentIndex' => $currentIndex,
             'currentChapter' => $chapter,
             'prevChapter' => $prevChapter,
             'nextChapter' => $nextChapter,
