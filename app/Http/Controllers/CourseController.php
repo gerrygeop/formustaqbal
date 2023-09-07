@@ -58,7 +58,25 @@ class CourseController extends Controller
      */
     public function levels(Course $course)
     {
-        $course = $course->load('modules.submodules');
+        $course->load([
+            'modules' => function ($query) {
+                $query->where('is_visible', true)->with([
+                    'submodules' => function ($query) {
+                        $query->where('is_visible', true)->with('chapters');
+                    }
+                ]);
+            }
+        ]);
+
+        $course->modules->map(function ($module) {
+            $module->user_count = $module->users->count();
+            $module->submodule_count = $module->submodules->count();
+            $module->chapter_count = $module->submodules->sum(function ($submodule) {
+                return $submodule->chapters->count();
+            });
+
+            return $module;
+        });
 
         return view('courses.levels', [
             'course' => $course,

@@ -9,13 +9,16 @@ class ModuleController extends Controller
 {
     public function show(Module $module)
     {
+        if (!$module->is_visible) {
+            abort(403);
+        }
+
         $module->load('course', 'submodules');
 
-        $user = auth()->user();
         $courseUser = DB::table('course_user')
             ->where('module_id', $module->id)
             ->where('course_id', $module->course->id)
-            ->where('user_id', $user->id)
+            ->where('user_id', auth()->id())
             ->first();
 
         $completedSubmodules = json_decode($courseUser->completed_submodules);

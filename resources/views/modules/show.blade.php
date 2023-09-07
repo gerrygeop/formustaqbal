@@ -77,7 +77,7 @@
 						<h3 class="font-medium text-xl text-gray-700 dark:text-gray-200">Silabus - {{ $module->title }}</h3>
 
 						<div class="mt-4 selection:bg-amber-300">
-							@foreach ($module->submodules->sortBy('list_sort') as $submodule)
+							@foreach ($module->submodules->where('is_visible', 1)->sortBy('list_sort') as $submodule)
 								<div class="bg-white border rounded overflow-hidden" x-data="{ collapse: null }">
 									<div class="p-4 flex items-center justify-between cursor-pointer"
 										x-on:click="collapse !== {{ $submodule->id }} ? collapse = {{ $submodule->id }} : collapse = null">
@@ -95,7 +95,8 @@
 										x-bind:style="collapse == {{ $submodule->id }} ? 'max-height:' + $refs.container.scrollHeight + 'px' : ''"
 										class="bg-slate-50 relative overflow-hidden max-h-0 transition-all duration-500">
 										<div class="p-4 border-t">
-											@forelse ($submodule->chapters->sortBy('list_sort') as $chapter)
+
+											@forelse ($submodule->chapters->where('is_visible', 1)->sortBy('list_sort') as $chapter)
 												<div @class(['flex relative', 'pb-6' => !$loop->last])>
 													@if (!$loop->last)
 														<div class="h-full w-7 absolute inset-0 flex items-center justify-center">
@@ -118,6 +119,7 @@
 											@empty
 												<p class="text-sm text-gray-600 italic">Belum ada submodule</p>
 											@endforelse
+
 										</div>
 									</div>
 								</div>
