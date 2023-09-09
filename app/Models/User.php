@@ -87,11 +87,16 @@ class User extends Authenticatable implements FilamentUser
 
     public function assessments(): BelongsToMany
     {
-        return $this->belongsToMany(Assessment::class, 'assessment_user', 'user_id')->withPivot(['score', 'is_completed']);
+        return $this->belongsToMany(Assessment::class, 'assessment_user', 'user_id')->withPivot(['score', 'is_completed'])->withTimestamps();
     }
 
     public function siakad(): HasOne
     {
         return $this->hasOne(Siakad::class);
+    }
+
+    public function responsi(): HasMany
+    {
+        return $this->hasMany(UserResponses::class);
     }
 }

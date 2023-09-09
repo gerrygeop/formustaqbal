@@ -27,7 +27,7 @@ class Assessment extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'assessment_user')->withTimestamps();
+        return $this->belongsToMany(User::class, 'assessment_user')->withPivot(['score', 'is_completed'])->withTimestamps();
     }
 
     public function questions(): HasMany
@@ -38,5 +38,10 @@ class Assessment extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function responsi(): HasMany
+    {
+        return $this->hasMany(UserResponses::class);
     }
 }
