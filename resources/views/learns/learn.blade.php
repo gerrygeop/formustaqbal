@@ -82,20 +82,33 @@
 					@endif
 
 					@if ($currentChapter->assessment)
-						<div class="my-20 min-h-[8rem]">
-							<div class="px-6 h-full">
-								<div class="flex flex-col items-center justify-between h-full">
-									<p class="text-gray-600 md:text-lg">
-										{{ $currentChapter->assessment->instruction ?? 'Latihan' }}
-									</p>
+						<div class="my-10 min-h-[8rem]">
+							<div class="px-6 h">
 
-									<div>
-										<a href="#"
-											class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">
-											Mulai
-										</a>
+								@if (!$hasTakenAssessment)
+									<div class="flex flex-col justify-between h-full">
+										@if ($currentChapter->assessment->instruction)
+											<article class="prose dark:prose-invert mb-10">
+												{!! $currentChapter->assessment->instruction !!}
+											</article>
+										@endif
+
+										@if (!$hasTakenAssessment)
+											<div>
+												<a href="{{ route('courses.quiz', [$module, $currentChapter]) }}"
+													class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">
+													Mulai
+												</a>
+											</div>
+										@endif
 									</div>
-								</div>
+								@else
+									<div class="bg-white rounded-lg shadow p-6">
+										<p class="text-lg text-gray-800 text-center italic">
+											Terima kasih telah mengerjakan, nilai anda akan keluar setelah direview
+										</p>
+									</div>
+								@endif
 							</div>
 						</div>
 					@endif
@@ -135,7 +148,7 @@
 							</p>
 						@endif
 
-						@if ($nextChapter)
+						@if ($nextChapter && $hasTakenAssessment)
 							<a href="{{ route('courses.learn', [$module, $nextChapter]) }}"
 								class="flex items-center space-x-1 px-6 py-2 text-white hover:text-white font-semibold capitalize bg-amber-500 rounded hover:bg-amber-500/80">
 								<span class="hidden md:block">Selanjutnya</span>
@@ -202,7 +215,7 @@
 													<path stroke-linecap="round" stroke-linejoin="round"
 														d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
 												</svg>
-												<x-nav-module href="{{ route('courses.learn', [$module, $chapter]) }}" :active="$currentChapter->id === $chapter->id">
+												<x-nav-module href="{{ route('courses.learn', [$module, $chapter]) }}" :active="$chapter->id === $currentChapter->id">
 													{{ $chapter->title }}
 												</x-nav-module>
 											@else
