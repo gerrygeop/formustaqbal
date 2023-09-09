@@ -6,6 +6,7 @@ use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PlacementTestController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -31,8 +32,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/courses/{module}/learn', [CourseController::class, 'start'])->name('courses.start');
     Route::get('/courses/{module}/learn/{chapter}', [CourseController::class, 'learn'])->name('courses.learn');
 
+    // QUIZ
+    Route::get('/courses/{module}/quiz/{chapter}', [QuizController::class, 'quiz'])->name('courses.quiz');
+
     // LEVEL / MODULE
     Route::get('/levels/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
+
 
     // LEADERBOARD
     Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');
