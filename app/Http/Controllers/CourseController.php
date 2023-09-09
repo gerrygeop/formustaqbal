@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssessmentUser;
 use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Module;
@@ -182,12 +183,27 @@ class CourseController extends Controller
             $chapter->material->embed_links = [];
         }
 
+        $chapter->load(['assessment' => function ($query) {
+            $query->where('is_active', true)->where('published_at', '<=', now());
+        }]);
+
+        $hasTakenAssessment = true;
+        if ($chapter->assessment) {
+            $au = AssessmentUser::where('user_id', auth()->id())->where('assessment_id', $chapter->assessment->id)->first();
+            $hasTakenAssessment = is_null($au) ? false : true;
+
+            if (!is_null($au) && $au->is_completed == 0 && $au->created_at->addMinutes($chapter->assessment->duration_minutes) > now()) {
+                return to_route('courses.quiz', [$module, $chapter]);
+            }
+        }
+
         return view('learns.learn', [
             'module' => $module,
             'currentChapter' => $chapter,
             'prevChapter' => $prevChapter,
             'nextChapter' => $nextChapter,
             'completedSubmodules' => $completedSubmodules,
+            'hasTakenAssessment' => $hasTakenAssessment,
         ]);
     }
 
