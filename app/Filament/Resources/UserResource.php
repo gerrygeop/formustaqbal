@@ -93,7 +93,7 @@ class UserResource extends Resource
                                     ->required(),
                             ])
                             ->visible(function (callable $get) {
-                                return (in_array(4, $get('roles'))) ? true : false;
+                                return (in_array(5, $get('roles'))) ? true : false;
                             })
                     ])
                     ->columnSpan(1),
