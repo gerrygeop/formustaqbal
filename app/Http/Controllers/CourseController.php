@@ -131,6 +131,10 @@ class CourseController extends Controller
 
         $user = auth()->user();
 
+        if ($user->siakad && is_null($user->siakad->local)) {
+            return redirect()->route('profile.edit')->with('status', 'fill-local');
+        }
+
         $module->load([
             'submodules',
             'users' => function ($query) use ($user) {

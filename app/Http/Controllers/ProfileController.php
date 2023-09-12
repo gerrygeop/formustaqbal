@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfilesInformationUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Local;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,8 +28,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $user = $request->user();
+
+        if ($user->siakad) {
+            $locals = Local::where('department_id', $user->siakad->department_id)->get();
+        }
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'locals' => $locals ?? null,
         ]);
     }
 
@@ -42,6 +50,19 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profiles-information-updated');
+    }
+
+    public function updateLocal(Request $request)
+    {
+        $validated = $request->validate([
+            'local' => ['required', 'exists:locals,id']
+        ]);
+
+        $request->user()->siakad()->update([
+            'local_id' => $validated['local']
+        ]);
+
+        return Redirect::route('profile.edit')->with('status', 'profiles-local-updated');
     }
 
     /**

@@ -94,4 +94,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(UserResponses::class);
     }
+
+    public function rooms(): BelongsToMany
+    {
+        return $this->belongsToMany(Room::class, 'room_user')->withPivot('type')->withTimestamps();
+    }
 }

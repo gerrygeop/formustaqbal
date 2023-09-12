@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/setting', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/informations', [ProfileController::class, 'updateProfiles'])->name('profile.update.information');
+    Route::patch('/profile/local', [ProfileController::class, 'updateLocal'])->name('profile.update.local');
     // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

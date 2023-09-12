@@ -33,6 +33,6 @@ class Siakad extends Model
 
     public function local(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Local::class);
     }
 }
