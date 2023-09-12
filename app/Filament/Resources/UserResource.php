@@ -6,6 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\Department;
 use App\Models\Faculty;
+use App\Models\Local;
 use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
@@ -25,7 +26,7 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?string $navigationGroup = 'User Management';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 21;
 
     public static function form(Form $form): Form
     {
@@ -89,6 +90,18 @@ class UserResource extends Resource
                                         return is_null($faculties) ?
                                             Department::all()->pluck('name', 'id') :
                                             $faculties->departments->pluck('name', 'id');
+                                    })
+                                    ->required()
+                                    ->reactive(),
+
+                                Forms\Components\Select::make('local_id')
+                                    ->relationship('local', 'name')
+                                    ->options(function (callable $get) {
+                                        $departments = Department::find($get('department_id'));
+
+                                        return is_null($departments) ?
+                                            Local::all()->pluck('name', 'id') :
+                                            $departments->locals->pluck('name', 'id');
                                     })
                                     ->required(),
                             ])
