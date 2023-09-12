@@ -2,15 +2,14 @@
 
 namespace App\Filament\Resources\AssessmentResource\RelationManagers;
 
-use App\Models\Question;
+use App\Models\Department;
+use App\Models\Faculty;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UsersRelationManager extends RelationManager
 {
@@ -22,36 +21,28 @@ class UsersRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Grid::make(1)
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
+                        Forms\Components\TextInput::make('name'),
+                        Forms\Components\TextInput::make('username'),
+                        Forms\Components\TextInput::make('email'),
 
-                        Forms\Components\Repeater::make('answers')
-                            ->relationship()
+                        Forms\Components\Section::make('Fakultas/Prodi')
+                            ->relationship('siakad')
                             ->schema([
-                                Forms\Components\Select::make('question_id')
-                                    ->relationship('questions', 'question')
-                                    ->disabled(),
-                                Forms\Components\Select::make('choice')
-                                    ->relationship('choice', 'choice')
-                                    ->disabled()
-                                    ->hidden(function ($state) {
-                                        return $state == NULL ? true : false;
-                                    }),
-                                Forms\Components\TextInput::make('answer_text')
-                                    ->label('Answer')
-                                    ->disabled()
-                                    ->hidden(function ($state) {
-                                        return $state == NULL ? true : false;
-                                    }),
+                                Forms\Components\Select::make('faculty_id')
+                                    ->label('Fakultas')
+                                    ->relationship('faculty', 'name')
+                                    ->options(Faculty::all()->pluck('name', 'id')),
 
-                                Forms\Components\TextInput::make('point')->required()->numeric()->default(0)->minValue(0),
+                                Forms\Components\Select::make('department_id')
+                                    ->label('Prodi')
+                                    ->relationship('department', 'name')
+                                    ->options(Department::all()->pluck('name', 'id')),
                             ])
-                            ->disableItemCreation()
-                            ->disableItemDeletion()
-                            ->disableItemMovement(),
+                            ->visible(function (?User $record) {
+                                return $record->siakad ? true : false;
+                            })
                     ])
             ]);
     }
@@ -60,9 +51,9 @@ class UsersRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('score')->searchable()->sortable(),
-                Tables\Columns\IconColumn::make('is_completed')->boolean(),
+                Tables\Columns\TextColumn::make('name')->label('Nama')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('score')->label('Nilai')->searchable()->sortable(),
+                Tables\Columns\IconColumn::make('is_completed')->label('')->boolean(),
             ])
             ->filters([
                 //
@@ -71,8 +62,14 @@ class UsersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('Review')
+                    ->action(function (RelationManager $livewire, User $record) {
+                        return redirect()->route('review.assessment', [$livewire->ownerRecord->id, $record]);
+                    })
+                    ->color('primary')
+                    ->icon('heroicon-s-pencil'),
+
                 Tables\Actions\Action::make('Reset')
                     ->action(function (RelationManager $livewire, User $record) {
                         return redirect()->route('reset.assessment', [$livewire->ownerRecord->id, $record]);

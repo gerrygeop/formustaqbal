@@ -14,7 +14,7 @@ class UserResponses extends Model
     protected $table = 'user_responses';
 
     protected $casts  = [
-        'responses' => 'json',
+        'responses' => 'array',
     ];
 
     public function user(): BelongsTo

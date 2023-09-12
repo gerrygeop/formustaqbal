@@ -20,11 +20,6 @@ class Assessment extends Model
         return $this->morphTo();
     }
 
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'creator_id');
-    }
-
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'assessment_user')->withPivot(['score', 'is_completed'])->withTimestamps();

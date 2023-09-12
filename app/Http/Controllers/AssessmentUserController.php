@@ -2,14 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Assessment;
-use App\Models\Profile;
+use App\Models\Question;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\UserResponses;
 use Illuminate\Support\Facades\DB;
 
 class AssessmentUserController extends Controller
 {
+    public function review(Assessment $assessment, User $user)
+    {
+        if ($assessment->type == 2) {
+            $answers = Answer::query()
+                ->with(['question' => function ($query) {
+                    $query->with('choices');
+                }])
+                ->where([
+                    ['assessment_id', '=', $assessment->id],
+                    ['user_id', '=', $user->id],
+                ])
+                ->get(['choice_id', 'question_id', 'answer_text', 'file_path', 'point']);
+
+            $correctAnswer = 0;
+            foreach ($answers as $answer) {
+                foreach ($answer->question->choices as $choice) {
+                    if ($answer->choice_id === $choice->id && $choice->is_correct) {
+                        $correctAnswer++;
+                    }
+                }
+            }
+
+            return view('reviews.review-placement-test', [
+                'assessment' => $assessment,
+                'user' => $user,
+                'answers' => $answers,
+                'correctAnswer' => $correctAnswer,
+                'incorrectAnswer' => $answers->count() - $correctAnswer,
+            ]);
+        } else {
+            $ur = UserResponses::query()
+                ->where([
+                    ['assessment_id', '=', $assessment->id],
+                    ['user_id', '=', $user->id],
+                ])
+                ->get()->first();
+
+            $responses = collect(json_decode($ur->responses));
+            $questions = Question::whereIn('id', $responses->pluck('question_id'))->with('choices')->get();
+
+            $answers = $responses->mapWithKeys(function ($res, int $key) {
+                return [$res->question_id => $res];
+            });
+
+            return view('reviews.review-quiz', [
+                'assessment' => $assessment,
+                'user' => $user,
+                'answers' => $answers,
+                'questions' => $questions,
+            ]);
+        }
+    }
+
     public function reset(Assessment $assessment, User $user)
     {
         DB::transaction(function () use ($assessment, $user) {
