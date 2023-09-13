@@ -19,22 +19,27 @@
 				</div>
 			</div>
 
-			<div class="col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-				<div
-					class="flex items-center gap-x-2 px-4 lg:px-6 py-3 lg:py-4 font-semibold lg:text-lg text-gray-900 dark:text-gray-100">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-						class="w-5 h-5 lg:w-6 lg:h-6 text-amber-500">
-						<path
-							d="M5.566 4.657A4.505 4.505 0 016.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0015.75 3h-7.5a3 3 0 00-2.684 1.657zM2.25 12a3 3 0 013-3h13.5a3 3 0 013 3v6a3 3 0 01-3 3H5.25a3 3 0 01-3-3v-6zM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 016.75 6h10.5a3 3 0 012.683 1.657A4.505 4.505 0 0018.75 7.5H5.25z" />
-					</svg>
+			@if ($rooms->isNotEmpty())
+				<div class="col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+					<div
+						class="flex items-center gap-x-2 px-4 lg:px-6 py-3 lg:py-4 font-semibold lg:text-lg text-gray-900 dark:text-gray-100">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+							class="w-5 h-5 lg:w-6 lg:h-6 text-amber-500">
+							<path
+								d="M5.566 4.657A4.505 4.505 0 016.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0015.75 3h-7.5a3 3 0 00-2.684 1.657zM2.25 12a3 3 0 013-3h13.5a3 3 0 013 3v6a3 3 0 01-3 3H5.25a3 3 0 01-3-3v-6zM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 016.75 6h10.5a3 3 0 012.683 1.657A4.505 4.505 0 0018.75 7.5H5.25z" />
+						</svg>
+						<span>Class:</span>
 
-
-					<span>Class</span>
-					<span class="font-semibold">
-						A
-					</span>
+						<div class="flex space-x-2">
+							@foreach ($rooms as $room)
+								<span class="font-semibold">
+									{{ $room->name }}
+								</span>
+							@endforeach
+						</div>
+					</div>
 				</div>
-			</div>
+			@endif
 		</div>
 
 		@cannot('teacher')

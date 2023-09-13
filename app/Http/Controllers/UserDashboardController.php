@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Room;
 use Illuminate\Support\Facades\Auth;
 
 class UserDashboardController extends Controller
@@ -30,9 +31,12 @@ class UserDashboardController extends Controller
             return $module;
         });
 
+        $rooms = Room::whereRelation('users', 'user_id', auth()->id())->get();
+
         return view('dashboard', [
             'modules' => $modules,
             'profile' => Auth::user()->profile,
+            'rooms' => $rooms
         ]);
     }
 }
