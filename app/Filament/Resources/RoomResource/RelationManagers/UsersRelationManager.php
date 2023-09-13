@@ -4,12 +4,15 @@ namespace App\Filament\Resources\RoomResource\RelationManagers;
 
 use App\Models\Department;
 use App\Models\Faculty;
+use App\Models\Room;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Contracts\HasTable;
+use stdClass;
 
 class UsersRelationManager extends RelationManager
 {
@@ -54,8 +57,20 @@ class UsersRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')->label('No')->getStateUsing(
+                    static function (stdClass $rowLoop, HasTable $livewire): string {
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
+                            ))
+                        );
+                    }
+                ),
                 Tables\Columns\TextColumn::make('username'),
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('type')->label('Status')->enum([
+                    '0' => 'Mahasiswa',
+                    '1' => 'Dosen',
+                ]),
             ])
             ->filters([
                 //
