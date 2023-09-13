@@ -104,7 +104,11 @@ class CourseController extends Controller
             },
         ]);
 
-        $lastVisit = $module->users->first()->pivot->last_visit;
+        if (auth()->user()->hasRole('teacher')) {
+            $lastVisit = null;
+        } else {
+            $lastVisit = $module->users->first()->pivot->last_visit;
+        }
 
         if (is_null($lastVisit)) {
             $chapter = $module->getFirstChapterFromFirstSubmodule();
