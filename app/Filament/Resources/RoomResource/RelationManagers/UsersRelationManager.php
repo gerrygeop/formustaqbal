@@ -15,7 +15,7 @@ class UsersRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'username';
 
     public static function form(Form $form): Form
     {
@@ -54,6 +54,7 @@ class UsersRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('username'),
                 Tables\Columns\TextColumn::make('name'),
             ])
             ->filters([
@@ -64,7 +65,10 @@ class UsersRelationManager extends RelationManager
                     ->label('Tambah')
                     ->preloadRecordSelect()
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
-                        $action->getRecordSelect()->multiple()->autofocus(),
+                        $action->getRecordSelect()
+                            ->multiple()
+                            ->autofocus(),
+
                         Forms\Components\Select::make('type')
                             ->options([
                                 '0' => 'Mahasiswa',
