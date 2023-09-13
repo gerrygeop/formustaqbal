@@ -192,23 +192,41 @@ class CourseController extends Controller
         }]);
 
         $hasTakenAssessment = true;
+        $questionNull = true;
+
         if ($chapter->assessment) {
             $au = AssessmentUser::where('user_id', auth()->id())->where('assessment_id', $chapter->assessment->id)->first();
             $hasTakenAssessment = is_null($au) ? false : true;
+
+            if (!is_null($au) && !is_null($au->questions)) {
+                $questionNull = false;
+            }
 
             if (!is_null($au) && $au->is_completed == 0 && $au->created_at->addMinutes($chapter->assessment->duration_minutes) > now()) {
                 return to_route('courses.quiz', [$module, $chapter]);
             }
         }
 
-        return view('learns.learn', [
-            'module' => $module,
-            'currentChapter' => $chapter,
-            'prevChapter' => $prevChapter,
-            'nextChapter' => $nextChapter,
-            'completedSubmodules' => $completedSubmodules,
-            'hasTakenAssessment' => $hasTakenAssessment,
-        ]);
+        if (auth()->user()->hasRole('teacher')) {
+            return view('learns.learn-teacher', [
+                'module' => $module,
+                'currentChapter' => $chapter,
+                'prevChapter' => $prevChapter,
+                'nextChapter' => $nextChapter,
+                'completedSubmodules' => $completedSubmodules,
+                'hasTakenAssessment' => $hasTakenAssessment,
+                'questionNull' => $questionNull,
+            ]);
+        } else {
+            return view('learns.learn', [
+                'module' => $module,
+                'currentChapter' => $chapter,
+                'prevChapter' => $prevChapter,
+                'nextChapter' => $nextChapter,
+                'completedSubmodules' => $completedSubmodules,
+                'hasTakenAssessment' => $hasTakenAssessment,
+            ]);
+        }
     }
 
     /**

@@ -14,18 +14,24 @@ class ModuleController extends Controller
         }
 
         $module->load('course', 'submodules');
-
         $courseUser = DB::table('course_user')
             ->where('module_id', $module->id)
             ->where('course_id', $module->course->id)
             ->where('user_id', auth()->id())
             ->first();
 
-        $completedSubmodules = json_decode($courseUser->completed_submodules);
+        $completedSubmodules = is_null($courseUser) ? null : json_decode($courseUser->completed_submodules);
 
-        return view('modules.show', [
-            'module' => $module,
-            'completedSubmodules' => $completedSubmodules,
-        ]);
+        if (auth()->user()->hasRole('teacher')) {
+            return view('modules.show-teacher', [
+                'module' => $module,
+                'completedSubmodules' => is_null($completedSubmodules) ? [] : $completedSubmodules,
+            ]);
+        } else {
+            return view('modules.show', [
+                'module' => $module,
+                'completedSubmodules' => $completedSubmodules,
+            ]);
+        }
     }
 }
