@@ -91,7 +91,7 @@ class AssessmentResource extends Resource
                             ->label('Durasi')
                             ->numeric()
                             ->default(5)
-                            ->minValue(1),
+                            ->minValue(0),
                         Forms\Components\TextInput::make('question_limit')
                             ->label('Batas Soal')
                             ->numeric()
