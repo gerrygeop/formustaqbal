@@ -7,6 +7,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PlacementTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -38,15 +39,16 @@ Route::middleware(['auth'])->group(function () {
     // LEVEL / MODULE
     Route::get('/levels/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
 
-
     // LEADERBOARD
     Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');
 
-    // Teacher
-    Route::get('/class', [TeacherController::class, 'room'])->name('teacher.room');
-
-    // Teacher testing placement-test
     Route::middleware('can:teacher')->group(function () {
+        // Room/Class
+        Route::get('/class', [RoomController::class, 'index'])->name('rooms.index');
+        Route::get('/class/{room}', [RoomController::class, 'show'])->name('rooms.show');
+        Route::get('/class/{room}/{user}', [RoomController::class, 'mhs'])->name('rooms.mhs');
+
+        // Teacher testing placement-test
         Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
         Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
     });

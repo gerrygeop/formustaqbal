@@ -114,7 +114,7 @@
 			</x-responsive-nav-link>
 
 			@can('teacher')
-				<x-responsive-nav-link :href="route('teacher.room')" :active="request()->routeIs('teacher.*')">
+				<x-responsive-nav-link :href="route('rooms.index')" :active="request()->routeIs('rooms.*')">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
 						class="w-6 h-6 mr-2">
 						<path stroke-linecap="round" stroke-linejoin="round"

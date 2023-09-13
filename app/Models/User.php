@@ -45,6 +45,11 @@ class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'username';
+    }
+
     public function canAccessFilament(): bool
     {
         return $this->hasRole('superadmin');
@@ -83,6 +88,11 @@ class User extends Authenticatable implements FilamentUser
     public function assessments(): BelongsToMany
     {
         return $this->belongsToMany(Assessment::class, 'assessment_user', 'user_id')->withPivot(['score', 'is_completed'])->withTimestamps();
+    }
+
+    public function placementTest(): HasOne
+    {
+        return $this->hasOne(AssessmentUser::class);
     }
 
     public function siakad(): HasOne

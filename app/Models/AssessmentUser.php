@@ -11,4 +11,9 @@ class AssessmentUser extends Model
 
     protected $guarded = ['id'];
     protected $table = 'assessment_user';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
