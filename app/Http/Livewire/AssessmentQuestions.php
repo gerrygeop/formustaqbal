@@ -39,18 +39,26 @@ class AssessmentQuestions extends Component
 
         $this->loadQuestion();
 
-        if (!session()->has('end_time')) {
-            session(['end_time' => now()->addMinutes($this->assessment->duration_minutes)]);
-        }
+        if ($this->assessment->duration_minutes > 0) {
+            if (!session()->has('end_time')) {
+                session(['end_time' => now()->addMinutes($this->assessment->duration_minutes)]);
+            }
 
-        $this->endTime = session('end_time');
+            $this->endTime = session('end_time');
+        }
     }
 
     public function render()
     {
+        if ($this->assessment->duration_minutes > 0) {
+            $timer = $this->getRemainingTime();
+        } else {
+            $timer = null;
+        }
+
         return view('livewire.assessment-questions', [
             'currentQuestionIndex' => $this->currentQuestionIndex,
-            'remainingTime' => $this->getRemainingTime(),
+            'remainingTime' => $timer,
         ]);
     }
 
@@ -60,8 +68,10 @@ class AssessmentQuestions extends Component
         $remainingTime = $this->endTime->diffInSeconds($currentTime);
 
         if ($remainingTime <= 0 || $this->endTime < now()) {
-            $this->resetSessionData();
-            $this->finishAssessment();
+            if ($this->assessment->duration_minutes > 0) {
+                $this->resetSessionData();
+                $this->finishAssessment();
+            }
         }
 
         return max($remainingTime, 0); // Pastikan waktu tidak negatif

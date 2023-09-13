@@ -5,16 +5,18 @@
 				<p class="text-gray-600">
 					Question: {{ $currentQuestionIndex + 1 }} / {{ $totalQuestions }}
 				</p>
-				<p class="text-gray-600 mb-4">
-					Time left:
-					{{-- <span id="countdown" class="text-red-600"> --}}
-					<span id="countdown" class="text-red-600" wire:poll.1000ms>
-						{{ gmdate('H:i:s', $remainingTime) }}
-						@if ($remainingTime < 0)
-							Selesai
-						@endif
-					</span>
-				</p>
+
+				@if ($assessment->duration_minutes > 0 && !is_null($remainingTime))
+					<p class="text-gray-600 mb-4">
+						Time left:
+						<span id="countdown" class="text-red-600" wire:poll.1000ms>
+							{{ gmdate('H:i:s', $remainingTime) }}
+							@if ($remainingTime < 0)
+								Selesai
+							@endif
+						</span>
+					</p>
+				@endif
 			</div>
 
 			<div class="my-6">
