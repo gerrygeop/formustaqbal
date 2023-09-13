@@ -92,7 +92,9 @@ class CourseController extends Controller
         $userId = auth()->id();
 
         if (!$module->users()->where('user_id', $userId)->exists()) {
-            abort(404);
+            if (!auth()->user()->hasRole('teacher')) {
+                abort(404);
+            }
         }
 
         $module->load([
