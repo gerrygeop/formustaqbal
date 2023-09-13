@@ -126,7 +126,9 @@ class CourseController extends Controller
     public function learn(Module $module, Chapter $chapter)
     {
         if (!$module->isUSerValid() || !$module->isSubmoduleExists($chapter->submodule->id)) {
-            abort(404);
+            if (!auth()->user()->hasRole('teacher')) {
+                abort(404);
+            }
         }
 
         $user = auth()->user();
@@ -159,26 +161,29 @@ class CourseController extends Controller
                 $nextChapter = $chapters->get($currentIndex + 1);
             }
 
-            $completedSubmodules = DB::transaction(function () use ($module, $chapter, $user) {
-                $module->users()
-                    ->syncWithoutDetaching([
-                        $user->id => ['last_visit' => $chapter->id]
-                    ]);
+            $completedSubmodules = [];
+            if (!auth()->user()->hasRole('teacher')) {
+                $completedSubmodules = DB::transaction(function () use ($module, $chapter, $user) {
+                    $module->users()
+                        ->syncWithoutDetaching([
+                            $user->id => ['last_visit' => $chapter->id]
+                        ]);
 
-                $completedSubmodules = json_decode(
-                    $module->users->first()->pivot->completed_submodules
-                );
+                    $completedSubmodules = json_decode(
+                        $module->users->first()->pivot->completed_submodules
+                    );
 
-                if (is_null($completedSubmodules) || !in_array($chapter->id, $completedSubmodules)) {
-                    $completedSubmodules[] = $chapter->id;
-                    $module->updateUserCompletedSubmodules($completedSubmodules);
-                    $user->profile->increment('xp', 10);
-                } else {
-                    $user->profile->increment('xp');
-                }
+                    if (is_null($completedSubmodules) || !in_array($chapter->id, $completedSubmodules)) {
+                        $completedSubmodules[] = $chapter->id;
+                        $module->updateUserCompletedSubmodules($completedSubmodules);
+                        $user->profile->increment('xp', 10);
+                    } else {
+                        $user->profile->increment('xp');
+                    }
 
-                return $completedSubmodules;
-            });
+                    return $completedSubmodules;
+                });
+            }
         } else {
             abort(404);
         }
@@ -213,7 +218,7 @@ class CourseController extends Controller
                 'currentChapter' => $chapter,
                 'prevChapter' => $prevChapter,
                 'nextChapter' => $nextChapter,
-                'completedSubmodules' => $completedSubmodules,
+                'completedSubmodules' => is_null($completedSubmodules) ? [] : $completedSubmodules,
                 'hasTakenAssessment' => $hasTakenAssessment,
                 'questionNull' => $questionNull,
             ]);
