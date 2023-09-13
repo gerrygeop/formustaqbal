@@ -48,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/class/{room}', [RoomController::class, 'show'])->name('rooms.show');
         Route::get('/class/{room}/{user}', [RoomController::class, 'mhs'])->name('rooms.mhs');
 
+        Route::get('/level/{module}/review/{assessment}', [QuizController::class, 'roast'])->name('rooms.roast');
+
         // Teacher testing placement-test
         Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
         Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
@@ -66,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/profile/{user}/l', [ProfileController::class, 'detail'])->name('profile.detail');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
 
     Route::get('/profile/setting', [ProfileController::class, 'edit'])->name('profile.edit');
