@@ -8,6 +8,7 @@
 						<img src="{{ asset('storage/' . $module->course->cover_path) }}" alt="{{ $module->course->name }}"
 							class="h-auto w-full">
 					</div>
+
 					<div class="flex flex-col items-center xl:items-start gap-5">
 						<h3 class="font-semibold text-3xl text-gray-800 dark:text-gray-50">
 							{{ $module->course->name }}
@@ -62,24 +63,69 @@
 
 			{{-- Action --}}
 			<div class="hidden xl:block col-span-1">
-				<div class="flex flex-col items-center justify-center bg-white dark:bg-gray-800 p-6 shadow-sm rounded-md">
+				<div class="flex flex-col items-center justify-center gap-y-3 bg-white dark:bg-gray-800 p-6 shadow-sm rounded-md">
 					<a href="{{ route('courses.start', $module) }}"
 						class="bg-slate-800 hover:bg-slate-900 px-6 py-2 text-white rounded w-full text-center">
 						{{ is_null($completedSubmodules) ? 'Mulai Belajar' : 'Lanjut Belajar' }}
 					</a>
+					<a href="#silabus"
+						class="bg-gray-100 hover:bg-gray-200 px-6 py-2 text-slate-900 border border-gray-400 rounded w-full text-center">
+						Silabus
+					</a>
+				</div>
+			</div>
+
+			{{-- Quiz/Exam --}}
+			<div class="col-span-1 lg:col-span-3">
+				<div class="py-6">
+					<div class="w-full">
+						<h3 class="font-medium text-xl text-gray-700 dark:text-gray-200">Quiz/Exam</h3>
+
+						<div class="mt-4 selection:bg-amber-300">
+							@foreach ($chapters as $chapter)
+								<div class="bg-white border rounded overflow-hidden">
+									<div class="py-4 px-5 flex items-center justify-between">
+										<div>
+											<h3 class="font-semibold text-lg text-gray-800">
+												{{ $chapter->submodule->title }}
+											</h3>
+
+											<div class="flex items-center space-x-4">
+												<p>
+													{{ $chapter->title }}
+												</p>
+												@if ($chapter->assessment)
+													<span>-</span>
+												@endif
+												<p>
+													{{ $chapter->assessment->title }}
+												</p>
+											</div>
+										</div>
+										<div>
+											<a href="{{ route('rooms.roast', [$chapter->submodule->module, $chapter->assessment]) }}"
+												class="px-4 py-2 text-sm bg-gray-50 hover:bg-gray-200 border">
+												Detail
+											</a>
+										</div>
+									</div>
+								</div>
+							@endforeach
+						</div>
+					</div>
 				</div>
 			</div>
 
 			{{-- Silabus --}}
-			<div class="col-span-1 lg:col-span-3">
+			<div class="col-span-1 lg:col-span-3" id="silabus">
 				<div class="py-6">
-					<div class="max-w-2xl">
-						<h3 class="font-medium text-xl text-gray-700 dark:text-gray-200">Silabus - {{ $module->title }}</h3>
+					<div class="w-full">
+						<h3 class="font-medium text-xl text-gray-700 dark:text-gray-200">Silabus</h3>
 
 						<div class="mt-4 selection:bg-amber-300">
 							@foreach ($module->submodules->where('is_visible', 1)->sortBy('list_sort') as $submodule)
 								<div class="bg-white border rounded overflow-hidden" x-data="{ collapse: null }">
-									<div class="p-4 flex items-center justify-between cursor-pointer"
+									<div class="py-4 px-5 flex items-center justify-between cursor-pointer"
 										x-on:click="collapse !== {{ $submodule->id }} ? collapse = {{ $submodule->id }} : collapse = null">
 										<h3 class="font-semibold text-lg text-gray-800">
 											{{ $submodule->title }}
@@ -94,7 +140,7 @@
 									<div x-ref="container"
 										x-bind:style="collapse == {{ $submodule->id }} ? 'max-height:' + $refs.container.scrollHeight + 'px' : ''"
 										class="bg-slate-50 relative overflow-hidden max-h-0 transition-all duration-500">
-										<div class="p-4 border-t">
+										<div class="py-4 px-6 border-t">
 
 											@forelse ($submodule->chapters->where('is_visible', 1)->sortBy('list_sort') as $chapter)
 												<div @class(['flex relative', 'pb-6' => !$loop->last])>

@@ -189,7 +189,7 @@
 				<div class="border-t my-6"></div>
 
 				<div class="flex flex-col">
-					@foreach ($module->submodules->sortBy('list_sort') as $submodule)
+					@foreach ($module->submodules->where('is_visible', 1)->sortBy('list_sort') as $submodule)
 						<div x-data="{ collapse: {{ $currentChapter->submodule->id == $submodule->id ? $submodule->id : 'null' }} }">
 							<div class="bg-white py-4 border-b flex items-center justify-between cursor-pointer"
 								x-on:click="collapse != {{ $submodule->id }} ? collapse = {{ $submodule->id }} : collapse = null">

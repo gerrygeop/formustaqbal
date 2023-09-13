@@ -7,7 +7,6 @@ use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Subject;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -19,26 +18,42 @@ class CourseController extends Controller
      */
     public function my()
     {
-        $myCourses = Auth::user()
-            ->courses()
-            ->where('is_visible', true)
-            ->where(function ($query) {
-                $query->whereNull('published_at')
-                    ->orWhere('published_at', '<=', date('Y-m-d'));
-            })
-            ->with(['modules' => function ($query) {
-                $query->whereHas('users', function ($userQuery) {
-                    $userQuery->where('user_id', Auth::id());
-                })->where('is_visible', 1);
-            }])
-            ->get();
+        if (auth()->user()->hasRole('teacher')) {
+            $rooms = Auth::user()
+                ->rooms()
+                ->with(['module' => function ($query) {
+                    $query->where('is_visible', 1);
+                }])
+                ->get();
 
-        $courses = Course::withCount(['modules'])->get();
+            $courses = Course::withCount(['modules'])->get();
 
-        return view('courses.my', [
-            'myCourses' => $myCourses,
-            'courses' => $courses,
-        ]);
+            return view('courses.teacher.my', [
+                'rooms' => $rooms,
+                'courses' => $courses,
+            ]);
+        } else {
+            $myCourses = Auth::user()
+                ->courses()
+                ->where('is_visible', true)
+                ->where(function ($query) {
+                    $query->whereNull('published_at')
+                        ->orWhere('published_at', '<=', date('Y-m-d'));
+                })
+                ->with(['modules' => function ($query) {
+                    $query->whereHas('users', function ($userQuery) {
+                        $userQuery->where('user_id', Auth::id());
+                    })->where('is_visible', 1);
+                }])
+                ->get();
+
+            $courses = Course::withCount(['modules'])->get();
+
+            return view('courses.my', [
+                'myCourses' => $myCourses,
+                'courses' => $courses,
+            ]);
+        }
     }
 
     /**
@@ -79,9 +94,15 @@ class CourseController extends Controller
             return $module;
         });
 
-        return view('courses.levels', [
-            'course' => $course,
-        ]);
+        if (auth()->user()->hasRole('teacher')) {
+            return view('courses.teacher.levels', [
+                'course' => $course,
+            ]);
+        } else {
+            return view('courses.levels', [
+                'course' => $course,
+            ]);
+        }
     }
 
     /**
@@ -203,19 +224,23 @@ class CourseController extends Controller
         }]);
 
         $hasTakenAssessment = true;
-        $questionNull = true;
+        $questionNull = false;
+
+        if ($chapter->assessment && $chapter->assessment->questions->isEmpty()) {
+            $questionNull = true;
+        }
 
         if ($chapter->assessment) {
             $au = AssessmentUser::where('user_id', auth()->id())->where('assessment_id', $chapter->assessment->id)->first();
             $hasTakenAssessment = is_null($au) ? false : true;
 
-            if (!is_null($au) && !is_null($au->questions)) {
-                $questionNull = false;
-            }
-
             if (!is_null($au) && $au->is_completed == 0 && $au->created_at->addMinutes($chapter->assessment->duration_minutes) > now()) {
                 return to_route('courses.quiz', [$module, $chapter]);
             }
+        }
+
+        if (!$nextChapter->material && !$nextChapter->assessment) {
+            $nextChapter = null;
         }
 
         if (auth()->user()->hasRole('teacher')) {
@@ -238,61 +263,5 @@ class CourseController extends Controller
                 'hasTakenAssessment' => $hasTakenAssessment,
             ]);
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Course $course)
-    {
-        //
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

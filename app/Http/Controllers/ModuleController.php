@@ -13,7 +13,8 @@ class ModuleController extends Controller
             abort(403);
         }
 
-        $module->load('course', 'submodules');
+        $module->load('course', 'submodules.chapters.assessment');
+
         $courseUser = DB::table('course_user')
             ->where('module_id', $module->id)
             ->where('course_id', $module->course->id)
@@ -23,8 +24,16 @@ class ModuleController extends Controller
         $completedSubmodules = is_null($courseUser) ? null : json_decode($courseUser->completed_submodules);
 
         if (auth()->user()->hasRole('teacher')) {
+            $chapters = $module->submodules
+                ->flatMap(function ($submodule) {
+                    return $submodule->chapters->filter(function ($chapter) {
+                        return $chapter->assessment !== null;
+                    });
+                });
+
             return view('modules.show-teacher', [
                 'module' => $module,
+                'chapters' => $chapters,
                 'completedSubmodules' => is_null($completedSubmodules) ? [] : $completedSubmodules,
             ]);
         } else {

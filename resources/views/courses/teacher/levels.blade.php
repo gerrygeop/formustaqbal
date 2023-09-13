@@ -12,7 +12,7 @@
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
 				@forelse ($course->modules as $module)
-					@if ($module->users->contains(auth()->user()->id))
+					@if (auth()->user()->hasRoleAndRoom('teacher', $module->id))
 						<a href="{{ route('courses.modules.show', $module) }}"
 							class="col-span-1 group bg-white dark:bg-gray-800 overflow-hidden shadow-sm border hover:shadow-md hover:-translate-y-0.5 rounded-md md:rounded-lg transition duration-200">
 							<div class="p-4 md:p-5 text-gray-900 dark:text-gray-100 h-full">

@@ -29,6 +29,11 @@ class Module extends Model
         return $this->hasMany(Submodule::class);
     }
 
+    public function rooms(): HasMany
+    {
+        return $this->hasMany(Room::class);
+    }
+
     public function isUserValid()
     {
         return $this->users()->where('user_id', auth()->id())->exists();

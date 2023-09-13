@@ -156,7 +156,7 @@
 							</p>
 						@endif
 
-						@if (($nextChapter && $hasTakenAssessment) || $questionNull)
+						@if ($nextChapter && $hasTakenAssessment && !$questionNull)
 							<a href="{{ route('courses.learn', [$module, $nextChapter]) }}"
 								class="flex items-center space-x-1 px-6 py-2 text-white hover:text-white font-semibold capitalize bg-amber-500 rounded hover:bg-amber-500/80">
 								<span class="hidden md:block">Selanjutnya</span>
@@ -197,7 +197,7 @@
 				<div class="border-t my-6"></div>
 
 				<div class="flex flex-col">
-					@foreach ($module->submodules->sortBy('list_sort') as $submodule)
+					@foreach ($module->submodules->where('is_visible', 1)->sortBy('list_sort') as $submodule)
 						<div x-data="{ collapse: {{ $currentChapter->submodule->id == $submodule->id ? $submodule->id : 'null' }} }">
 							<div class="bg-white py-4 border-b flex items-center justify-between cursor-pointer"
 								x-on:click="collapse != {{ $submodule->id }} ? collapse = {{ $submodule->id }} : collapse = null">

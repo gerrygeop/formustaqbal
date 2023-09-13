@@ -12,6 +12,11 @@ class Room extends Model
 
     protected $guarded = ['id'];
 
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'room_user')->withPivot('type')->withTimestamps();

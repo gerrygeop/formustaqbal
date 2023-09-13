@@ -70,6 +70,15 @@ class User extends Authenticatable implements FilamentUser
         return $this->roles->pluck('name')->contains($roles);
     }
 
+    public function hasRoleAndRoom($role, $module): bool
+    {
+        if ($this->roles->pluck('name')->contains($role) && $this->rooms->pluck('module_id')->contains($module)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_user')->withTimestamps();
