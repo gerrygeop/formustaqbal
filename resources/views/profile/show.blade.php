@@ -12,8 +12,12 @@
 							</div>
 						</div>
 
-						<a href="{{ route('profile.edit') }}"
-							class="w-full md:w-auto text-center px-5 py-1.5 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">Edit</a>
+						@if (auth()->id() == $user->id)
+							<a href="{{ route('profile.edit') }}"
+								class="w-full md:w-auto text-center px-5 py-1.5 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">
+								Edit
+							</a>
+						@endif
 					</div>
 				</div>
 				<div class="px-4 sm:px-6 border-t border-gray-100">
