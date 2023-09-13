@@ -61,9 +61,10 @@ class UsersRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
+                    ->label('Tambah')
                     ->preloadRecordSelect()
                     ->form(fn (Tables\Actions\AttachAction $action): array => [
-                        $action->getRecordSelect(),
+                        $action->getRecordSelect()->multiple()->autofocus(),
                         Forms\Components\Select::make('type')
                             ->options([
                                 '0' => 'Mahasiswa',
@@ -75,7 +76,7 @@ class UsersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DetachAction::make()->label('Keluarkan'),
             ])
             ->bulkActions([
                 Tables\Actions\DetachBulkAction::make(),

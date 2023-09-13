@@ -125,8 +125,6 @@ class UserResource extends Resource
                                 'L' => 'Laki-laki',
                                 'P' => 'Perempuan',
                             ]),
-
-                        Forms\Components\Textarea::make('bio'),
                     ])
                     ->columnSpan(['lg' => 2]),
             ])
