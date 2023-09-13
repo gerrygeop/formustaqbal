@@ -3,21 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Assessment;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TeacherController extends Controller
 {
-    public function room()
-    {
-        $users = User::all();
-        return view('teachers.room', [
-            'users' => $users
-        ]);
-    }
-
     public function start()
     {
         return view('testing.test-start');
