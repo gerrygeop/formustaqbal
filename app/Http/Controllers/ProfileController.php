@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfilesInformationUpdateRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Local;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,16 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    /**
+     * Display the user's profile form.
+     */
+    public function detail(User $user): View
+    {
+        return view('profile.profile-teacher', [
+            'user' => $user,
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */
