@@ -12,24 +12,28 @@ class UserDashboardController extends Controller
         $modules = Auth::user()
             ->modules()
             ->where('is_visible', true)
-            ->with('course')
-            ->withCount('submodules')
+            ->with(['course', 'submodules.chapters'])
             ->get();
 
-        $modules->map(function ($module) {
-            $completedSubmodules = json_decode($module->pivot->completed_submodules);
-            if (!is_null($completedSubmodules)) {
-                $totalCompletedSubmodules = count($completedSubmodules);
-            } else {
-                $totalCompletedSubmodules = 0;
-            }
+        if (!auth()->user()->hasRole('teacher')) {
+            $modules->map(function ($module) {
+                $completedSubmodules = json_decode($module->pivot->completed_submodules);
+                if (!is_null($completedSubmodules)) {
+                    $totalCompletedSubmodules = count($completedSubmodules);
+                } else {
+                    $totalCompletedSubmodules = 0;
+                }
 
-            $totalSubmodules = $module->submodules_count;
-            $completionPercentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
-            $module->completion_percentage = $completionPercentage;
+                $totalSubmodules = $module->submodules->sum(function ($submodule) {
+                    return $submodule->chapters->count();
+                });
 
-            return $module;
-        });
+                $completionPercentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
+                $module->completion_percentage = $completionPercentage;
+
+                return $module;
+            });
+        }
 
         $rooms = Room::whereRelation('users', 'user_id', auth()->id())->get();
 
