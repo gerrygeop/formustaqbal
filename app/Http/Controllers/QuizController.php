@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assessment;
 use App\Models\AssessmentUser;
 use App\Models\Chapter;
 use App\Models\Module;
+use App\Models\Question;
+use App\Models\User;
+use App\Models\UserResponses;
 use Carbon\Carbon;
 
 class QuizController extends Controller
@@ -17,8 +21,11 @@ class QuizController extends Controller
             },
         ]);
 
-        if (!in_array($chapter->id, json_decode($module->users->first()->pivot->completed_submodules))) {
-            abort(403);
+        if (!auth()->user()->hasRole('teacher')) {
+            $completeSubmodule = json_decode($module->users->first()->pivot->completed_submodules);
+            if (!in_array($chapter->id, $completeSubmodule)) {
+                abort(403);
+            }
         }
 
         $chapter->load(['assessment' => function ($query) {
@@ -41,13 +48,56 @@ class QuizController extends Controller
             $au = $assessment->users->first()->pivot;
         }
 
-        if ($au->is_completed == 1 || $au->created_at->addMinutes($assessment->duration_minutes) < now()) {
-            return to_route('courses.learn', [$chapter->submodule->module->id, $chapter]);
+        if ($au->is_completed == 1) {
+            if ($assessment->duration_minutes > 0 && $au->created_at->addMinutes($assessment->duration_minutes) < now()) {
+                return to_route('courses.learn', [$chapter->submodule->module->id, $chapter]);
+            }
         } else {
             return view('quizzes.assessment-layout', [
                 'chapter' => $chapter,
                 'assessment' => $assessment,
             ]);
         }
+    }
+
+    public function roast(Module $module, Assessment $assessment)
+    {
+        $rooms = auth()
+            ->user()
+            ->rooms()
+            ->where('module_id', $module->id)
+            ->with(['users' => function ($query) {
+                $query->where('user_id', '!=', auth()->id());
+            }])
+            ->get();
+
+        return view('reviews.index', [
+            'assessment' => $assessment,
+            'rooms' => $rooms,
+        ]);
+    }
+
+    public function review(Assessment $assessment, User $user)
+    {
+        $ur = UserResponses::query()
+            ->where([
+                ['assessment_id', '=', $assessment->id],
+                ['user_id', '=', $user->id],
+            ])
+            ->get()->first();
+
+        $responses = collect(json_decode($ur->responses));
+        $questions = Question::whereIn('id', $responses->pluck('question_id'))->with('choices')->get();
+
+        $answers = $responses->mapWithKeys(function ($res, int $key) {
+            return [$res->question_id => $res];
+        });
+
+        return view('reviews.review-quiz', [
+            'assessment' => $assessment,
+            'user' => $user,
+            'answers' => $answers,
+            'questions' => $questions,
+        ]);
     }
 }
