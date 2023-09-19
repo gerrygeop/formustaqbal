@@ -9,11 +9,13 @@ class UsersProgress extends Component
 {
     public $room;
     public $users;
+    public $overallProgress = 0;
 
     public function mount($room)
     {
         $this->room = $room;
         $this->getAllUsers();
+        $this->overallProgress = $this->calculateAverageCompletion();
     }
 
     public function getAllUsers()
@@ -31,29 +33,35 @@ class UsersProgress extends Component
 
     public function countProgress()
     {
-        $this->users->sum(function ($user) {
+        $this->users->each(function ($user) {
             $user->completion_percentage = 0;
 
-            $user->modules->map(function ($module) use ($user) {
+            $user->modules->each(function ($module) use ($user) {
                 $completedSubmodules = json_decode($module->pivot->completed_submodules);
-                if (!is_null($completedSubmodules)) {
-                    $totalCompletedSubmodules = count($completedSubmodules);
-                } else {
-                    $totalCompletedSubmodules = 0;
-                }
+                $totalCompletedSubmodules = is_null($completedSubmodules) ? 0 : count($completedSubmodules);
 
                 $totalSubmodules = $module->submodules->sum(function ($submodule) {
                     return $submodule->chapters->count();
                 });
 
-                if ($totalSubmodules == 0) {
-                    $completionPercentage = 0;
-                } else {
-                    $completionPercentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
-                }
+                $completionPercentage = ($totalSubmodules == 0) ? 0 : round(($totalCompletedSubmodules / $totalSubmodules) * 100);
                 $user->completion_percentage = $completionPercentage;
             });
         });
+    }
+
+    public function calculateAverageCompletion()
+    {
+        $totalUsers = $this->users->count();
+
+        if ($totalUsers > 0) {
+            $totalCompletion = $this->users->sum('completion_percentage');
+            $averageCompletion = round($totalCompletion / $totalUsers);
+        } else {
+            $averageCompletion = 0;
+        }
+
+        return $averageCompletion;
     }
 
     public function render()
