@@ -25,6 +25,8 @@ class ModuleController extends Controller
 
         if (auth()->user()->hasRole('teacher')) {
             $chapters = $module->submodules
+                ->where('is_visible', 1)
+                ->sortBy('list_sort')
                 ->flatMap(function ($submodule) {
                     return $submodule->chapters->filter(function ($chapter) {
                         return $chapter->assessment !== null;

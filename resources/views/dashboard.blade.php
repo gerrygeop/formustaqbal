@@ -3,9 +3,9 @@
 
 		<div class="grid grid-cols-2 gap-4">
 			@if ($rooms->isEmpty())
-				<div class="col-span-1 bg-white dark:bg-gray-800 flex items-center overflow-hidden shadow-sm sm:rounded-lg">
+				<div class="col-span-1 bg-white dark:bg-gray-800 flex items-center overflow-hidden border shadow-sm sm:rounded-lg">
 					<div
-						class="flex items-center border gap-x-2 px-4 lg:px-6 py-3 lg:py-4 font-semibold lg:text-lg text-gray-900 dark:text-gray-100">
+						class="flex items-center gap-x-2 px-4 lg:px-6 py-3 lg:py-4 font-semibold lg:text-lg text-gray-900 dark:text-gray-100">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
 							class="w-5 h-5 lg:w-6 lg:h-6 text-amber-500">
 							<path fill-rule="evenodd"
@@ -14,7 +14,7 @@
 						</svg>
 
 						<span class="font-semibold">
-							{{ auth()->user()->profile->point }}
+							{{ $profile->point }}
 						</span>
 						<span>Point</span>
 					</div>
@@ -23,7 +23,7 @@
 
 			@if ($rooms->isNotEmpty())
 				<div class="col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-					<div class="px-4 lg:px-6 py-3 lg:py-4">
+					<div class="p-4 lg:p-6">
 						<div class="flex items-center gap-x-2 text-gray-900 dark:text-gray-100">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
 								class="w-5 h-5 lg:w-6 lg:h-6 text-amber-500">
@@ -153,7 +153,7 @@
 					<h3 class="text-lg text-slate-800 leading-0 dark:text-slate-100">Progress Class</h3>
 				</div>
 
-				<div class="flex flex-col gap-y-8">
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 					@foreach ($rooms as $room)
 						@livewire('users-progress', ['room' => $room], key($room->id))
 					@endforeach

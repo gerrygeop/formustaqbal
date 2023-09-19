@@ -16,54 +16,33 @@
 	</div>
 
 	<section class="mx-auto">
-		<div class="flex flex-col mt-6">
-			<div class="overflow-x-auto">
-				<div class="inline-block min-w-full py-2 align-middle">
-					<div class="overflow-hidden shadow border border-gray-200 dark:border-gray-700 md:rounded-lg">
-						<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-							<thead class="bg-gray-50 dark:bg-gray-800">
-								<tr>
-									<th scope="col"
-										class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										No
-									</th>
-									<th scope="col"
-										class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Name
-									</th>
-									<th scope="col"
-										class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Userame
-									</th>
-									<th scope="col"
-										class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Fakultas
-									</th>
-									<th scope="col"
-										class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Prodi
-									</th>
-								</tr>
-							</thead>
-							<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-								@foreach ($users as $user)
-									<tr>
-										<td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $loop->iteration }}</td>
-										<td class="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-											<h2 class="font-medium text-gray-800 dark:text-white ">
-												{{ $user->name }}
-											</h2>
-										</td>
-										<td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->username }}</td>
-										<td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->faculty }}</td>
-										<td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->department }}</td>
-									</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+		<div class="mt-6">
+
+			<x-table>
+				@slot('thead')
+					<x-th>No</x-th>
+					<x-th>Name</x-th>
+					<x-th>Userame</x-th>
+					<x-th>Fakultas</x-th>
+					<x-th>Prodi</x-th>
+				@endslot
+				@slot('tbody')
+					@foreach ($users as $user)
+						<tr>
+							<x-td>{{ $loop->iteration }}</x-td>
+							<x-td>
+								<h2 class="font-medium text-gray-800 dark:text-white ">
+									{{ $user->name }}
+								</h2>
+							</x-td>
+							<x-td>{{ $user->username }}</x-td>
+							<x-td>{{ $user->faculty }}</x-td>
+							<x-td>{{ $user->department }}</x-td>
+						</tr>
+					@endforeach
+				@endslot
+			</x-table>
+
 		</div>
 	</section>
 

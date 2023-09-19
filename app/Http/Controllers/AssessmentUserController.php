@@ -51,11 +51,16 @@ class AssessmentUserController extends Controller
             $responses = collect(json_decode($ur->responses));
             $questions = Question::whereIn('id', $responses->pluck('question_id'))->with('choices')->get();
 
+            $questions = $questions->mapWithKeys(function ($question, int $key) {
+                return [$question->id => $question];
+            });
+
             $answers = $responses->mapWithKeys(function ($res, int $key) {
                 return [$res->question_id => $res];
             });
 
             return view('reviews.review-quiz', [
+                'userResponses' => $ur,
                 'assessment' => $assessment,
                 'user' => $user,
                 'answers' => $answers,

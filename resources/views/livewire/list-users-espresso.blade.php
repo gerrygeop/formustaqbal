@@ -26,76 +26,49 @@
 	</div>
 
 	<section class="mx-auto">
-		<div class="flex flex-col mt-4">
-			<div class="overflow-x-auto">
-				<div class="inline-block min-w-full py-2 align-middle">
-					<div class="overflow-hidden shadow border border-gray-200 dark:border-gray-700 md:rounded-lg">
-						<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-							<thead class="bg-gray-50 dark:bg-gray-800">
-								<tr>
-									<th scope="col"
-										class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										No
-									</th>
-									<th scope="col"
-										class="px-2 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Name
-									</th>
-									<th scope="col"
-										class="px-2 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Username
-									</th>
-									<th scope="col"
-										class="px-2 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Fakultas
-									</th>
-									<th scope="col"
-										class="px-2 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Prodi
-									</th>
-									<th scope="col"
-										class="px-2 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Point
-									</th>
-									<th scope="col"
-										class="px-2 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-										Is completed
-									</th>
-								</tr>
-							</thead>
-							<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-								@foreach ($users as $user)
-									<tr>
-										<td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $loop->iteration }}</td>
-										<td class="px-2 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-											<h2 class="font-medium text-gray-800 dark:text-white ">
-												{{ $user->name }}
-											</h2>
-										</td>
-										<td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->username }}</td>
-										<td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->faculty }}</td>
-										<td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->department }}</td>
-										<td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">{{ $user->score }}</td>
-										<td class="px-2 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
-											@if ($user->is_completed)
-												<span
-													class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-													Selesai
-												</span>
-											@else
-												<span
-													class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-													Tidak Selesai
-												</span>
-											@endif
-										</td>
-									</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+		<div class="mt-4">
+
+			<x-table>
+				@slot('thead')
+					<x-th>No</x-th>
+					<x-th>Name</x-th>
+					<x-th>Username</x-th>
+					<x-th>Fakultas</x-th>
+					<x-th>Prodi</x-th>
+					<x-th>Point</x-th>
+					<x-th>Is completed</x-th>
+				@endslot
+				@slot('tbody')
+					@foreach ($users as $user)
+						<tr>
+							<x-td>{{ $loop->iteration }}</x-td>
+							<x-td>
+								<h2 class="font-medium text-gray-800 dark:text-white ">
+									{{ $user->name }}
+								</h2>
+							</x-td>
+							<x-td>{{ $user->username }}</x-td>
+							<x-td>{{ $user->faculty }}</x-td>
+							<x-td>{{ $user->department }}</x-td>
+							<x-td>{{ $user->score }}</x-td>
+							<x-td>
+								@if ($user->is_completed)
+									<span
+										class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+										Selesai
+									</span>
+								@else
+									<span
+										class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+										Tidak Selesai
+									</span>
+								@endif
+							</x-td>
+						</tr>
+					@endforeach
+				@endslot
+			</x-table>
+
 		</div>
 	</section>
 

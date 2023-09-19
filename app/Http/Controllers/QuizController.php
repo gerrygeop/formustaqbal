@@ -60,18 +60,22 @@ class QuizController extends Controller
         }
     }
 
-    public function roast(Module $module, Assessment $assessment)
+    public function show(Module $module, Assessment $assessment)
     {
         $rooms = auth()
             ->user()
             ->rooms()
             ->where('module_id', $module->id)
-            ->with(['users' => function ($query) {
-                $query->where('user_id', '!=', auth()->id());
+            ->with(['users' => function ($query) use ($assessment) {
+                $query->where('user_id', '!=', auth()->id())
+                    ->whereHas('assessments', function ($subquery) use ($assessment) {
+                        $subquery->where('assessment_id', $assessment->id);
+                    });
             }])
             ->get();
 
         return view('reviews.index', [
+            'module' => $module,
             'assessment' => $assessment,
             'rooms' => $rooms,
         ]);

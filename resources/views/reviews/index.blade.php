@@ -1,107 +1,119 @@
 <x-app-layout>
-	<section class="fixed inset-0 overflow-y-auto z-50 bg-gray-50 dark:bg-gray-900">
-		<div class="sticky top-0 bg-white dark:bg-gray-800 py-3 md:py-4 px-4 md:px-8 z-[51] shadow">
-			<div class="flex items-center justify-between">
-				<a href="{{ url()->previous() }}" class="flex-1 flex items-center gap-x-2 text-gray-600 dark:text-gray-50">
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-						class="w-6 h-6">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-					</svg>
-					<p class="font-semibold">Kembali</p>
-				</a>
-			</div>
+	<div class="max-w-6xl mx-auto">
+		<div class="mb-6">
+			<a href="{{ route('courses.modules.show', $module) }}"
+				class="w-fit flex items-center px-4 py-2 text-sm bg-gray-50 hover:bg-white rounded-lg hover:shadow transition-all duration-150">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+					class="w-5 h-5 mr-2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+				</svg>
+				<span>Kembali</span>
+			</a>
 		</div>
 
-		<div class="relative min-h-screen">
-			<div class="grid grid-cols-1 lg:grid-cols-4 min-h-screen">
-				<div class="col-span-1 p-4 md:p-6 lg:p-10 divide-y border-b lg:border-r">
-					{{-- <div class="pb-5 font-medium">
-						<p class="text-xl">{{ $user->name }}</p>
-						<p>{{ $user->username ?? '' }}</p>
-						<p>{{ $user->email ?? '' }}</p>
-					</div>
-					<div class="text-xl py-5">
-						<p>Total Soal</p>
-						<span class="font-semibold text-4xl text-amber-500">{{ $questions->count() }}</span>
-					</div> --}}
+		<div class="grid grid-cols-1 lg:grid-cols-4 gap-y-6 lg:gap-y-10 lg:gap-x-6 mb-16 divide-y">
+			<div class="col-span-1 lg:col-span-3 bg-white rounded-lg shadow p-6">
+				<div>
+					<p class="text-sm text-gray-600 mb-2">
+						@switch($assessment->type)
+							@case(1)
+								Quiz
+							@break
+
+							@case(3)
+								Exam
+							@break
+
+							@default
+								N/A
+						@endswitch
+					</p>
+					<h3 class="font-medium text-gray-800 text-lg">
+						{{ $assessment->assessmentable->submodule->title }}
+					</h3>
+					<h3 class="font-medium text-gray-800 text-lg">
+						{{ $assessment->assessmentable->title }} - {{ $assessment->title }}
+					</h3>
 				</div>
 
-				<div class="col-span-1 lg:col-span-3 bg-white">
-					<div class="max-w-5xl mx-auto w-full flex flex-col justify-between">
-						<div class="py-8 mb-20">
+				@if ($assessment->instruction)
+					<div class="mt-8">
+						<p class="text-sm text-gray-600 mb-2">Instruksi:</p>
 
-							<h2 class="font-semibold text-2xl text-gray-700">
-								{{ $assessment->title }}
-							</h2>
-
-							@foreach ($rooms as $room)
-							@endforeach
-							<div class="flex flex-col mt-6">
-								<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-									<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-										<div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-
-											<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-												<thead class="bg-gray-50 dark:bg-gray-800">
-													<tr>
-														<th scope="col"
-															class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-															No
-														</th>
-														<th scope="col"
-															class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-															NIM
-														</th>
-														<th scope="col"
-															class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-															Nama
-														</th>
-														<th scope="col"
-															class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400">
-															Prodi
-														</th>
-														<th scope="col" class="relative py-3.5 px-4">
-															<span class="sr-only">Edit</span>
-														</th>
-													</tr>
-												</thead>
-												<tbody class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-
-													@foreach ($room->users as $user)
-														<tr>
-															<td class="px-4 py-4 text-sm text-gray-800 dark:text-white whitespace-nowrap">
-																{{ $loop->iteration }}
-															</td>
-															<td class="px-4 py-4 text-sm text-gray-800 dark:text-white font-medium whitespace-nowrap">
-																{{ $user->username }}
-															</td>
-															<td class="px-4 py-4 text-sm text-gray-800 dark:text-white font-medium whitespace-nowrap">
-																{{ $user->name }}
-															</td>
-															<td class="px-4 py-4 text-sm text-gray-800 dark:text-white whitespace-nowrap">
-																{{ $user->siakad ? $user->siakad->department->name : '-' }}
-															</td>
-															<td class="px-4 py-4 text-sm whitespace-nowrap">
-																<a href="{{ route('rooms.mhs', [$room, $user]) }}"
-																	class="px-3 py-1 text-gray-700 border transition-colors duration-200 rounded dark:text-gray-300 hover:bg-gray-100">
-																	Review
-																</a>
-															</td>
-														</tr>
-													@endforeach
-
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-								</div>
-							</div>
-
+						<div class="prose">
+							{!! $assessment->instruction !!}
 						</div>
 					</div>
+				@endif
+			</div>
+
+			<div class="col-span-1 bg-white rounded-lg shadow p-6">
+				<div class="flex flex-col items-center justify-center">
+					<h5 class="text-xl text-gray-600 font-medium">Total Pertanyaan</h5>
+					<h2 class="text-3xl text-gray-800 font-semibold">
+						{{ $assessment->question_limit }}
+					</h2>
+				</div>
+			</div>
+
+			<div class="col-span-full">
+				<div class="py-8 mb-20" x-data="{ currentTab: {{ $rooms[0]->id }}, activeTab: 'text-amber-600 bg-white shadow', inactiveTab: 'text-gray-600' }">
+
+					<div class="flex items-center justify-center">
+						<div class="bg-gray-200 p-1 rounded-lg">
+							@foreach ($rooms as $room)
+								<button class="px-4 py-2 font-medium text-sm rounded-lg" @click="currentTab = {{ $room->id }}"
+									:class="currentTab == {{ $room->id }} ? activeTab : inactiveTab">
+									{{ $room->name }}
+								</button>
+							@endforeach
+						</div>
+					</div>
+
+					@foreach ($rooms as $room)
+						<div x-show="currentTab == {{ $room->id }}">
+							<div class="mt-3">
+
+								<x-table>
+									@slot('thead')
+										<x-th>No</x-th>
+										<x-th>NIM</x-th>
+										<x-th>Nama</x-th>
+										<x-th>Prodi</x-th>
+										<th scope="col" class="relative py-3.5 px-4">
+											<span class="sr-only">Edit</span>
+										</th>
+									@endslot
+
+									@slot('tbody')
+										@foreach ($room->users as $user)
+											<tr>
+												<x-td>{{ $loop->iteration }}</x-td>
+												<x-td>
+													<div class="font-medium">
+														{{ $user->username }}
+													</div>
+												</x-td>
+												<x-td>{{ $user->name }}</x-td>
+												<x-td>
+													{{ $user->siakad ? $user->siakad->department->name : '-' }}
+												</x-td>
+												<x-td>
+													<a href="{{ route('review.assessment', [$assessment, $user]) }}"
+														class="px-3 py-1 text-amber-600 dark:text-gray-300 hover:underline transition-all duration-200">
+														Review
+													</a>
+												</x-td>
+											</tr>
+										@endforeach
+									@endslot
+								</x-table>
+							</div>
+						</div>
+					@endforeach
+
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 </x-app-layout>

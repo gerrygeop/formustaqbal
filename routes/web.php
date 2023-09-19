@@ -48,16 +48,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/class/{room}', [RoomController::class, 'show'])->name('rooms.show');
         Route::get('/class/{room}/{user}', [RoomController::class, 'mhs'])->name('rooms.mhs');
 
-        Route::get('/level/{module}/review/{assessment}', [QuizController::class, 'roast'])->name('rooms.roast');
+        Route::get('/level/{module}/review/{assessment}', [QuizController::class, 'show'])->name('courses.quiz.show');
 
         // Teacher testing placement-test
         Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
         Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
     });
 
+    Route::get('/review/{assessment}/{user}', [AssessmentUserController::class, 'review'])->name('review.assessment');
+
     // Assessment user
     Route::middleware('can:superadmin')->group(function () {
-        Route::get('/review/{assessment}/{user}', [AssessmentUserController::class, 'review'])->name('review.assessment');
 
         Route::get('/reset/{assessment}/{user}', [AssessmentUserController::class, 'reset'])->name('reset.assessment');
 
