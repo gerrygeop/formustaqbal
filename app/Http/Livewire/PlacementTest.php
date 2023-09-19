@@ -51,7 +51,7 @@ class PlacementTest extends Component
 
     public function render()
     {
-        return view('livewire.placemen-test', [
+        return view('livewire.placement-test', [
             'currentQuestionIndex' => $this->currentQuestionIndex,
             'remainingTime' => $this->getRemainingTime(),
         ]);
