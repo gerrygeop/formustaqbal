@@ -52,7 +52,7 @@
 									<x-td>
 										<a href="{{ route('rooms.mhs', [$room, $user]) }}"
 											class="px-3 py-1 text-amber-600 dark:text-gray-300 hover:underline transition-all duration-200">
-											Lihat
+											Profil
 										</a>
 									</x-td>
 								</tr>

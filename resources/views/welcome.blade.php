@@ -174,7 +174,7 @@
 
 							<span class="col-span-full border-t"></span>
 
-							@foreach (\App\Models\User::with('profile')->get()->take(10) as $user)
+							@foreach (\App\Models\User::with('profile')->get()->random(10)->sortByDesc('profile.point') as $user)
 								<span class="col-span-1 text-sm lg:text-base">{{ $loop->iteration }}</span>
 								<span class="col-span-3 text-sm lg:text-base">{{ $user->name }}</span>
 								<span class="col-span-1 text-sm lg:text-base">{{ $user->profile->point ?? '0' }}</span>
