@@ -148,7 +148,7 @@
 												</div>
 											</div>
 											<div>
-												<a href="{{ route('courses.quiz.show', [$chapter->submodule->module, $chapter->assessment]) }}"
+												<a href="{{ route('courses.review.index', [$chapter->submodule->module, $chapter->assessment]) }}"
 													class="px-4 py-2 text-sm bg-gray-50 hover:bg-gray-200 border rounded">
 													Detail
 												</a>
