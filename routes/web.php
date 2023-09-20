@@ -7,6 +7,7 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PlacementTestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserDashboardController;
@@ -37,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/courses/{module}/quiz/{chapter}', [QuizController::class, 'quiz'])->name('courses.quiz');
 
     // LEVEL / MODULE
-    Route::get('/levels/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
+    Route::get('/level/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
 
     // LEADERBOARD
     Route::get('/leaderboards', [LeaderboardController::class, 'index'])->name('leader.index');
@@ -48,17 +49,21 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/class/{room}', [RoomController::class, 'show'])->name('rooms.show');
         Route::get('/class/{room}/{user}', [RoomController::class, 'mhs'])->name('rooms.mhs');
 
-        Route::get('/level/{module}/review/{assessment}', [QuizController::class, 'show'])->name('courses.quiz.show');
+        // Review
+        Route::get('/level/{module}/review/{assessment}', [ReviewController::class, 'index'])->name('courses.review.index');
+        Route::get('/level/{module}/review/{assessment}/{user}', [ReviewController::class, 'show'])->name('courses.review.show');
+        Route::get('/level/{module}/review/{assessment}/responses/{userresponses}', [ReviewController::class, 'edit'])->name('courses.review.edit');
+        Route::put('/review/{userresponses}/submit', [ReviewController::class, 'update'])->name('quiz.review.update');
 
         // Teacher testing placement-test
         Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
         Route::get('/testing/placement-test', [TeacherController::class, 'test'])->name('testing.placement-test');
     });
 
-    Route::get('/review/{assessment}/{user}', [AssessmentUserController::class, 'review'])->name('review.assessment');
 
     // Assessment user
     Route::middleware('can:superadmin')->group(function () {
+        Route::get('/review/{assessment}/{user}', [AssessmentUserController::class, 'review'])->name('review.assessment');
 
         Route::get('/reset/{assessment}/{user}', [AssessmentUserController::class, 'reset'])->name('reset.assessment');
 
@@ -76,7 +81,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/informations', [ProfileController::class, 'updateProfiles'])->name('profile.update.information');
     Route::patch('/profile/local', [ProfileController::class, 'updateLocal'])->name('profile.update.local');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';

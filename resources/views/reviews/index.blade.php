@@ -99,9 +99,9 @@
 													{{ $user->siakad ? $user->siakad->department->name : '-' }}
 												</x-td>
 												<x-td>
-													<a href="{{ route('review.assessment', [$assessment, $user]) }}"
+													<a href="{{ route('courses.review.show', [$module, $assessment, $user]) }}"
 														class="px-3 py-1 text-amber-600 dark:text-gray-300 hover:underline transition-all duration-200">
-														Review
+														Lihat
 													</a>
 												</x-td>
 											</tr>

@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Assessment;
 use App\Models\AssessmentUser;
 use App\Models\Chapter;
 use App\Models\Module;
-use App\Models\Question;
-use App\Models\User;
-use App\Models\UserResponses;
 use Carbon\Carbon;
 
 class QuizController extends Controller
@@ -58,50 +54,5 @@ class QuizController extends Controller
                 'assessment' => $assessment,
             ]);
         }
-    }
-
-    public function show(Module $module, Assessment $assessment)
-    {
-        $rooms = auth()
-            ->user()
-            ->rooms()
-            ->where('module_id', $module->id)
-            ->with(['users' => function ($query) use ($assessment) {
-                $query->where('user_id', '!=', auth()->id())
-                    ->whereHas('assessments', function ($subquery) use ($assessment) {
-                        $subquery->where('assessment_id', $assessment->id);
-                    });
-            }])
-            ->get();
-
-        return view('reviews.index', [
-            'module' => $module,
-            'assessment' => $assessment,
-            'rooms' => $rooms,
-        ]);
-    }
-
-    public function review(Assessment $assessment, User $user)
-    {
-        $ur = UserResponses::query()
-            ->where([
-                ['assessment_id', '=', $assessment->id],
-                ['user_id', '=', $user->id],
-            ])
-            ->get()->first();
-
-        $responses = collect(json_decode($ur->responses));
-        $questions = Question::whereIn('id', $responses->pluck('question_id'))->with('choices')->get();
-
-        $answers = $responses->mapWithKeys(function ($res, int $key) {
-            return [$res->question_id => $res];
-        });
-
-        return view('reviews.review-quiz', [
-            'assessment' => $assessment,
-            'user' => $user,
-            'answers' => $answers,
-            'questions' => $questions,
-        ]);
     }
 }

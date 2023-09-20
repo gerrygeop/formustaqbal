@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use App\Models\Assessment;
-use App\Models\Question;
 use App\Models\User;
-use App\Models\UserResponses;
 use Illuminate\Support\Facades\DB;
 
 class AssessmentUserController extends Controller
@@ -39,32 +37,6 @@ class AssessmentUserController extends Controller
                 'answers' => $answers,
                 'correctAnswer' => $correctAnswer,
                 'incorrectAnswer' => $answers->count() - $correctAnswer,
-            ]);
-        } else {
-            $ur = UserResponses::query()
-                ->where([
-                    ['assessment_id', '=', $assessment->id],
-                    ['user_id', '=', $user->id],
-                ])
-                ->get()->first();
-
-            $responses = collect(json_decode($ur->responses));
-            $questions = Question::whereIn('id', $responses->pluck('question_id'))->with('choices')->get();
-
-            $questions = $questions->mapWithKeys(function ($question, int $key) {
-                return [$question->id => $question];
-            });
-
-            $answers = $responses->mapWithKeys(function ($res, int $key) {
-                return [$res->question_id => $res];
-            });
-
-            return view('reviews.review-quiz', [
-                'userResponses' => $ur,
-                'assessment' => $assessment,
-                'user' => $user,
-                'answers' => $answers,
-                'questions' => $questions,
             ]);
         }
     }
