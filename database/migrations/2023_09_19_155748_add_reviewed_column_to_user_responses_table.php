@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('user_responses', function (Blueprint $table) {
             $table->unsignedInteger('reviewed')->nullable()->after('responses');
-            $table->integer('feedback')->nullable()->after('responses');
+            $table->text('feedback')->nullable()->after('responses');
+            $table->integer('score')->default(0)->after('responses');
         });
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('user_responses', function (Blueprint $table) {
             $table->dropColumn('reviewed');
             $table->dropColumn('feedback');
+            $table->dropColumn('score');
         });
     }
 };
