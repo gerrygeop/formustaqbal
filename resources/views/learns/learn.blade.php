@@ -83,32 +83,94 @@
 
 					@if ($currentChapter->assessment)
 						<div class="my-10 min-h-[8rem]">
-							<div class="px-6 h">
+							<div class="px-6">
 
-								@if (!$hasTakenAssessment)
-									<div class="flex flex-col justify-between h-full">
+								@if (session('finished'))
+									<x-alert-success>
+										{{ session('finished') }}
+									</x-alert-success>
+								@endif
+
+								@if (session('limitation'))
+									<x-alert-danger>
+										{{ session('limitation') }}
+									</x-alert-danger>
+								@endif
+
+								<div class="grid grid-cols-1 gap-y-10">
+									<div class="flex flex-col justify-between space-y-12 pb-4">
 										@if ($currentChapter->assessment->instruction)
-											<article class="prose dark:prose-invert mb-10">
+											<article class="prose dark:prose-invert">
 												{!! $currentChapter->assessment->instruction !!}
 											</article>
 										@endif
 
-										@if (!$hasTakenAssessment)
-											<div>
+										<div class="text-center space-x-4">
+											@if ($userResponses->count() < 5)
 												<a href="{{ route('courses.quiz', [$module, $currentChapter]) }}"
-													class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm overflow-hidden bg-slate-700 hover:bg-slate-800 text-white">
-													Mulai
+													class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm bg-slate-700 hover:bg-slate-800 text-white">
+													Mulai Kerjakan
 												</a>
+												<a href="{{ route('courses.quiz.preview', [$module, $currentChapter]) }}"
+													class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm bg-white text-gray-600 hover:text-gray-900">
+													Lihat Soal
+												</a>
+											@endif
+										</div>
+									</div>
+
+									@if (!$userResponses->isEmpty())
+										<div>
+											<div class="flex items-center justify-between px-1">
+												<h4 class="text-xl text-gray-800 font-medium">Riwayat</h4>
+												<p class="text-gray-700">
+													Total: {{ $userResponses->count() }}/5
+												</p>
 											</div>
-										@endif
-									</div>
-								@else
-									<div class="bg-white rounded-lg shadow p-6">
-										<p class="text-lg text-gray-800 text-center italic">
-											Terima kasih telah mengerjakan, nilai anda akan keluar setelah direview
-										</p>
-									</div>
-								@endif
+											<x-table>
+												@slot('thead')
+													<x-th>No</x-th>
+													<x-th>Waktu</x-th>
+													<x-th>Skor</x-th>
+													<x-th>Status</x-th>
+													<th scope="col" class="relative py-3.5 px-4">
+														<span class="sr-only">Edit</span>
+													</th>
+												@endslot
+
+												@slot('tbody')
+													@forelse ($userResponses->sortDesc() as $user)
+														<tr>
+															<x-td>{{ $loop->iteration }}</x-td>
+															<x-td class="font-medium">{{ $user->created_at }}</x-td>
+															<x-td>{{ $user->score }}</x-td>
+															<x-td>
+																@if ($user->reviewed)
+																	<x-badge color="green">Sudah direview</x-badge>
+																@else
+																	<x-badge color="red">Belum direview</x-badge>
+																@endif
+															</x-td>
+															<x-td class="text-end">
+																<a href="{{ route('courses.quiz.history', [$module, $currentChapter, $user]) }}"
+																	class="px-3 py-1 text-amber-600 dark:text-gray-300 hover:underline transition-all duration-200">
+																	Detail
+																</a>
+															</x-td>
+														</tr>
+													@empty
+														<tr>
+															<x-td colspan="5">
+																Tidak ada hasil
+															</x-td>
+														</tr>
+													@endforelse
+												@endslot
+											</x-table>
+										</div>
+									@endif
+
+								</div>
 							</div>
 						</div>
 					@endif

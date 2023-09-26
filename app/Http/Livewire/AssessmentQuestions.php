@@ -248,13 +248,12 @@ class AssessmentQuestions extends Component
 
             $userResponses->save();
 
-
             $assUser = AssessmentUser::where('assessment_id', $this->assessment->id)->where('user_id', auth()->id())->first();
             $assUser->update([
                 'is_completed' => true
             ]);
         });
 
-        return to_route('courses.learn', [$this->chapter->submodule->module, $this->chapter]);
+        return to_route('courses.learn', [$this->chapter->submodule->module, $this->chapter])->with('finished', 'Terima kasih telah mengerjakan, nilai anda akan keluar setelah direview');
     }
 }

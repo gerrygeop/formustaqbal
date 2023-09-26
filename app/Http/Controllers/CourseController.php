@@ -7,6 +7,7 @@ use App\Models\Chapter;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Subject;
+use App\Models\UserResponses;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -231,10 +232,20 @@ class CourseController extends Controller
         }
 
         if ($chapter->assessment) {
-            $au = AssessmentUser::where('user_id', auth()->id())->where('assessment_id', $chapter->assessment->id)->first();
+            $au = AssessmentUser::query()
+                ->where('user_id', auth()->id())
+                ->where('assessment_id', $chapter->assessment->id)
+                ->get()
+                ->last();
+
+            $userResponses = UserResponses::query()
+                ->where('user_id', auth()->id())
+                ->where('assessment_id', $chapter->assessment->id)
+                ->get();
+
             $hasTakenAssessment = is_null($au) ? false : true;
 
-            if (!is_null($au) && $au->is_completed == 0 && $au->created_at->addMinutes($chapter->assessment->duration_minutes) > now()) {
+            if (!is_null($au) && $au->is_completed == 0 && $au->updated_at->addMinutes($chapter->assessment->duration_minutes) > now()) {
                 return to_route('courses.quiz', [$module, $chapter]);
             }
         }
@@ -261,6 +272,7 @@ class CourseController extends Controller
                 'nextChapter' => $nextChapter,
                 'completedSubmodules' => $completedSubmodules,
                 'hasTakenAssessment' => $hasTakenAssessment,
+                'userResponses' => $userResponses ?? null,
             ]);
         }
     }
