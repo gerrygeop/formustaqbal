@@ -28,8 +28,7 @@ class UserDashboardController extends Controller
                     return $submodule->chapters->count();
                 });
 
-                $completionPercentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
-                $module->completion_percentage = $completionPercentage;
+                $module->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
 
                 return $module;
             });

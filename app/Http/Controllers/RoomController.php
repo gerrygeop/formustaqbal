@@ -44,14 +44,11 @@ class RoomController extends Controller
                     $totalCompletedSubmodules = 0;
                 }
 
-                $totalSubmodules = $module->submodules->count();
+                $totalSubmodules = $module->submodules->sum(function ($submodule) {
+                    return $submodule->chapters->count();
+                });
 
-                if ($totalSubmodules == 0) {
-                    $completionPercentage = 0;
-                } else {
-                    $completionPercentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
-                }
-                $user->completion_percentage = $completionPercentage;
+                $user->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
             });
         });
 
