@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 
     // QUIZ
     Route::get('/courses/{module}/quiz/{chapter}', [QuizController::class, 'quiz'])->name('courses.quiz');
+    Route::get('/courses/{module}/quiz/{chapter}/preview', [QuizController::class, 'preview'])->name('courses.quiz.preview');
+    Route::get('/courses/{module}/quiz/{chapter}/detail/{userresponses}', [QuizController::class, 'history'])->name('courses.quiz.history');
 
     // LEVEL / MODULE
     Route::get('/level/{module}', [ModuleController::class, 'show'])->name('courses.modules.show');
