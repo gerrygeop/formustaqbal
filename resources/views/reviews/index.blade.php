@@ -86,7 +86,7 @@
 									@endslot
 
 									@slot('tbody')
-										@foreach ($room->users as $user)
+										@foreach ($room->users->sortDesc() as $user)
 											<tr>
 												<x-td>{{ $loop->iteration }}</x-td>
 												<x-td>

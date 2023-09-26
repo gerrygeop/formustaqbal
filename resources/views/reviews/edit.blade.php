@@ -16,10 +16,10 @@
 		<div class="relative min-h-screen">
 			<div class="grid grid-cols-1 lg:grid-cols-4">
 				<div class="col-span-1 p-4 md:p-6 lg:p-10 divide-y border-b lg:border-r">
-					<div class="pb-5 font-medium">
-						<p class="text-lg">{{ $userResponses->user->name }}</p>
-						<p>{{ $userResponses->user->username ?? '' }}</p>
-						<p>{{ $userResponses->user->email ?? '' }}</p>
+					<div class="pb-5">
+						<p class="text-lg font-medium">{{ $userResponses->user->name }}</p>
+						<p class="text-gray-600">{{ $userResponses->user->username ?? '' }}</p>
+						<p class="text-gray-600">{{ $userResponses->user->email ?? '' }}</p>
 					</div>
 					<div class="py-5">
 						<p class="text-lg">Total Soal</p>

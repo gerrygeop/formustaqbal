@@ -70,7 +70,7 @@ class ReviewController extends Controller
     public function update(Request $request, UserResponses $user)
     {
         $validated = $request->validate([
-            'feedback' => ['string'],
+            'feedback' => ['nullable', 'string'],
         ]);
         $req = $request->except('_token', '_method', 'feedback');
         $responses = json_decode($user->responses, true);
