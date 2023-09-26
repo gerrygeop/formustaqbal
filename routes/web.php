@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/level/{module}/review/{assessment}', [ReviewController::class, 'index'])->name('courses.review.index');
         Route::get('/level/{module}/review/{assessment}/{user}', [ReviewController::class, 'show'])->name('courses.review.show');
         Route::get('/level/{module}/review/{assessment}/responses/{userresponses}', [ReviewController::class, 'edit'])->name('courses.review.edit');
-        Route::put('/review/{userresponses}/submit', [ReviewController::class, 'update'])->name('quiz.review.update');
+        Route::put('/review/{user}/submit', [ReviewController::class, 'update'])->name('quiz.review.update');
 
         // Teacher testing placement-test
         Route::get('/testing/start', [TeacherController::class, 'start'])->name('testing.start');
