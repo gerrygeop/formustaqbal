@@ -22,8 +22,9 @@
 			<div class="my-6">
 				@if ($question->file_path)
 					<div class="mb-4">
-						@if (str($question->file_path)->endsWith('.mp3'))
+						@if (str($question->file_path)->endsWith('.mp3') || str($question->file_path)->endsWith('.ogg'))
 							<audio controls class="bg-yellow-400 w-full">
+								<source src="{{ asset('storage/' . $question->file_path) }}" type="audio/ogg">
 								<source src="{{ asset('storage/' . $question->file_path) }}" type="audio/mpeg">
 								Your browser does not support the audio element.
 							</audio>
