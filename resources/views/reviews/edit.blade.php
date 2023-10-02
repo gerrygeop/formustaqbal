@@ -127,7 +127,7 @@
 													<p>{{ $response->answer }}</p>
 												</div>
 											@elseif ($questions[$response->question_id]->type == 4)
-												@if (str($response->answer)->endsWith('.mp3'))
+												@if (str($response->answer)->endsWith('.mp3') || str($response->answer)->endsWith('.ogg'))
 													<audio controls class="bg-yellow-400 w-full">
 														<source src="{{ asset('storage/' . $response->answer) }}" type="audio/mpeg">
 														Your browser does not support the audio element.

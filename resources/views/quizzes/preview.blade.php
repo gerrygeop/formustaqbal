@@ -13,7 +13,7 @@
 			</div>
 		</div>
 
-		<div class="relative min-h-screen">
+		<div class="min-h-screen">
 			<div class="grid grid-cols-1 lg:grid-cols-4">
 				<div class="col-span-1 p-4 md:p-6 lg:p-8 border-b lg:border-r">
 					<div class="pb-5 border-b">
@@ -22,7 +22,7 @@
 					</div>
 				</div>
 
-				<div class="col-span-1 lg:col-span-3 bg-white">
+				<div class="col-span-1 lg:col-span-3 bg-white h-screen">
 					<div class="max-w-5xl mx-auto">
 						<div class="py-8 px-4 lg:px-0 mb-20">
 
@@ -33,6 +33,14 @@
 							<div class="grid grid-cols-1 divide-y py-6">
 								@foreach ($questions as $question)
 									<div class="py-6">
+
+										<div class="mb-2">
+											<x-badge>
+												<x-question-type>
+													{{ $question->type }}
+												</x-question-type>
+											</x-badge>
+										</div>
 
 										@if ($question->file_path)
 											<div class="mb-4">
