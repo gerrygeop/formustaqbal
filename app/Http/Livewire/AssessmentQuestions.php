@@ -26,6 +26,9 @@ class AssessmentQuestions extends Component
 
     public $endTime;
 
+    protected $rules = [
+        'answers.*.speaking' => 'file|mimetypes:audio/mpeg,audio/ogg|max:5024',
+    ];
     protected $messages = [
         'answers.*.speaking' => 'The Audio file must be a file of type: mpeg, ogg.',
     ];
@@ -208,9 +211,7 @@ class AssessmentQuestions extends Component
                     }
                 }
             } else if ($this->question->type = 4 && isset($this->answers[$this->question->id]['speaking'])) { // Speaking
-                $this->validate([
-                    'answers.*.speaking' => 'file|mimetypes:audio/mpeg,audio/ogg|max:5024', // 5MB Max
-                ]);
+                $this->validate();
 
                 $audioFile = $this->answers[$this->question->id]['speaking'];
                 $audioFileName = $audioFile->store('speaking-question', 'public');

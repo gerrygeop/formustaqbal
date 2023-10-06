@@ -22,7 +22,7 @@
 					</div>
 				</div>
 
-				<div class="col-span-1 lg:col-span-3 bg-white h-screen">
+				<div class="col-span-1 lg:col-span-3 bg-white min-h-screen">
 					<div class="max-w-5xl mx-auto">
 						<div class="py-8 px-4 lg:px-0 mb-20">
 
@@ -36,16 +36,15 @@
 
 										<div class="mb-2">
 											<x-badge>
-												<x-question-type>
-													{{ $question->type }}
-												</x-question-type>
+												<x-question-type :type="$question->type" />
 											</x-badge>
 										</div>
 
 										@if ($question->file_path)
 											<div class="mb-4">
-												@if (str($question->file_path)->endsWith('.mp3'))
+												@if (str($question->file_path)->endsWith('.mp3') || str($question->file_path)->endsWith('.ogg'))
 													<audio controls class="bg-yellow-400 w-full">
+														<source src="{{ asset('storage/' . $question->file_path) }}" type="audio/ogg">
 														<source src="{{ asset('storage/' . $question->file_path) }}" type="audio/mpeg">
 														Your browser does not support the audio element.
 													</audio>
