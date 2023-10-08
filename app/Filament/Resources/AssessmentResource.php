@@ -49,7 +49,14 @@ class AssessmentResource extends Resource
                                 if ($get('type') == '2') {
                                     return [Forms\Components\MorphToSelect\Type::make(Course::class)->titleColumnName('name')->label('Bahasa')];
                                 } else {
-                                    return [Forms\Components\MorphToSelect\Type::make(Chapter::class)->titleColumnName('title')->label('Submodule')];
+                                    return [
+                                        Forms\Components\MorphToSelect\Type::make(Chapter::class)
+                                            ->titleColumnName('title')
+                                            ->getOptionLabelFromRecordUsing(function (Chapter $record) {
+                                                return "Level: {$record->submodule->module->title} > Module: {$record->submodule->title} > Sub: {$record->title}";
+                                            })
+                                            ->label('Submodule')
+                                    ];
                                 }
                             })
                             ->required(),
