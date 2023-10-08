@@ -41,8 +41,10 @@
 
 										@if ($questions[$response->question_id]->file_path)
 											<div class="mb-4">
-												@if (str($questions[$response->question_id]->file_path)->endsWith('.mp3'))
+												@if (str($questions[$response->question_id]->file_path)->endsWith('.mp3') ||
+														str($questions[$response->question_id]->file_path)->endsWith('.ogg'))
 													<audio controls class="bg-yellow-400 w-full">
+														<source src="{{ asset('storage/' . $questions[$response->question_id]->file_path) }}" type="audio/ogg">
 														<source src="{{ asset('storage/' . $questions[$response->question_id]->file_path) }}" type="audio/mpeg">
 														Your browser does not support the audio element.
 													</audio>
@@ -79,7 +81,15 @@
 														@endif
 
 														@if ($choice->image_path)
-															<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+															@if (str($choice->image_path)->endsWith('.mp3') || str($choice->image_path)->endsWith('.ogg'))
+																<audio controls class="bg-yellow-400 rounded-lg">
+																	<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/ogg">
+																	<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/mpeg">
+																	Your browser does not support the audio element.
+																</audio>
+															@else
+																<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+															@endif
 														@endif
 
 														<span @class([

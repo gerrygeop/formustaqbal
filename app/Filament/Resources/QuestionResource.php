@@ -40,7 +40,7 @@ class QuestionResource extends Resource
                         ->reactive(),
 
                     Forms\Components\FileUpload::make('file_path')
-                        ->label('Audio/Gambar')
+                        ->label('Gambar/Audio')
                         ->directory(fn (callable $get): string => $get('type') == 3 ? 'question-audio' : 'question-images')
                         ->acceptedFileTypes(['audio/mpeg', 'audio/ogg', 'image/jpeg', 'image/png', 'image/webp'])
                         ->imageResizeMode('cover')
@@ -74,9 +74,9 @@ class QuestionResource extends Resource
                         ->relationship('choices')
                         ->schema([
                             Forms\Components\FileUpload::make('image_path')
-                                ->label('Gambar (max: 3mb)')
+                                ->label('Gambar/Audio (max: 3mb)')
                                 ->directory('choices-images')
-                                ->image()
+                                ->acceptedFileTypes(['audio/mpeg', 'audio/ogg', 'image/jpeg', 'image/png', 'image/webp'])
                                 ->imageResizeMode('cover')
                                 ->imagePreviewHeight('200')
                                 ->enableOpen()

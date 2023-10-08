@@ -44,12 +44,21 @@
 					<div class="grid grid-cols-1 gap-4" @if ($question->is_choice_rtl) dir="rtl" @endif>
 						@foreach ($choiceOrder as $index)
 							<label class="text-lg flex items-center gap-x-4">
-								@if ($question->choices[$index]->image_path)
-									<img src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" alt="choice"
-										class="h-24 w-auto border">
-								@endif
 								<input type="radio" name="question_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
 									value="{{ old('choice_id', $question->choices[$index]->id) }}">
+								@if ($question->choices[$index]->image_path)
+									@if (str($question->choices[$index]->image_path)->endsWith('.mp3') ||
+											str($question->choices[$index]->image_path)->endsWith('.ogg'))
+										<audio controls class="bg-yellow-400 rounded-lg">
+											<source src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" type="audio/ogg">
+											<source src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" type="audio/mpeg">
+											Your browser does not support the audio element.
+										</audio>
+									@else
+										<img src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" alt="choice"
+											class="h-24 w-auto border">
+									@endif
+								@endif
 								{{ $question->choices[$index]->choice }}
 							</label>
 						@endforeach

@@ -244,10 +244,9 @@ class AssessmentQuestions extends Component
             if (session()->has('responses')) {
                 $userResponses->responses = json_encode(session('responses'));
 
+                $userResponses->save();
                 session()->forget('responses');
             }
-
-            $userResponses->save();
 
             $assUser = AssessmentUser::where('assessment_id', $this->assessment->id)->where('user_id', auth()->id())->first();
             $assUser->update([
