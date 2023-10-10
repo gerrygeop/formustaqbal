@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Answer;
 use App\Models\Assessment;
+use App\Models\Question;
 use App\Models\User;
+use App\Models\UserResponses;
 use Illuminate\Support\Facades\DB;
 
 class AssessmentUserController extends Controller
@@ -38,7 +40,36 @@ class AssessmentUserController extends Controller
                 'correctAnswer' => $correctAnswer,
                 'incorrectAnswer' => $answers->count() - $correctAnswer,
             ]);
+        } else {
+            $ur = UserResponses::query()
+                ->where([
+                    ['assessment_id', '=', $assessment->id],
+                    ['user_id', '=', $user->id],
+                ])
+                ->get();
+
+            return view('reviews.dapur.index', [
+                'user' => $user,
+                'assessment' => $assessment,
+                'responses' => $ur,
+            ]);
         }
+    }
+
+    public function detailReview(Assessment $assessment, UserResponses $userresponses)
+    {
+        $responses = collect(json_decode($userresponses->responses));
+        $questions = Question::whereIn('id', $responses->pluck('question_id'))->with('choices')->get();
+
+        $questions = $questions->mapWithKeys(function ($question, int $key) {
+            return [$question->id => $question];
+        });
+
+        return view('reviews.dapur.show', [
+            'assessment' => $assessment,
+            'userResponses' => $userresponses,
+            'questions' => $questions,
+        ]);
     }
 
     public function reset(Assessment $assessment, User $user)

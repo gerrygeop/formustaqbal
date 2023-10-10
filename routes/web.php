@@ -65,7 +65,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Assessment user
     Route::middleware('can:superadmin')->group(function () {
-        Route::get('/review/{assessment}/{user}', [AssessmentUserController::class, 'review'])->name('review.assessment');
+        Route::get('/dapur/review/{assessment}/{user}', [AssessmentUserController::class, 'review'])->name('review.assessment');
+        Route::get('/dapur/review/{assessment}/answers/{userresponses}', [AssessmentUserController::class, 'detailReview'])->name('review.assessment.detail');
 
         Route::get('/reset/{assessment}/{user}', [AssessmentUserController::class, 'reset'])->name('reset.assessment');
 
