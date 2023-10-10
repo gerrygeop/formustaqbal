@@ -53,7 +53,7 @@ class UsersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nama')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('score')->label('Nilai')->searchable()->sortable(),
-                Tables\Columns\IconColumn::make('is_completed')->label('')->boolean(),
+                Tables\Columns\IconColumn::make('is_completed')->label('Selesai')->boolean(),
             ])
             ->filters([
                 //
