@@ -26,7 +26,7 @@
 									<div class="flex items-center space-x-2 mt-3 text-gray-800">
 										<span class="text-xl font-semibold">{{ $module->title }}</span>
 										<div class="w-1 h-1 rounded-full bg-gray-500"></div>
-										<span class="text-sm font-medium">Class A</span>
+										<span class="text-sm font-medium">Class {{ auth()->user()->rooms->first()->name }}</span>
 									</div>
 								</div>
 							</a>
