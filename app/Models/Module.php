@@ -46,12 +46,9 @@ class Module extends Model
 
     public function getAllChapters()
     {
-        return $this->submodules->flatMap(function ($submodule) {
-            return $submodule->chapters;
-        })->sortBy([
-            ['submodule.list_sort', 'asc'],
-            ['list_sort', 'asc'],
-        ]);
+        return $this->submodules->sortBy('list_sort')->flatMap(function ($submodule) {
+            return $submodule->chapters->sortBy('list_sort');
+        });
     }
 
     public function updateUserCompletedSubmodules($completedSubmodules)
