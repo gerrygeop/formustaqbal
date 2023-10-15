@@ -25,7 +25,7 @@
 							@break
 
 							@default
-								N/A
+								-
 						@endswitch
 					</p>
 					<h3 class="font-medium text-gray-800 text-lg">
@@ -48,10 +48,10 @@
 			</div>
 
 			<div class="col-span-1 bg-white rounded-lg shadow p-6">
-				<div class="flex flex-col items-center justify-center">
-					<h5 class="text-xl text-gray-600 font-medium">Total Pertanyaan</h5>
-					<h2 class="text-3xl text-gray-800 font-semibold">
-						{{ $assessment->question_limit }}
+				<div class="flex flex-col items-center justify-center text-center">
+					<h5 class="text-xl text-gray-600 font-medium mb-1">Total Pertanyaan</h5>
+					<h2 class="text-4xl text-gray-800 font-semibold">
+						{{ $assessment->question_limit ?? $assessment->questions->count() }}
 					</h2>
 				</div>
 			</div>
