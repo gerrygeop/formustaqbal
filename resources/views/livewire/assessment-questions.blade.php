@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto w-full h-screen md:h-auto flex flex-col justify-between pb-10">
+<div class="max-w-5xl mx-auto w-full m-h-screen md:h-auto flex flex-col justify-between pb-10">
 	<div class="bg-white/80 h-full md:h-auto backdrop-blur border rounded-xl shadow py-8 px-10">
 		<div class="flex flex-col">
 			<div class="flex items-center justify-between">
@@ -22,7 +22,7 @@
 			<div class="my-6">
 				@if ($question->file_path)
 					<div class="mb-4">
-						@livewire('question-attachment', ['path' => $question->file_path], key($question->id))
+						@livewire('file-attachment', ['path' => $question->file_path, 'classes' => 'w-full'], key($question->id))
 					</div>
 				@endif
 
@@ -39,17 +39,14 @@
 								<input type="radio" name="question_{{ $question->id }}" wire:model="answers.{{ $question->id }}"
 									value="{{ old('choice_id', $question->choices[$index]->id) }}">
 								@if ($question->choices[$index]->image_path)
-									@if (str($question->choices[$index]->image_path)->endsWith('.mp3') ||
-											str($question->choices[$index]->image_path)->endsWith('.ogg'))
-										<audio controls class="bg-yellow-400 rounded-lg">
-											<source src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" type="audio/ogg">
-											<source src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" type="audio/mpeg">
-											Your browser does not support the audio element.
-										</audio>
-									@else
-										<img src="{{ asset('storage/' . $question->choices[$index]->image_path) }}" alt="choice"
-											class="h-24 w-auto border">
-									@endif
+									@livewire(
+									    'file-attachment',
+									    [
+									        'path' => $question->choices[$index]->image_path,
+									        'classes' => 'rounded',
+									    ],
+									    key($question->choices[$index]->id)
+									)
 								@endif
 								{{ $question->choices[$index]->choice }}
 							</label>

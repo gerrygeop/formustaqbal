@@ -4,12 +4,13 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class QuestionAttachment extends Component
+class FileAttachment extends Component
 {
     public $path;
+    public $classes;
 
     public function render()
     {
-        return view('livewire.question-attachment');
+        return view('livewire.file-attachment');
     }
 }
