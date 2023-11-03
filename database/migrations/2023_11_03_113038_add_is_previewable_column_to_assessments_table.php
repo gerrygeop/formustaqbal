@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assessments', function (Blueprint $table) {
-            $table->boolean('is_previewable')->default(true)->after('is_random_choices ');
+            $table->boolean('is_previewable')->default(true);
         });
     }
 
