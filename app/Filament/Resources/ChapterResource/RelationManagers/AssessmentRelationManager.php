@@ -68,6 +68,9 @@ class AssessmentRelationManager extends RelationManager
                         Forms\Components\Toggle::make('is_random_choices')
                             ->label('Pilihan ganda acak')
                             ->default(false),
+                        Forms\Components\Toggle::make('is_previewable')
+                            ->label('Preview Soal')
+                            ->default(true),
                     ]),
             ]);
     }

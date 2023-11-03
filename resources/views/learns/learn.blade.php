@@ -111,10 +111,13 @@
 													class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm bg-slate-700 hover:bg-slate-800 text-white">
 													Mulai Kerjakan
 												</a>
-												<a href="{{ route('courses.quiz.preview', [$module, $currentChapter]) }}"
-													class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm bg-white text-gray-600 hover:text-gray-900">
-													Lihat Soal
-												</a>
+
+												@if ($currentChapter->assessment->is_previewable)
+													<a href="{{ route('courses.quiz.preview', [$module, $currentChapter]) }}"
+														class="w-full md:w-auto text-center font-semibold px-6 py-2 border rounded-md shadow-sm bg-white text-gray-600 hover:text-gray-900">
+														Lihat Soal
+													</a>
+												@endif
 											@endif
 										</div>
 									</div>
