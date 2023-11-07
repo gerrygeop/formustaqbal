@@ -22,15 +22,8 @@ class AssessmentRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        // Forms\Components\Select::make('creator_id')
-                        //     ->relationship('creator', 'name')
-                        //     ->options(User::whereHas('roles', fn ($query) => $query->where('name', 'teacher'))->pluck('name', 'id'))
-                        //     ->default(auth()->user()->id)
-                        //     ->label('Created by')
-                        //     ->required(),
-
                         Forms\Components\Select::make('type')
-                            ->label('Type Assessment')
+                            ->label('Tipe')
                             ->options([
                                 '1' => 'Quiz',
                                 '3' => 'Exam',
@@ -39,21 +32,32 @@ class AssessmentRelationManager extends RelationManager
                             ->required(),
 
                         Forms\Components\TextInput::make('title')
+                            ->label('Judul')
                             ->required()
                             ->maxLength(255),
 
                         Forms\Components\RichEditor::make('instruction')
+                            ->label('Instruksi')
                             ->disableAllToolbarButtons(),
 
                         Forms\Components\Grid::make(3)->schema([
-                            Forms\Components\DateTimePicker::make('published_at')->default(now()),
+                            Forms\Components\DateTimePicker::make('published_at')
+                                ->label('Waktu Aktif')
+                                ->default(now()),
                             Forms\Components\TextInput::make('duration_minutes')
+                                ->label('Durasi')
                                 ->numeric()
                                 ->default(5)
                                 ->minValue(1),
                             Forms\Components\TextInput::make('question_limit')
+                                ->label('Batas Soal')
                                 ->numeric()
                                 ->minValue(0),
+                            Forms\Components\TextInput::make('trial_limits')
+                                ->label('Batas Percobaan')
+                                ->numeric()
+                                ->default(5)
+                                ->minValue(1),
                         ]),
                     ]),
 
@@ -79,11 +83,14 @@ class AssessmentRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Judul'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->sortable()
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Terakhir diperbarui')
                     ->sortable()
                     ->dateTime(),
             ])

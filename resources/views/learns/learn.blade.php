@@ -127,7 +127,7 @@
 											<div class="flex items-center justify-between px-1">
 												<h4 class="text-xl text-gray-800 font-medium">Riwayat</h4>
 												<p class="text-gray-700">
-													Total: {{ $userResponses->count() }}/5
+													Total: {{ $userResponses->count() }}/{{ $currentChapter->assessment->trial_limits }}
 												</p>
 											</div>
 											<x-table>

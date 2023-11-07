@@ -30,7 +30,7 @@ class AssessmentsRelationManager extends RelationManager
                             ->required(),
 
                         Forms\Components\Select::make('type')
-                            ->label('Type Assessment')
+                            ->label('Tipe')
                             ->options([
                                 '1' => 'Quiz',
                             ])
@@ -38,21 +38,32 @@ class AssessmentsRelationManager extends RelationManager
                             ->required(),
 
                         Forms\Components\TextInput::make('title')
+                            ->label('Judul')
                             ->required()
                             ->maxLength(255),
 
                         Forms\Components\RichEditor::make('instruction')
+                            ->label('Instruksi')
                             ->disableAllToolbarButtons(),
 
                         Forms\Components\Grid::make(3)->schema([
-                            Forms\Components\DateTimePicker::make('published_at')->default(now()),
+                            Forms\Components\DateTimePicker::make('published_at')
+                                ->label('Waktu Aktif')
+                                ->default(now()),
                             Forms\Components\TextInput::make('duration_minutes')
+                                ->label('Durasi')
                                 ->numeric()
                                 ->default(5)
                                 ->minValue(1),
                             Forms\Components\TextInput::make('question_limit')
+                                ->label('Batas Soal')
                                 ->numeric()
                                 ->minValue(0),
+                            Forms\Components\TextInput::make('trial_limits')
+                                ->label('Batas Percobaan')
+                                ->numeric()
+                                ->default(5)
+                                ->minValue(1),
                         ]),
                     ]),
 

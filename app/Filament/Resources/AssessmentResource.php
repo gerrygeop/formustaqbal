@@ -27,14 +27,8 @@ class AssessmentResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        // Forms\Components\Select::make('creator_id')
-                        //     ->relationship('creator', 'name')
-                        //     ->default(auth()->user()->id)
-                        //     ->label('Created by')
-                        //     ->required(),
-
                         Forms\Components\Select::make('type')
-                            ->label('Type Assessment')
+                            ->label('Tipe')
                             ->options([
                                 '1' => 'Quiz',
                                 '2' => 'Placement Test',
@@ -94,9 +88,11 @@ class AssessmentResource extends Resource
 
                 Forms\Components\Section::make('Pengaturan')
                     ->schema([
-                        Forms\Components\DateTimePicker::make('published_at')->default(now()),
                         // Forms\Components\TimePicker::make('start_time'),
                         // Forms\Components\TimePicker::make('end_time'),
+                        Forms\Components\DateTimePicker::make('published_at')
+                            ->label('Waktu Aktif')
+                            ->default(now()),
                         Forms\Components\TextInput::make('duration_minutes')
                             ->label('Durasi')
                             ->numeric()
@@ -106,6 +102,11 @@ class AssessmentResource extends Resource
                             ->label('Batas Soal')
                             ->numeric()
                             ->minValue(0),
+                        Forms\Components\TextInput::make('trial_limits')
+                            ->label('Batas Percobaan')
+                            ->numeric()
+                            ->default(5)
+                            ->minValue(1),
                     ])->columnSpan(['lg' => 2]),
             ])
             ->columns(3);
@@ -115,7 +116,6 @@ class AssessmentResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('creator.name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Judul')
                     ->sortable()

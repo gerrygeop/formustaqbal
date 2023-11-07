@@ -52,7 +52,7 @@ class QuizController extends Controller
             ['assessment_id', '=', $assessment->id],
         ])->get();
 
-        if ($userResponses->count() == 5) {
+        if ($userResponses->count() == $assessment->trial_limits) {
             return to_route('courses.learn', [$chapter->submodule->module->id, $chapter])->with('limitation', 'Anda telah mencapai batas untuk mengambil Quiz');
         }
 
