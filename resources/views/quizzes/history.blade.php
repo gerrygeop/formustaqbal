@@ -106,8 +106,9 @@
 												<p>{{ $response->answer }}</p>
 											</div>
 										@elseif ($questions[$response->question_id]->type == 4)
-											@if (str($response->answer)->endsWith('.mp3'))
+											@if (str($response->answer)->endsWith('.mp3') || str($choice->image_path)->endsWith('.ogg'))
 												<audio controls class="bg-yellow-400 w-full">
+													<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/ogg">
 													<source src="{{ asset('storage/' . $response->answer) }}" type="audio/mpeg">
 													Your browser does not support the audio element.
 												</audio>
@@ -120,7 +121,7 @@
 
 										<div class="my-8 p-4 border rounded-lg bg-amber-50">
 											<x-input-label :value="__('Point')" />
-											<div class="mt-1 block w-full font-semibold text-xl"> {{ $response->point }} </div>
+											<div class="mt-1 block w-full font-semibold text-xl"> {{ $response->point ?? '-' }} </div>
 										</div>
 									</div>
 								@endforeach
