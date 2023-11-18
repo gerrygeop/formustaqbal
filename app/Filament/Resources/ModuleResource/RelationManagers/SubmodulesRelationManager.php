@@ -52,6 +52,9 @@ class SubmodulesRelationManager extends RelationManager
                     ->label('Judul')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_visible')
+                    ->label('Aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
                     ->label('Dibuat')
