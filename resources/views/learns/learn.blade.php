@@ -272,7 +272,7 @@
 							<div class="bg-slate-50 max-h-0 transition-all duration-500"
 								x-bind:class="collapse == {{ $submodule->id }} ? 'max-h-fit' : ''">
 								<div class="pl-4 space-y-4" x-bind:class="collapse == {{ $submodule->id }} ? 'py-4 border-b' : 'invisible'">
-									@forelse ($submodule->chapters as $chapter)
+									@forelse ($submodule->chapters->sortBy('list_sort') as $chapter)
 										<div class="flex items-center">
 											@if (in_array($chapter->id, $completedSubmodules))
 												<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

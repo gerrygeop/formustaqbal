@@ -173,6 +173,7 @@ class CourseController extends Controller
         ]);
 
         $chapters = $module->getAllChapters();
+        // return dd($chapters);
 
         $currentIndex = $chapters->search(function ($item) use ($chapter) {
             return $item->id == $chapter->id;

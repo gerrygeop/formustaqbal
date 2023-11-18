@@ -46,7 +46,7 @@ class Module extends Model
 
     public function getAllChapters()
     {
-        return $this->submodules->sortBy('list_sort')->flatMap(function ($submodule) {
+        return $this->submodules->where('is_visible', 1)->sortBy('list_sort')->flatMap(function ($submodule) {
             return $submodule->chapters->sortBy('list_sort');
         });
     }
