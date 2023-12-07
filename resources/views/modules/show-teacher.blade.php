@@ -127,7 +127,7 @@
 
 						<div x-show="currentTab === 2">
 							<div class="mt-4 selection:bg-amber-300">
-								@foreach ($chapters->where('is_visible', 1)->sortBy('list_sort') as $chapter)
+								@foreach ($chapters as $chapter)
 									<div class="bg-white border rounded overflow-hidden">
 										<div class="py-4 px-5 flex items-center justify-between">
 											<div>

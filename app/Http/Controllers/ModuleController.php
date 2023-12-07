@@ -30,7 +30,7 @@ class ModuleController extends Controller
                 ->flatMap(function ($submodule) {
                     return $submodule->chapters->filter(function ($chapter) {
                         return $chapter->assessment !== null;
-                    });
+                    })->sortBy('list_sort');
                 });
 
             return view('modules.show-teacher', [
