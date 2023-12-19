@@ -139,9 +139,7 @@
 													<p>
 														{{ $chapter->title }}
 													</p>
-													@if ($chapter->assessment)
-														<span>-</span>
-													@endif
+													<span>-</span>
 													<p>
 														{{ $chapter->assessment->title }}
 													</p>
