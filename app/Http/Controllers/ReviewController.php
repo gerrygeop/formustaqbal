@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Models\User;
 use App\Models\UserResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
 {
@@ -40,7 +41,11 @@ class ReviewController extends Controller
                 ['user_id', '=', $user->id],
             ])
             ->with('user')
-            ->get();
+            ->get()
+            ->sortBy([
+                ['score', 'desc'],
+                ['created_at', 'desc'],
+            ]);
 
         return view('reviews.show', [
             'user' => $user,
@@ -92,5 +97,14 @@ class ReviewController extends Controller
         $user->save();
 
         return back()->with('submit-success', 'Berhasil disubmit');
+    }
+
+    public function destroy(UserResponses $userresponses)
+    {
+        DB::transaction(function () use ($userresponses) {
+            $userresponses->delete();
+        });
+
+        return redirect()->back()->with('success-delete-response', 'Berhasil Menghapus');
     }
 }
