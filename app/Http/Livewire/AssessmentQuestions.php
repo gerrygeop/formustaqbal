@@ -237,21 +237,28 @@ class AssessmentQuestions extends Component
     public function finishAssessment()
     {
         DB::transaction(function () {
-            $userResponses = new UserResponses();
-            $userResponses->user_id = auth()->id();
-            $userResponses->assessment_id = $this->assessment->id;
+            $userResponses = UserResponses::where([
+                ['user_id', '=', auth()->id()],
+                ['assessment_id', '=', $this->assessment->id],
+            ])->get();
 
-            if (session()->has('responses')) {
-                $userResponses->responses = json_encode(session('responses'));
+            if ($userResponses->count() <= $this->assessment->trial_limits) {
+                $userResponses = new UserResponses();
+                $userResponses->user_id = auth()->id();
+                $userResponses->assessment_id = $this->assessment->id;
 
-                $userResponses->save();
-                session()->forget('responses');
+                if (session()->has('responses')) {
+                    $userResponses->responses = json_encode(session('responses'));
+
+                    $userResponses->save();
+                    session()->forget('responses');
+                }
+
+                $assUser = AssessmentUser::where('assessment_id', $this->assessment->id)->where('user_id', auth()->id())->first();
+                $assUser->update([
+                    'is_completed' => true
+                ]);
             }
-
-            $assUser = AssessmentUser::where('assessment_id', $this->assessment->id)->where('user_id', auth()->id())->first();
-            $assUser->update([
-                'is_completed' => true
-            ]);
         });
 
         return to_route('courses.learn', [$this->chapter->submodule->module, $this->chapter])->with('finished', 'Terima kasih telah mengerjakan, nilai anda akan keluar setelah direview');
