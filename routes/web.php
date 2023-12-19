@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssessmentUserController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PlacementTestController;
@@ -49,12 +50,24 @@ Route::middleware(['auth'])->group(function () {
         // Room/Class
         Route::get('/class', [RoomController::class, 'index'])->name('rooms.index');
         Route::get('/class/{room}', [RoomController::class, 'show'])->name('rooms.show');
+
+        Route::get('/class/{room}/form', [GradeController::class, 'index'])->name('rooms.form.index');
+        Route::get('/class/{room}/form/create', [GradeController::class, 'create'])->name('rooms.form.create');
+        Route::post('/class/{room}/form', [GradeController::class, 'store'])->name('rooms.form.store');
+
+        Route::get('/class/{room}/form/export/excel', [GradeController::class, 'exportExcel'])->name('rooms.form.export-excel');
+
+        Route::get('/class/{room}/nilai', [RoomController::class, 'nilai'])->name('rooms.nilai.list');
+        Route::get('/class/{room}/nilai/{user}', [RoomController::class, 'detailNilai'])->name('rooms.nilai.detail');
+        Route::get('/class/{room}/rekap', [RoomController::class, 'rekap'])->name('rooms.rekap');
+
         Route::get('/class/{room}/{user}', [RoomController::class, 'mhs'])->name('rooms.mhs');
 
         // Review
         Route::get('/level/{module}/review/{assessment}', [ReviewController::class, 'index'])->name('courses.review.index');
         Route::get('/level/{module}/review/{assessment}/{user}', [ReviewController::class, 'show'])->name('courses.review.show');
         Route::get('/level/{module}/review/{assessment}/responses/{userresponses}', [ReviewController::class, 'edit'])->name('courses.review.edit');
+        Route::delete('/level/review/responses/{userresponses}', [ReviewController::class, 'destroy'])->name('courses.review.destroy');
         Route::put('/review/{user}/submit', [ReviewController::class, 'update'])->name('quiz.review.update');
 
         // Teacher testing placement-test
