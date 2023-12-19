@@ -27,6 +27,8 @@ class AssessmentRelationManager extends RelationManager
                             ->options([
                                 '1' => 'Quiz',
                                 '3' => 'Exam',
+                                '4' => 'UTS',
+                                '5' => 'Ujian Akhir',
                             ])
                             ->default(1)
                             ->required(),

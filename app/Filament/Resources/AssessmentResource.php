@@ -33,6 +33,8 @@ class AssessmentResource extends Resource
                                 '1' => 'Quiz',
                                 '2' => 'Placement Test',
                                 '3' => 'Exam',
+                                '4' => 'UTS',
+                                '5' => 'Ujian Akhir',
                             ])
                             ->default('1')
                             ->required()
@@ -126,6 +128,8 @@ class AssessmentResource extends Resource
                         '1' => 'Quiz',
                         '2' => 'Placement Test',
                         '3' => 'Exam',
+                        '4' => 'UTS',
+                        '5' => 'Ujian Akhir',
                     ]),
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
