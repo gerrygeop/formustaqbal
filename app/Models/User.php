@@ -118,4 +118,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(Room::class, 'room_user')->withPivot('type')->withTimestamps();
     }
+
+    public function grade(): HasOne
+    {
+        return $this->hasOne(StudentGrade::class);
+    }
 }
