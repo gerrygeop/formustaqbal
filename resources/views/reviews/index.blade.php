@@ -24,6 +24,14 @@
 								Exam
 							@break
 
+							@case(4)
+								UTS
+							@break
+
+							@case(5)
+								Ujian Akhir
+							@break
+
 							@default
 								-
 						@endswitch
