@@ -14,7 +14,9 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "psr/simple-cache": "2.0",
+        "pxlrbt/filament-excel": "^1.1"
     },
     "require-dev": {
         "doctrine/dbal": "^3.6",
