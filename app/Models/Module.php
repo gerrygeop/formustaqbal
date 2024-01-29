@@ -21,7 +21,7 @@ class Module extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'course_user')->withPivot(['completed_submodules', 'last_visit']);
+        return $this->belongsToMany(User::class, 'course_user')->withPivot(['course_id', 'completed_submodules', 'last_visit'])->withTimestamps();
     }
 
     public function submodules(): HasMany

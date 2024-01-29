@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\RoomResource\RelationManagers;
+namespace App\Filament\Resources\ModuleResource\RelationManagers;
 
 use App\Models\Department;
 use App\Models\Faculty;
 use App\Models\User;
-use Filament\Forms;
+use Filament\Forms\Components;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
@@ -23,27 +23,23 @@ class UsersRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Grid::make(1)
+                Components\Grid::make(1)
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('username')
-                            ->required()
-                            ->maxLength(255),
+                        Components\TextInput::make('name'),
+                        Components\TextInput::make('username'),
 
-                        Forms\Components\Section::make('Fakultas/Prodi')
+                        Components\Section::make('Fakultas/Prodi')
                             ->relationship('siakad')
                             ->schema([
-                                Forms\Components\Select::make('faculty_id')
+                                Components\Select::make('faculty_id')
                                     ->label('Fakultas')
                                     ->relationship('faculty', 'name')
                                     ->options(Faculty::all()->pluck('name', 'id')),
 
-                                Forms\Components\Select::make('department_id')
+                                Components\Select::make('department_id')
                                     ->label('Prodi')
                                     ->relationship('department', 'name')
-                                    ->options(Department::all()->pluck('name', 'id')),
+                                    ->options(Department::all()->pluck('name', 'id'))
                             ])
                             ->visible(function (?User $record) {
                                 return $record->siakad ? true : false;
@@ -56,20 +52,17 @@ class UsersRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('index')->label('No')->getStateUsing(
-                    static function (stdClass $rowLoop, HasTable $livewire): string {
-                        return (string) ($rowLoop->iteration +
-                            ($livewire->tableRecordsPerPage * ($livewire->page - 1
-                            ))
-                        );
-                    }
-                ),
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->getStateUsing(
+                        static function (stdClass $rowLoop, HasTable $livewire): string {
+                            return (string) ($rowLoop->iteration + ($livewire->tableRecordsPerPage * ($livewire->page - 1)));
+                        }
+                    ),
+
                 Tables\Columns\TextColumn::make('username'),
                 Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('type')->label('Status')->enum([
-                    '0' => 'Mahasiswa',
-                    '1' => 'Dosen',
-                ]),
+                Tables\Columns\TextColumn::make('modules.course_id'),
             ])
             ->filters([
                 //
@@ -83,14 +76,19 @@ class UsersRelationManager extends RelationManager
                             ->multiple()
                             ->autofocus(),
 
-                        Forms\Components\Select::make('type')
-                            ->options([
-                                '0' => 'Mahasiswa',
-                                '1' => 'Dosen',
-                            ])
-                            ->default('0')
-                            ->required(),
-                    ]),
+                        Components\Select::make('course_id')
+                            ->label('Bahasa')
+                            ->options(function (RelationManager $livewire): array {
+                                return $livewire->ownerRecord->course()
+                                    ->pluck('name', 'id')
+                                    ->toArray();
+                            })
+                            ->default(function (RelationManager $livewire) {
+                                return $livewire->ownerRecord->course_id;
+                            })
+                            ->required()
+                            ->disabled(),
+                    ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
