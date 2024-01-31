@@ -18,20 +18,20 @@
 								<div class="flex items-center space-x-2">
 									<img src="{{ asset('storage/' . $room->module->course->cover_path) }}" alt="{{ $room->module->course->name }}"
 										class="h-6 w-auto">
-									<h2 class="font-medium text-lg text-slate-700 dark:text-gray-50">
+									<h2 class="font-semibold text-xl text-slate-700 dark:text-gray-50">
 										{{ $room->module->course->name }}
 									</h2>
 								</div>
 
 								<div class="flex items-center space-x-2 mt-4 text-gray-800">
-									<span
-										class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 font-medium text-lg text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
-										Level: {{ $room->module->title }}
-									</span>
-									<span
-										class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 font-medium text-lg text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
-										Class: {{ $room->name }}
-									</span>
+									<div
+										class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+										Level: <span class="font-medium ml-1">{{ $room->module->title }}</span>
+									</div>
+									<div
+										class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+										Class: <span class="font-medium ml-1">{{ $room->name }}</span>
+									</div>
 								</div>
 							</div>
 						</a>
