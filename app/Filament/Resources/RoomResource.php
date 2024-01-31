@@ -33,6 +33,9 @@ class RoomResource extends Resource
                         Forms\Components\TextInput::make('limit')
                             ->label('Kuota')
                             ->required(),
+                        Forms\Components\Select::make('module')
+                            ->label('Level')
+                            ->relationship('module', 'title')
                     ])
             ]);
     }
