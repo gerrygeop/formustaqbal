@@ -50,7 +50,11 @@ class RoomController extends Controller
                     return $submodule->chapters->count();
                 });
 
-                $user->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
+                if ($totalSubmodules == 0) {
+                    $user->completion_percentage = 0;
+                } else {
+                    $user->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
+                }
             });
         });
 
@@ -63,7 +67,7 @@ class RoomController extends Controller
     /**
      * Menampilkan daftar mahasiswa dengan nilai
      */
-    public function nilai(Room $room, User $user)
+    public function nilai(Room $room)
     {
         $users = User::query()
             ->whereHas('rooms', function ($query) use ($room) {
@@ -87,7 +91,11 @@ class RoomController extends Controller
                     return $submodule->chapters->count();
                 });
 
-                $user->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
+                if ($totalSubmodules == 0) {
+                    $user->completion_percentage = 0;
+                } else {
+                    $user->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
+                }
             });
         });
 

@@ -18,17 +18,13 @@ class UserDashboardController extends Controller
         if (!auth()->user()->hasRole('teacher')) {
             $modules->map(function ($module) {
                 $completedSubmodules = json_decode($module->pivot->completed_submodules);
-                if (!is_null($completedSubmodules)) {
-                    $totalCompletedSubmodules = count($completedSubmodules);
-                } else {
-                    $totalCompletedSubmodules = 0;
-                }
+                $totalCompletedSubmodules = !is_null($completedSubmodules) ? count($completedSubmodules) : 0;
 
                 $totalSubmodules = $module->submodules->sum(function ($submodule) {
                     return $submodule->chapters->count();
                 });
 
-                if ($totalCompletedSubmodules === 0 || is_null($totalSubmodules)) {
+                if ($totalSubmodules == 0) {
                     $module->completion_percentage = 0;
                 } else {
                     $module->completion_percentage = round(($totalCompletedSubmodules / $totalSubmodules) * 100);
