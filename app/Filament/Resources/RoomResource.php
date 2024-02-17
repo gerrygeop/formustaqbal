@@ -44,7 +44,10 @@ class RoomResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nama'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Terakhir diperbarui')
                     ->placeholder('-')
@@ -52,7 +55,9 @@ class RoomResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('module')
+                    ->label('Level')
+                    ->relationship('module', 'title')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -15,7 +15,7 @@ class Department extends Model
 
     public function faculty(): BelongsTo
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Faculty::class);
     }
 
     public function locals(): HasMany

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LocalResource\Pages;
-use App\Filament\Resources\LocalResource\RelationManagers;
 use App\Models\Local;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LocalResource extends Resource
 {
@@ -43,8 +40,14 @@ class LocalResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nama'),
-                Tables\Columns\TextColumn::make('department.name')->label('Progran Studi'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->label('Progran Studi')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Terakhir diperbarui')
                     ->placeholder('-')
@@ -52,7 +55,9 @@ class LocalResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('department')
+                    ->label('Program Studi')
+                    ->relationship('department', 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

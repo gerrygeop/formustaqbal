@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
 use App\Models\Department;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DepartmentResource extends Resource
 {
@@ -43,8 +40,14 @@ class DepartmentResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('Nama'),
-                Tables\Columns\TextColumn::make('faculty.name')->label('Fakultas'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('faculty.name')
+                    ->label('Fakultas')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Terakhir diperbarui')
                     ->placeholder('-')
@@ -52,7 +55,9 @@ class DepartmentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('faculty')
+                    ->label('Fakultas')
+                    ->relationship('faculty', 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
