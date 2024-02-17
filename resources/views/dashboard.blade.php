@@ -35,10 +35,9 @@
 
 						<div class="flex mt-2 space-x-2 lg:text-lg">
 							@foreach ($rooms as $room)
-								<a href="{{ route('rooms.show', $room) }}"
-									class="font-medium text-gray-800 px-3 py-0.5 border rounded-md hover:bg-gray-50">
+								<span class="font-medium text-gray-800 px-3 py-0.5 border rounded-md hover:bg-gray-50">
 									{{ $room->name }}
-								</a>
+								</span>
 							@endforeach
 						</div>
 					</div>
@@ -46,20 +45,21 @@
 
 				@cannot('teacher')
 					<div class="col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-						<div class="px-4 lg:px-6 py-3 lg:py-4">
+						<div class="p-4 lg:p-6">
 							<div class="flex items-center gap-x-2 text-gray-900 dark:text-gray-100">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
 									class="w-5 h-5 lg:w-6 lg:h-6 text-amber-500">
 									<path
 										d="M5.566 4.657A4.505 4.505 0 016.75 4.5h10.5c.41 0 .806.055 1.183.157A3 3 0 0015.75 3h-7.5a3 3 0 00-2.684 1.657zM2.25 12a3 3 0 013-3h13.5a3 3 0 013 3v6a3 3 0 01-3 3H5.25a3 3 0 01-3-3v-6zM5.25 7.5c-.41 0-.806.055-1.184.157A3 3 0 016.75 6h10.5a3 3 0 012.683 1.657A4.505 4.505 0 0018.75 7.5H5.25z" />
 								</svg>
-								<span>Dosen:</span>
+								<span>Dosen</span>
 							</div>
 
-							<div class="flex mt-1 space-x-2 lg:text-lg">
+							<div class="flex mt-2 space-x-2 lg:text-lg">
 								@foreach ($rooms as $room)
 									@foreach ($room->users()->where('type', 1)->get() as $user)
-										<a href="{{ route('profile.detail', $user) }}" class="font-medium hover:underline">
+										<a href="{{ route('profile.detail', $user) }}"
+											class="font-medium text-gray-800 px-3 py-0.5 border rounded-md hover:bg-gray-50 hover:underline">
 											{{ $user->name }}
 										</a>
 									@endforeach
