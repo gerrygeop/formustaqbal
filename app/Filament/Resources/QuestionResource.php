@@ -9,6 +9,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Contracts\HasTable;
+use stdClass;
 
 class QuestionResource extends Resource
 {
@@ -40,9 +42,9 @@ class QuestionResource extends Resource
                         ->reactive(),
 
                     Forms\Components\FileUpload::make('file_path')
-                        ->label('Gambar/Audio')
-                        ->directory(fn (callable $get): string => $get('type') == 3 ? 'question-audio' : 'question-images')
-                        ->acceptedFileTypes(['audio/mpeg', 'audio/ogg', 'image/jpeg', 'image/png', 'image/webp'])
+                        ->label('Audio')
+                        ->directory('question-audio')
+                        ->acceptedFileTypes(['audio/mpeg', 'audio/ogg'])
                         ->imageResizeMode('cover')
                         ->imagePreviewHeight('200')
                         ->enableOpen()
@@ -51,11 +53,6 @@ class QuestionResource extends Resource
 
                     Forms\Components\RichEditor::make('question')
                         ->label('Pertanyaan')
-                        ->toolbarButtons([
-                            'bold',
-                            'italic',
-                            'underline',
-                        ])
                         ->required(),
 
                     Forms\Components\Grid::make(3)->schema([
@@ -111,6 +108,13 @@ class QuestionResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->getStateUsing(
+                        static function (stdClass $rowLoop, HasTable $livewire): string {
+                            return (string) ($rowLoop->iteration + ($livewire->tableRecordsPerPage * ($livewire->page - 1)));
+                        }
+                    ),
                 Tables\Columns\TextColumn::make('type')
                     ->label('Jenis Soal')
                     ->enum([
@@ -121,7 +125,7 @@ class QuestionResource extends Resource
                     ]),
                 Tables\Columns\TextColumn::make('question')
                     ->label('Pertanyaan')
-                    ->words(10)
+                    ->words(5)
                     ->searchable()
                     ->placeholder('-')
                     ->html(),

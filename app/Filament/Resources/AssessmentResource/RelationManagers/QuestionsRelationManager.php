@@ -8,6 +8,8 @@ use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Contracts\HasTable;
+use stdClass;
 
 class QuestionsRelationManager extends RelationManager
 {
@@ -33,9 +35,9 @@ class QuestionsRelationManager extends RelationManager
                         ->reactive(),
 
                     Forms\Components\FileUpload::make('file_path')
-                        ->label('Gambar/Audio')
-                        ->directory(fn (callable $get): string => $get('type') == 3 ? 'question-audio' : 'question-images')
-                        ->acceptedFileTypes(['audio/mpeg', 'audio/ogg', 'image/jpeg', 'image/png', 'image/webp'])
+                        ->label('Audio')
+                        ->directory('question-audio')
+                        ->acceptedFileTypes(['audio/mpeg', 'audio/ogg'])
                         ->imageResizeMode('cover')
                         ->imagePreviewHeight('200')
                         ->enableOpen()
@@ -44,11 +46,6 @@ class QuestionsRelationManager extends RelationManager
 
                     Forms\Components\RichEditor::make('question')
                         ->label('Pertanyaan')
-                        ->toolbarButtons([
-                            'bold',
-                            'italic',
-                            'underline',
-                        ])
                         ->required(),
 
                     Forms\Components\Grid::make(3)->schema([
@@ -104,6 +101,13 @@ class QuestionsRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->getStateUsing(
+                        static function (stdClass $rowLoop, HasTable $livewire): string {
+                            return (string) ($rowLoop->iteration + ($livewire->tableRecordsPerPage * ($livewire->page - 1)));
+                        }
+                    ),
                 Tables\Columns\TextColumn::make('type')
                     ->label('Jenis Soal')
                     ->enum([
@@ -112,12 +116,14 @@ class QuestionsRelationManager extends RelationManager
                         '3' => 'Listenig',
                         '4' => 'Speaking',
                     ]),
+
                 Tables\Columns\TextColumn::make('question')
                     ->label('Pertanyaan')
-                    ->wrap()
-                    ->html()
+                    ->limit(5)
                     ->searchable()
-                    ->placeholder('-'),
+                    ->placeholder('-')
+                    ->html(),
+
                 Tables\Columns\TextColumn::make('point')->sortable(),
             ])
             ->filters([
