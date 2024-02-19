@@ -94,68 +94,71 @@
 													{!! $questions[$response->question_id]->question !!}
 												</div>
 
-												@if ($questions[$response->question_id]->type == 1)
-													<div class="grid grid-cols-1 gap-4" @if ($questions[$response->question_id]->is_choice_rtl) dir="rtl" @endif>
-														@foreach ($questions[$response->question_id]->choices as $choice)
-															<div class="text-lg flex items-center gap-x-4">
+												<div class="p-4 pt-2 border rounded">
+													<div class="text-gray-800 mb-3">Jawaban:</div>
+													@if ($questions[$response->question_id]->type == 1)
+														<div class="grid grid-cols-1 gap-4" @if ($questions[$response->question_id]->is_choice_rtl) dir="rtl" @endif>
+															@foreach ($questions[$response->question_id]->choices as $choice)
+																<div class="text-lg flex items-center gap-x-4">
 
-																@if ($response->answer == $choice->id && $choice->is_correct)
-																	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-																		stroke="currentColor" class="w-7 h-7 text-green-600">
-																		<path stroke-linecap="round" stroke-linejoin="round"
-																			d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-																	</svg>
-																@elseif ($response->answer == $choice->id && !$choice->is_correct)
-																	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-																		stroke="currentColor" class="w-7 h-7 text-red-600">
-																		<path stroke-linecap="round" stroke-linejoin="round"
-																			d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-																	</svg>
-																@else
-																	<div class="w-5 h-5 mx-1 bg-gray-200 rounded"></div>
-																@endif
-
-																@if ($choice->image_path)
-																	@if (str($choice->image_path)->endsWith('.mp3') || str($choice->image_path)->endsWith('.ogg'))
-																		<audio controls class="bg-yellow-400 rounded-lg">
-																			<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/ogg">
-																			<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/mpeg">
-																			Your browser does not support the audio element.
-																		</audio>
+																	@if ($response->answer == $choice->id && $choice->is_correct)
+																		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+																			stroke="currentColor" class="w-7 h-7 text-green-600">
+																			<path stroke-linecap="round" stroke-linejoin="round"
+																				d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+																		</svg>
+																	@elseif ($response->answer == $choice->id && !$choice->is_correct)
+																		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+																			stroke="currentColor" class="w-7 h-7 text-red-600">
+																			<path stroke-linecap="round" stroke-linejoin="round"
+																				d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+																		</svg>
 																	@else
-																		<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+																		<div class="w-5 h-5 mx-1 bg-gray-200 rounded"></div>
 																	@endif
-																@endif
 
-																<span @class([
-																	'font-semibold' => $response->answer == $choice->id,
-																])>
-																	{{ $choice->choice }}
-																</span>
+																	@if ($choice->image_path)
+																		@if (str($choice->image_path)->endsWith('.mp3') || str($choice->image_path)->endsWith('.ogg'))
+																			<audio controls class="bg-yellow-400 rounded-lg">
+																				<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/ogg">
+																				<source src="{{ asset('storage/' . $choice->image_path) }}" type="audio/mpeg">
+																				Your browser does not support the audio element.
+																			</audio>
+																		@else
+																			<img src="{{ asset('storage/' . $choice->image_path) }}" alt="choice" class="h-24 w-auto border">
+																		@endif
+																	@endif
 
-															</div>
-														@endforeach
-													</div>
-												@elseif ($questions[$response->question_id]->type == 2 || $questions[$response->question_id]->type == 3)
-													<div class="bg-gray-50 border rounded p-4">
-														<p>{{ $response->answer }}</p>
-													</div>
-												@elseif ($questions[$response->question_id]->type == 4)
-													@if (str($response->answer)->endsWith('.mp3') || str($response->answer)->endsWith('.ogg'))
-														<audio controls class="bg-yellow-400 w-full">
-															<source src="{{ asset('storage/' . $response->answer) }}" type="audio/ogg">
-															<source src="{{ asset('storage/' . $response->answer) }}" type="audio/mpeg">
-															Your browser does not support the audio element.
-														</audio>
+																	<span @class([
+																		'font-semibold' => $response->answer == $choice->id,
+																	])>
+																		{{ $choice->choice }}
+																	</span>
+
+																</div>
+															@endforeach
+														</div>
+													@elseif ($questions[$response->question_id]->type == 2 || $questions[$response->question_id]->type == 3)
+														<div class="bg-gray-50 border rounded p-4">
+															<p>{{ $response->answer }}</p>
+														</div>
+													@elseif ($questions[$response->question_id]->type == 4)
+														@if (str($response->answer)->endsWith('.mp3') || str($response->answer)->endsWith('.ogg'))
+															<audio controls class="bg-yellow-400 w-full">
+																<source src="{{ asset('storage/' . $response->answer) }}" type="audio/ogg">
+																<source src="{{ asset('storage/' . $response->answer) }}" type="audio/mpeg">
+																Your browser does not support the audio element.
+															</audio>
+														@else
+															<img src="{{ asset('storage/' . $response->answer) }}" alt="Image" class="h-48 w-auto border">
+														@endif
 													@else
-														<img src="{{ asset('storage/' . $response->answer) }}" alt="Image" class="h-48 w-auto border">
+														<div>Terjadi kesalahan saat membuat soal.</div>
 													@endif
-												@else
-													<div>Terjadi kesalahan saat membuat soal.</div>
-												@endif
+												</div>
 
-												<div class="my-8 p-4 border rounded-lg bg-amber-50">
-													<x-input-label for="point" :value="__('Point')" />
+												<div class="my-8 p-4 border rounded bg-amber-50">
+													<x-input-label for="point" :value="__('Point:')" />
 													<x-text-input id="point" name="{{ $response->question_id }}" type="number" min="0"
 														class="mt-1 block w-full" :value="old('point', $response->point)" required />
 												</div>
@@ -166,7 +169,7 @@
 								</div>
 
 								<div class="py-10 border-t">
-									<x-input-label for="feedback" :value="__('Komentar')" />
+									<x-input-label for="feedback" :value="__('Komentar:')" />
 									<textarea id="feedback" name="feedback" rows="5"
 									 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-yellow-500 dark:focus:border-yellow-600 focus:ring-yellow-500 dark:focus:ring-yellow-600 rounded shadow-sm">{{ old('feedback', $userResponses->feedback) }}</textarea>
 

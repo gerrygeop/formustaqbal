@@ -95,24 +95,26 @@
 
 									@slot('tbody')
 										@foreach ($room->users->sortDesc() as $user)
-											<tr>
-												<x-td>{{ $loop->iteration }}</x-td>
-												<x-td>
-													<div class="font-medium">
-														{{ $user->username }}
-													</div>
-												</x-td>
-												<x-td>{{ $user->name }}</x-td>
-												<x-td>
-													{{ $user->siakad ? $user->siakad->department->name : '-' }}
-												</x-td>
-												<x-td>
-													<a href="{{ route('courses.review.show', [$module, $assessment, $user]) }}"
-														class="px-3 py-1 text-amber-600 dark:text-gray-300 hover:underline transition-all duration-200">
-														Lihat
-													</a>
-												</x-td>
-											</tr>
+											@if ($user->pivot->type == 0)
+												<tr>
+													<x-td>{{ $loop->iteration }}</x-td>
+													<x-td>
+														<div class="font-medium">
+															{{ $user->username }}
+														</div>
+													</x-td>
+													<x-td>{{ $user->name }}</x-td>
+													<x-td>
+														{{ $user->siakad ? $user->siakad->department->name : '-' }}
+													</x-td>
+													<x-td>
+														<a href="{{ route('courses.review.show', [$module, $assessment, $user]) }}"
+															class="px-3 py-1 text-amber-600 dark:text-gray-300 hover:underline transition-all duration-200">
+															Lihat
+														</a>
+													</x-td>
+												</tr>
+											@endif
 										@endforeach
 									@endslot
 								</x-table>
