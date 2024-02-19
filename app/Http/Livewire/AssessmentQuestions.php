@@ -216,11 +216,11 @@ class AssessmentQuestions extends Component
                 $audioFile = $this->answers[$this->question->id]['speaking'];
                 $audioFileName = $audioFile->store('speaking-question', 'public');
                 $response['responses']['answer'] = $audioFileName;
-                $response['responses']['point'] = 0;
+                $response['responses']['point'] = $this->question->point ?? 0;
             } else {
                 $answer_text = $this->answers[$this->question->id];
                 $response['responses']['answer'] = $answer_text;
-                $response['responses']['point'] = 0;
+                $response['responses']['point'] = $this->question->point ?? 0;
             }
 
             $this->saveAnswer($response);
